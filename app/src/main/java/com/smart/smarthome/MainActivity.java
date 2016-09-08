@@ -153,12 +153,12 @@ public class MainActivity extends AppCompatActivity
 
     public void onClick(View v) {
         if (v == buttonAdditem) {
-            //startActivity(new Intent(this, ShowList.class));
+            startActivity(new Intent(this, InventoryActivity.class));
         }
         if (v == buttonLogout) {
             firebaseAuth.signOut();
             finish();
-           // startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 }

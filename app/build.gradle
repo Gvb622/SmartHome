@@ -52,6 +52,12 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.4.0'
     compile 'com.google.android.gms:play-services-auth:9.4.0'
     compile 'com.google.android.gms:play-services-gcm:9.4.0'
+
+    dependencies {
+        compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.6@aar'){
+            transitive=true
+        }
+    }
 }
 apply plugin: 'com.google.gms.google-services'
 
