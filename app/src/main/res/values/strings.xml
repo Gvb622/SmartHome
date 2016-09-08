@@ -9,9 +9,9 @@
     <string name="title_activity_input">InputActivity</string>
     <string name="product_name">Product Name</string>
     <string name="product_price">Price</string>
-    <string name="product_volume">Volume</string>
+    <string name="product_volume">Volume/Unit</string>
     <string name="product_units">Units</string>
-    <string name="add_comparelist">Add to Compare Lisst</string>
+    <string name="add_comparelist">Add to Compare List</string>
     <string name="title_activity_compare">CompareActivity</string>
     <string name="title_activity_inventory">InventoryActivity</string>
     <string name="title_activity_shoppinglist">ShoppinglistActivity</string>
@@ -37,5 +37,7 @@
     <string name="barcode_success">Barcode read successfully</string>
     <string name="barcode_failure">No barcode captured</string>
     <string name="barcode_error">"Error reading barcode: %1$s"</string>
+    <string name="title_activity_weekly_report">WeeklyReportActivity</string>
+    <string name="title_activity_daily_report">DailyReportActivity</string>
 
 </resources>

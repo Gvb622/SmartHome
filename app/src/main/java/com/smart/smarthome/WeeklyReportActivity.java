@@ -14,12 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +34,11 @@ import lecho.lib.hellocharts.view.Chart;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class MonthlyReportActivity extends AppCompatActivity
+public class WeeklyReportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public final static String[] months = new String[]{"1", "2", "3", "4"};
 
-    public final static String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-            "Sep", "Oct", "Nov", "Dec",};
-
-    public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
+   // public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
 
     private ColumnChartView chartBottom;
 
@@ -85,17 +77,27 @@ public class MonthlyReportActivity extends AppCompatActivity
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         List<Column> columns = new ArrayList<Column>();
         List<SubcolumnValue> values;
-        for (int i = 0; i < numColumns; ++i) {
 
             values = new ArrayList<SubcolumnValue>();
-            for (int j = 0; j < numSubcolumns; ++j) {
-                values.add(new SubcolumnValue((float) Math.random() * 50f + 5, ChartUtils.pickColor()));
-            }
-
-            axisValues.add(new AxisValue(i).setLabel(months[i]));
-
+            values.add(new SubcolumnValue(1300, ChartUtils.pickColor()));
+            axisValues.add(new AxisValue(0).setLabel(months[0]));
             columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
-        }
+
+        values = new ArrayList<SubcolumnValue>();
+        values.add(new SubcolumnValue(300, ChartUtils.pickColor()));
+        axisValues.add(new AxisValue(1).setLabel(months[1]));
+        columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
+
+        values = new ArrayList<SubcolumnValue>();
+        values.add(new SubcolumnValue(3500, ChartUtils.pickColor()));
+        axisValues.add(new AxisValue(2).setLabel(months[2]));
+        columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
+
+        values = new ArrayList<SubcolumnValue>();
+        values.add(new SubcolumnValue(770, ChartUtils.pickColor()));
+        axisValues.add(new AxisValue(3).setLabel(months[3]));
+        columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
+
 
         columnData = new ColumnChartData(columns);
 
@@ -180,22 +182,22 @@ public class MonthlyReportActivity extends AppCompatActivity
 
         if (id == R.id.nav_inventory) {
             // Handle the camera action
-            Intent bar = new Intent(MonthlyReportActivity.this,InventoryActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,InventoryActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(MonthlyReportActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,ShoppinglistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
-            Intent bar = new Intent(MonthlyReportActivity.this,CalculatorActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,CalculatorActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_locationbase) {
-            Intent bar = new Intent(MonthlyReportActivity.this,LocationbaseActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,LocationbaseActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_summary) {
-            Intent bar = new Intent(MonthlyReportActivity.this,SummaryreportActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,SummaryreportActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_setting) {
-            Intent bar = new Intent(MonthlyReportActivity.this,SettingActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,SettingActivity.class);
             startActivity(bar);
         }
 

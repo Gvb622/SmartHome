@@ -78,6 +78,24 @@ public class SummaryreportActivity extends AppCompatActivity
             }
         });
 
+        ImageView weekly = (ImageView) findViewById(R.id.report_week);
+        weekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent tt = new Intent (SummaryreportActivity.this,WeeklyReportActivity.class);
+                startActivity(tt);
+            }
+        });
+
+        ImageView daily = (ImageView) findViewById(R.id.report_day);
+        daily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent tt = new Intent (SummaryreportActivity.this,DailyReportActivity.class);
+                startActivity(tt);
+            }
+        });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

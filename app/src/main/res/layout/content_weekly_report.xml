@@ -9,12 +9,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.smart.smarthome.MonthlyReportActivity"
-    tools:showIn="@layout/app_bar_monthly_report">
+    tools:context="com.smart.smarthome.WeeklyReportActivity"
+    tools:showIn="@layout/app_bar_weekly_report">
 
 
     <lecho.lib.hellocharts.view.ColumnChartView
+
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </RelativeLayout>

@@ -39,7 +39,7 @@ import java.util.Iterator;
 
 public class BarcodeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    String firebaseUrl = "https://test-b32cf.firebaseio.com/products";
+    String firebaseUrl = "https://test-b32cf.firebaseio.com/system/items/products";
     Firebase ref;
     FirebaseStorage storage;
     ProductCompare productCompare;
