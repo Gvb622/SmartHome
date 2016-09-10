@@ -1,10 +1,12 @@
 package com.smart.smarthome;
 
 import android.app.LocalActivityManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,8 +28,12 @@ import android.widget.TabHost;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
@@ -40,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     private Button buttonAdditem;
     private EditText editTextProductName;
     private EditText editTextBarcode;
+    static final int GET_BAR_CODE = 1;
+
 
     LocalActivityManager mLocalActivityManager;
 
@@ -208,6 +216,55 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_BAR_CODE) {
+            if (resultCode == RESULT_OK) {
+                final String barcodeValue2 = data.getStringExtra("Barcode");
+                DatabaseReference mDatabse = FirebaseDatabase.getInstance().getReference().child("system").child("items");
+                Query queryRef = mDatabse.orderByChild("Barcode").equalTo(barcodeValue2);
+                queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (final com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("OK ?");
+                            builder.setMessage(barcodeValue2);
+                            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent i = new Intent(MainActivity.this, ShowBarcode.class);
+                                    i.putExtra("key", postSnapshot.getKey());
+                                    startActivity(i);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            builder.show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+            } else {
+                Toast.makeText(MainActivity.this, "Barcode not Found", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }
