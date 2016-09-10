@@ -29,20 +29,29 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
 
+
 import java.util.Iterator;
 
 public class BarcodeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    String firebaseUrl = "https://test-b32cf.firebaseio.com/system/items/products/products";
+    String firebaseUrl = "https://test-b32cf.firebaseio.com/system/items";
     Firebase ref;
     FirebaseStorage storage;
     ProductCompare productCompare;
+    static final int GET_BAR_CODE = 1;
+    EditText inputUnitsScan ;
+    EditText inputVolumeScan ;
+    Button buttonAddScan ;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +59,13 @@ public class BarcodeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        new IntentIntegrator(this).initiateScan();
+        inputUnitsScan = (EditText)findViewById(R.id.input_units_scan);
+        inputVolumeScan = (EditText)findViewById(R.id.input_volume_scan);
+        buttonAddScan = (Button)findViewById(R.id.buttonAddScan);
+
+        Intent intent = new Intent(BarcodeActivity.this, BarcodeCaptureActivity.class);
+        startActivityForResult(intent, GET_BAR_CODE);
+
         Firebase.setAndroidContext(this);
         ref = new Firebase(firebaseUrl);
         storage = FirebaseStorage.getInstance();
@@ -66,16 +81,8 @@ public class BarcodeActivity extends AppCompatActivity
         final EditText inputUnitsScan = (EditText)findViewById(R.id.input_units_scan);
         final EditText inputVolumeScan = (EditText)findViewById(R.id.input_volume_scan);
         Button buttonAddScan = (Button)findViewById(R.id.buttonAddScan);
-        buttonAddScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                productCompare.setUnit(Integer.valueOf(inputUnitsScan.getText().toString()));
-                productCompare.setVolume(Integer.valueOf(inputVolumeScan.getText().toString()));
-                ProductCompareData.add(productCompare);
-                Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
-                startActivity(intent);
-            }
-        });
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -153,40 +160,50 @@ public class BarcodeActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        final IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-                finish();
-            } else {
-                Log.i("BARCODE", result.getContents());
-                Query queryRef = ref.orderByChild("Barcode").equalTo(Long.valueOf(result.getContents()));
+        if (requestCode == GET_BAR_CODE) {
+            if (resultCode == RESULT_OK) {
+                final String barcodeValue2 = data.getStringExtra("Barcode");
+                Log.i("BARCODE", barcodeValue2);
+                Query queryRef = ref.orderByChild("Barcode").equalTo(barcodeValue2);
                 queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getChildrenCount()==0){
+                        if (dataSnapshot.getChildrenCount() == 0) {
                             Toast.makeText(getApplicationContext(), "No firebase", Toast.LENGTH_SHORT).show();
+                            finish();
 
-                        }
-                        Log.i("TEST", "IN");
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            productCompare = new ProductCompare(child.child("Products").getValue().toString(),
-                                    Double.valueOf(child.child("Price").getValue().toString()),
-                                    0,
-                                    0,
-                                    child.child("Barcode").getValue().toString());
-                            StorageReference pathReference = storage.getReferenceFromUrl("gs://test-b32cf.appspot.com/"+child.child("Barcode").getValue().toString()+".jpg");
-                            pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    ImageView imageViewScan = (ImageView)findViewById(R.id.imageViewScan);
-                                    Picasso.with(getApplicationContext()).load(uri.toString()).into(imageViewScan);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    // Handle any errors
-                                }
-                            });
+                        }else if(dataSnapshot.getChildrenCount() != 0){
+                            Log.i("TEST", "IN");
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                productCompare = new ProductCompare(child.child("Name").getValue().toString(),
+                                        Double.valueOf(child.child("SalePrice").getValue().toString()),
+                                        0,
+                                        0,
+                                        child.child("Barcode").getValue().toString());
+                                StorageReference pathReference = storage.getReferenceFromUrl("gs://test-b32cf.appspot.com/" + child.child("Barcode").getValue().toString() + ".jpg");
+                                pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        ImageView imageViewScan = (ImageView) findViewById(R.id.imageViewScan);
+                                        Picasso.with(getApplicationContext()).load(uri.toString()).into(imageViewScan);
+                                        buttonAddScan.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                productCompare.setUnit(Integer.valueOf(inputUnitsScan.getText().toString()));
+                                                productCompare.setVolume(Integer.valueOf(inputVolumeScan.getText().toString()));
+                                                ProductCompareData.add(productCompare);
+                                                Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle any errors
+                                    }
+                                });
+                            }
                         }
                     }
 
@@ -195,9 +212,11 @@ public class BarcodeActivity extends AppCompatActivity
 
                     }
                 });
+            }else{
+                finish();
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
+
+
     }
 }
