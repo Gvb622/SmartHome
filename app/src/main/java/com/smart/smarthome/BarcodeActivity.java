@@ -175,8 +175,13 @@ public class BarcodeActivity extends AppCompatActivity
                         }else if(dataSnapshot.getChildrenCount() != 0){
                             Log.i("TEST", "IN");
                             for (DataSnapshot child : dataSnapshot.getChildren()) {
+<<<<<<< HEAD
                                 productCompare = new ProductCompare(child.child("Name").getValue().toString(),
                                         Double.valueOf(child.child("SalePrice").getValue().toString()),
+=======
+                                productCompare = new ProductCompare(child.child("Products").getValue().toString(),
+                                        Double.valueOf(child.child("Price").getValue().toString()),
+>>>>>>> origin/master
                                         0,
                                         0,
                                         child.child("Barcode").getValue().toString());
