@@ -41,7 +41,7 @@ import java.util.Iterator;
 
 public class BarcodeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    String firebaseUrl = "https://test-b32cf.firebaseio.com/system/items/products/products";
+    String firebaseUrl = "https://test-b32cf.firebaseio.com/system/items";
     Firebase ref;
     FirebaseStorage storage;
     ProductCompare productCompare;
@@ -175,8 +175,8 @@ public class BarcodeActivity extends AppCompatActivity
                         }else if(dataSnapshot.getChildrenCount() != 0){
                             Log.i("TEST", "IN");
                             for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                productCompare = new ProductCompare(child.child("Products").getValue().toString(),
-                                        Double.valueOf(child.child("Price").getValue().toString()),
+                                productCompare = new ProductCompare(child.child("Name").getValue().toString(),
+                                        Double.valueOf(child.child("SalePrice").getValue().toString()),
                                         0,
                                         0,
                                         child.child("Barcode").getValue().toString());
