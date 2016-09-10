@@ -1,5 +1,6 @@
 package com.smart.smarthome;
 
+import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TabHost;
+
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener  {
     ImageView inputbtn;
     ImageView barcodebtn;
     private FirebaseAuth firebaseAuth;
@@ -37,6 +41,9 @@ public class MainActivity extends AppCompatActivity
     private EditText editTextProductName;
     private EditText editTextBarcode;
 
+    LocalActivityManager mLocalActivityManager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,49 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mLocalActivityManager = new LocalActivityManager(this, false);
+        mLocalActivityManager.dispatchCreate(savedInstanceState);
+
+        TabHost tabHost = (TabHost) findViewById(R.id.tabhost2);
+        tabHost.setup(mLocalActivityManager);
+
+
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab 111");
+        tab1.setIndicator("Tab1");
+        Intent intent = new Intent(MainActivity.this, Tab1.class);
+        tab1.setContent(intent);
+
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab 222");
+        tab2.setIndicator("Tab2");
+        Intent intent2 = new Intent(MainActivity.this, Tab2.class);
+        tab2.setContent(intent2);
+
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab 333");
+        tab3.setIndicator("Tab3");
+        Intent intent3 = new Intent(MainActivity.this, Tab3.class);
+        tab3.setContent(intent3);
+
+
+        tabHost.addTab(tab1);
+        tabHost.addTab(tab2);
+        tabHost.addTab(tab3);
+
+
+
+        /*TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2")
+                .setIndicator("Jelly Bean")
+                .setContent(new Intent(this, Tab2.class));
+        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3")
+                .setIndicator("Gingerbread")
+                .setContent(new Intent(this, Tab3.class));
+
+        tabHost.addTab(tabSpec);
+        tabHost.addTab(tabSpec2);
+        tabHost.addTab(tabSpec3);
+        */
+
+
 
 
 
@@ -72,19 +122,28 @@ public class MainActivity extends AppCompatActivity
 
 
         if (firebaseAuth.getCurrentUser() == null) {
-             finish();
-             startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
-        buttonAdditem = (Button) findViewById(R.id.buttonAdditem);
 
-        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-        textViewUserEmail.setText("Welcome " + user.getEmail());
-        buttonLogout = (Button) findViewById(R.id.buttonLogout);
 
-        buttonLogout.setOnClickListener(this);
-        buttonAdditem.setOnClickListener(this);
+//        buttonLogout.setOnClickListener(this);
+  //      buttonAdditem.setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mLocalActivityManager.dispatchPause(!isFinishing());
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mLocalActivityManager.dispatchResume();
     }
 
     @Override
@@ -151,17 +210,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void onClick(View v) {
-        if (v == buttonAdditem) {
-            startActivity(new Intent(this, InventoryActivity.class));
-        }
-        if (v == buttonLogout) {
-            firebaseAuth.signOut();
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-    }
 }
-
-
-
