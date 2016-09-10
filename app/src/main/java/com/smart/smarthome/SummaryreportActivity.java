@@ -32,42 +32,81 @@ public class SummaryreportActivity extends AppCompatActivity
 
 
    TextView timeTextView;
-   TextView dateTextView;
+   TextView begindateTextView,untildateTextView;
+
     ImageView monthly;
 
 
 
-    @TargetApi(24)
-    @Override
 
-
-
+    int currentButton;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summaryreport);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        dateTextView = (TextView)findViewById(R.id.date_textview);
-        ImageView dateButton = (ImageView)findViewById(R.id.date_button);
+        begindateTextView = (TextView)findViewById(R.id.begin_date_textview);
+        untildateTextView = (TextView) findViewById(R.id.until_date_textview);
+        ImageView begindateButton = (ImageView)findViewById(R.id.begin_date_button);
+        ImageView untildateButton = (ImageView)findViewById(R.id.until_date_button);
 
-        dateButton.setOnClickListener(new View.OnClickListener() {
+        begindateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currentButton =1;
                 java.util.Calendar now = java.util.Calendar.getInstance();
                 com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
                         SummaryreportActivity.this,
                         now.get(java.util.Calendar.YEAR),
                         now.get(java.util.Calendar.MONTH),
                         now.get(java.util.Calendar.DAY_OF_MONTH)
+
+
                 );
 
-                dpd.setAccentColor(Color.parseColor("#9C27B0"));
+                dpd.setAccentColor(Color.parseColor("#d32f2f"));
                 dpd.setTitle("DatePicker Title");
 
 
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
+
+        untildateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentButton =2;
+                java.util.Calendar now = java.util.Calendar.getInstance();
+                com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+                        SummaryreportActivity.this,
+                        now.get(java.util.Calendar.YEAR),
+                        now.get(java.util.Calendar.MONTH),
+                        now.get(java.util.Calendar.DAY_OF_MONTH)
+
+
+                );
+
+                dpd.setAccentColor(Color.parseColor("#d32f2f"));
+                dpd.setTitle("DatePicker Title");
+
+
+                dpd.show(getFragmentManager(), "Datepickerdialog");
+            }
+        });
+
+
+
+
+        TextView saleprice = (TextView) findViewById(R.id.summary_sale);
+        TextView retailprice = (TextView) findViewById(R.id.summary_retail);
+        TextView savemoney = (TextView) findViewById(R.id.summary_save);
+
+        int sale = Integer.valueOf(saleprice.getText().toString());
+
+        int retail = Integer.valueOf(retailprice.getText().toString());
+        savemoney.setText(String.valueOf(retail-sale));
+
+
 
          monthly = (ImageView) findViewById(R.id.report_month);
         monthly.setOnClickListener(new View.OnClickListener() {
@@ -129,9 +168,23 @@ public class SummaryreportActivity extends AppCompatActivity
 
 
     public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        if(currentButton==1){
         String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
-        dateTextView.setText(date);
+        begindateTextView.setText(date);}
+        else{
+            String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+            untildateTextView.setText(date);
+
+        }
     }
+
+    public void onDateSet2(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        untildateTextView.setText(date);
+    }
+
+
+
 
     public void onClick(View view) {
 

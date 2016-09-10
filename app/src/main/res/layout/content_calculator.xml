@@ -65,7 +65,9 @@
             android:id="@+id/scanbarcodeCompare"
             />
 
-
     </LinearLayout>
+
+
+
 
 </RelativeLayout>

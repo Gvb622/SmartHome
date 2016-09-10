@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
+import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
@@ -43,14 +45,31 @@ import lecho.lib.hellocharts.view.LineChartView;
 public class MonthlyReportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private LineChartView chart;
+    private LineChartData data;
+    private int numberOfLines = 1;
+    private int maxNumberOfLines = 4;
+    private int numberOfPoints = 12;
+
+    float[][] randomNumbersTab = new float[maxNumberOfLines][numberOfPoints];
+
+    private boolean hasAxes = true;
+    private boolean hasAxesNames = true;
+    private boolean hasLines = true;
+    private boolean hasPoints = true;
+    private ValueShape shape = ValueShape.CIRCLE;
+    private boolean isFilled = false;
+    private boolean hasLabels = false;
+    private boolean isCubic = false;
+    private boolean hasLabelForSelected = false;
+    private boolean pointsHaveDifferentColor;
+
     public final static String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
             "Sep", "Oct", "Nov", "Dec",};
 
-    public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
 
-    private ColumnChartView chartBottom;
 
-    private ColumnChartData columnData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +79,18 @@ public class MonthlyReportActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        // *** BOTTOM COLUMN CHART ***
+        chart = (LineChartView) findViewById(R.id.chart);
+        chart.setOnValueTouchListener(new ValueTouchListener());
 
-        chartBottom = (ColumnChartView)findViewById(R.id.chart);
+        // Generate some random values.
+        generateValues();
 
-        generateColumnData();
+        generateData();
 
+        // Disable viewport recalculations, see toggleCubic() method for more info.
+        chart.setViewportCalculationEnabled(false);
+
+        resetViewport();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -77,71 +102,90 @@ public class MonthlyReportActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void generateColumnData() {
 
-        int numSubcolumns = 1;
-        int numColumns = months.length;
-
-        List<AxisValue> axisValues = new ArrayList<AxisValue>();
-        List<Column> columns = new ArrayList<Column>();
-        List<SubcolumnValue> values;
-        for (int i = 0; i < numColumns; ++i) {
-
-            values = new ArrayList<SubcolumnValue>();
-            for (int j = 0; j < numSubcolumns; ++j) {
-                values.add(new SubcolumnValue((float) Math.random() * 50f + 5, ChartUtils.pickColor()));
-            }
-
-            axisValues.add(new AxisValue(i).setLabel(months[i]));
-
-            columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
-        }
-
-        columnData = new ColumnChartData(columns);
-
-        columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
-        columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(2));
-
-        chartBottom.setColumnChartData(columnData);
-
-        // Set value touch listener that will trigger changes for chartTop.
-        chartBottom.setOnValueTouchListener(new ValueTouchListener());
-
-        // Set selection mode to keep selected month column highlighted.
-        chartBottom.setValueSelectionEnabled(true);
-
-        chartBottom.setZoomType(ZoomType.HORIZONTAL);
-
-        // chartBottom.setOnClickListener(new View.OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // SelectedValue sv = chartBottom.getSelectedValue();
-        // if (!sv.isSet()) {
-        // generateInitialLineData();
-        // }
-        //
-        // }
-        // });
-
+    private void resetViewport() {
+        // Reset viewport height range to (0,100)
+        final Viewport v = new Viewport(chart.getMaximumViewport());
+        v.bottom = 0;
+        v.top = 100;
+        v.left = 0;
+        v.right = numberOfPoints - 1;
+        chart.setMaximumViewport(v);
+        chart.setCurrentViewport(v);
     }
 
 
 
 
-    private class ValueTouchListener implements ColumnChartOnValueSelectListener {
+    private void generateValues() {
+        for (int i = 0; i < maxNumberOfLines; ++i) {
+            for (int j = 0; j < numberOfPoints; ++j) {
+                randomNumbersTab[i][j] = (float) Math.random() * 100f;
+            }
+        }
+    }
+
+
+    private void generateData() {
+
+        List<Line> lines = new ArrayList<Line>();
+        for (int i = 0; i < numberOfLines; ++i) {
+
+            List<PointValue> values = new ArrayList<PointValue>();
+            for (int j = 0; j < numberOfPoints; ++j) {
+                values.add(new PointValue(j, randomNumbersTab[i][j]));
+            }
+
+            Line line = new Line(values);
+            line.setColor(ChartUtils.COLORS[i]);
+            line.setShape(shape);
+            line.setCubic(isCubic);
+            line.setFilled(isFilled);
+            line.setHasLabels(hasLabels);
+            line.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line.setHasLines(hasLines);
+            line.setHasPoints(hasPoints);
+            if (pointsHaveDifferentColor){
+                line.setPointColor(ChartUtils.COLORS[(i + 1) % ChartUtils.COLORS.length]);
+            }
+            lines.add(line);
+        }
+
+        data = new LineChartData(lines);
+
+        if (hasAxes) {
+            Axis axisX = new Axis();
+            Axis axisY = new Axis().setHasLines(true);
+            if (hasAxesNames) {
+                axisX.setName("Axis X");
+                axisY.setName("Axis Y");
+            }
+            data.setAxisXBottom(axisX);
+            data.setAxisYLeft(axisY);
+        } else {
+            data.setAxisXBottom(null);
+            data.setAxisYLeft(null);
+        }
+
+        data.setBaseValue(Float.NEGATIVE_INFINITY);
+        chart.setLineChartData(data);
+
+    }
+
+
+    private class ValueTouchListener implements LineChartOnValueSelectListener {
 
         @Override
-        public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-
+        public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
+            //Toast.makeText(getActivity(), "Selected: " + value, Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onValueDeselected() {
-
-
+            // TODO Auto-generated method stub
 
         }
+
     }
 
     @Override

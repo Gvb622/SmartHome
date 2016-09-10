@@ -23,7 +23,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
+            android:label="Welcome"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BarcodeActivity"
@@ -69,7 +69,9 @@
             android:name=".MonthlyReportActivity"
             android:label="@string/title_activity_monthly_report"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:label="@string/app_login"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,7 +81,10 @@
         <activity
             android:name=".BarcodeCaptureActivity"
             android:label="Read Barcode" />
-        <activity android:name=".RegisterActivity" />
+
+        <activity android:name=".RegisterActivity"
+            android:label="@string/app_register"
+            />
         <activity android:name=".AddItemActivity" />
         <activity android:name=".ShowInformationItem" />
         <activity android:name=".ShowBarcode" />

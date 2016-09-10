@@ -34,14 +34,26 @@ public class CompareActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addMoreCompare);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final com.getbase.floatingactionbutton.FloatingActionButton btn_scanbarcode = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.btn_scanbarcode);
+        btn_scanbarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent qq = new Intent(CompareActivity.this,CalculatorActivity.class);
-                startActivity(qq);
+                Intent bar = new Intent(CompareActivity.this,BarcodeActivity.class);
+                startActivity(bar);
             }
         });
+
+
+        final com.getbase.floatingactionbutton.FloatingActionButton btn_manual = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.btn_manual);
+        btn_manual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent man = new Intent(CompareActivity.this,ManualCompareActivity.class);
+                startActivity(man);
+            }
+        });
+
+
 
         ListView listViewProductCompare = (ListView)findViewById(R.id.listViewProductCompare);
         ProductCompareDataAdapter productCompareDataAdapter = new ProductCompareDataAdapter(this, ProductCompareData.getAll());

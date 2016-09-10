@@ -37,26 +37,61 @@
             />
 
         <TextView
-            android:id="@+id/date_textview"
+            android:id="@+id/begin_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/selected_date"
-            android:paddingTop="30dp"
-            android:textSize="20sp"
+            android:paddingTop="35dp"
+            android:textSize="15sp"
             android:layout_marginLeft="10dp"
             android:textColor="#ffffff"
             android:layout_toRightOf="@id/text_date"
             />
 
         <ImageView
-            android:id="@+id/date_button"
+            android:id="@+id/begin_date_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/calendar"
             android:paddingTop="36dp"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/date_textview"
+            android:layout_toRightOf="@id/begin_date_textview"
             />
+
+            <TextView
+                android:id="@+id/to_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To :"
+                android:paddingTop="30dp"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#ffffff"
+                android:layout_toRightOf="@id/begin_date_button"
+                />
+
+            <TextView
+                android:id="@+id/until_date_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/selected_date"
+                android:paddingTop="35dp"
+                android:textSize="15sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#ffffff"
+                android:layout_toRightOf="@id/to_textview"
+                />
+
+            <ImageView
+                android:id="@+id/until_date_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calendar"
+                android:paddingTop="36dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/until_date_textview"
+                />
+
         </RelativeLayout>
         </LinearLayout>
 
@@ -85,7 +120,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="#ffffff"
                     android:id="@+id/summary_sale"
-                    android:text="1,902"
+                    android:text="1902"
                     android:layout_toRightOf="@id/text_saleprice"
 
                     />
@@ -127,7 +162,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="#ffffff"
                     android:id="@+id/summary_retail"
-                    android:text="3,402"
+                    android:text="3402"
                     android:layout_toRightOf="@id/text_retailprice"
                     />
                 <TextView
@@ -164,7 +199,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="10dp"
-            android:text="21,090"
+            android:text=""
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:paddingLeft="20dp"
@@ -172,6 +207,7 @@
             android:textColor="#546226"
             android:textSize="20sp"
             android:background="#b4eeb4"
+            android:id="@+id/summary_save"
             />
     </LinearLayout>
 
