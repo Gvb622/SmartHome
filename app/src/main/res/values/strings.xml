@@ -17,7 +17,7 @@
     <string name="title_activity_compare">CompareActivity</string>
     <string name="title_activity_inventory">InventoryActivity</string>
     <string name="title_activity_shoppinglist">ShoppinglistActivity</string>
-    <string name="title_activity_calculator">CalculatorActivity</string>
+    <string name="title_activity_calculator">Unit Price Calculator</string>
     <string name="title_activity_locationbase">LocationbaseActivity</string>
     <string name="title_activity_summaryreport">SummaryreportActivity</string>
     <string name="title_activity_setting">SettingActivity</string>

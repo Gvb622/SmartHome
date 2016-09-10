@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="10dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.smart.smarthome.AddItemActivity">
 
     <ScrollView
@@ -28,6 +31,10 @@
                 android:src="@mipmap/no_image_icon_6"
                 />
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <EditText
                 android:id="@+id/addBarcodeEdit"
                 android:hint="Enter Your Barcode"
@@ -35,41 +42,62 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/addNameEdit"
-                android:hint="Enter Your Product Name"
-                android:gravity="center"
-                android:layout_margin="10dp"
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addNameEdit"
+                    android:hint="Enter Your Product Name"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/addTypeEdit"
-                android:hint="Enter Your Product Type"
-                android:gravity="center"
-                android:layout_margin="10dp"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addTypeEdit"
+                    android:hint="Enter Your Product Type"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/addUnitEdit"
-                android:hint="Enter Your Product Unit"
-                android:gravity="center"
-                android:layout_margin="10dp"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number"/>
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addUnitEdit"
+                    android:hint="Enter Your Product Unit"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/addPriceEdit"
-                android:hint="Enter Your Product Price"
-                android:gravity="center"
-                android:layout_margin="10dp"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number"/>
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addPriceEdit"
+                    android:hint="Enter Your Product Price"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"/>
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/addMadeinEdit"
                 android:hint="Enter Your Product Made in"
@@ -77,6 +105,7 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+        </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/addSubmitButton"

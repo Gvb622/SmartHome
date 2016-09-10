@@ -28,6 +28,9 @@
                 android:src="@mipmap/ic_launcher"
                 />
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/addBarcodeEdit3"
                 android:hint="Enter Your Barcode"
@@ -35,7 +38,11 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/addNameEdit3"
                 android:hint="Enter Your Product Name"
@@ -43,7 +50,12 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/addTypeEdit3"
                 android:hint="Enter Your Product Type"
@@ -51,7 +63,11 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/addUnitEdit3"
                 android:hint="Enter Your Product Unit"
@@ -60,7 +76,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="number"/>
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/addPriceEdit3"
                 android:hint="Enter Your Product Price"
@@ -69,7 +89,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="number"/>
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/addMadeinEdit3"
                 android:hint="Enter Your Product Made in"
@@ -77,6 +101,7 @@
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
