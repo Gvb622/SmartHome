@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TabHost;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost2);
         tabHost.setup(mLocalActivityManager);
+
 
         /*
         TextView textTab = new TextView(this);
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         tab2.setContent(intent2);
 
         TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab333");
-        tab3.setIndicator("Health ");
+        tab3.setIndicator("Health & Beauty");
         Intent intent3 = new Intent(MainActivity.this, Tab3.class);
         tab3.setContent(intent3);
 
@@ -136,6 +138,24 @@ public class MainActivity extends AppCompatActivity
         tabHost.addTab(tab3);
         tabHost.addTab(tab4);
         tabHost.addTab(tab5);
+
+        TabWidget tw = (TabWidget)tabHost.findViewById(android.R.id.tabs);
+        View tabView = tw.getChildTabViewAt(2);
+        TextView tv = (TextView)tabView.findViewById(android.R.id.title);
+        tv.setText("Health & Beauty");
+        tv.setTextSize(12);
+        tv.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        tv.setSingleLine();
+
+        TabWidget tw2 = (TabWidget)tabHost.findViewById(android.R.id.tabs);
+        View tabView2 = tw2.getChildTabViewAt(3);
+        TextView tv2 = (TextView)tabView2.findViewById(android.R.id.title);
+        tv2.setText("HouseHold");
+        tv2.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        tv2.setTextSize(12);
+
+
+
 
 
 
