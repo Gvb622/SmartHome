@@ -32,8 +32,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
 
 
