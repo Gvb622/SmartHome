@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -265,7 +263,7 @@ public class InventoryActivity extends AppCompatActivity
 
                         }else if (removeitem == true){
                             AlertDialog.Builder builder = new AlertDialog.Builder(InventoryActivity.this);
-                            builder.setTitle("Are you sure ?");
+                            builder.setTitle("Are you sure to remove ?");
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -298,7 +296,6 @@ public class InventoryActivity extends AppCompatActivity
 
                         }
                         return true;
-
                     }
                     @Override public void onLongItemClick(View view, int position) {
 

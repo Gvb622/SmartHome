@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/linear"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.smart.smarthome.ShoppinglistActivity"
-    tools:showIn="@layout/app_bar_shoppinglist">
+    android:layout_height="match_parent">
+
     <LinearLayout
         android:clickable="true"
         android:focusable="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:id="@+id/TopShoppingList"
+        android:background="#FFCDD2"
+        android:id="@+id/Top"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="72dp"
@@ -19,23 +17,33 @@
         android:weightSum="1">
 
 
-
         <TextView
-            android:text="Name"
-            android:textSize="18sp"
             android:gravity="center"
+            android:text="Image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.6"
+            android:layout_weight="0.25"
             />
         <TextView
-            android:text="Average Price"
-            android:textSize="18sp"
+            android:gravity="center"
+            android:text="Name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            />
+        <TextView
+            android:text="Price"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.4"
-
+            android:layout_weight="0.25"
+            />
+        <TextView
+            android:text="Volumn"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
             />
 
     </LinearLayout>
@@ -44,17 +52,17 @@
 
         android:clickable="true"
         android:focusable="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_above="@+id/bottomShoppingList"
-        android:layout_below="@+id/TopShoppingList"
-        android:id="@+id/item_Shoppinglist"
+        android:background="#FAFAFA"
+        android:layout_above="@+id/bottom"
+        android:layout_below="@+id/Top"
+        android:id="@+id/item_listShopping"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
-        android:id="@+id/bottomShoppingList"
+        android:id="@+id/bottom"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="72dp"
@@ -63,28 +71,35 @@
 
 
         <ImageButton
-            android:id="@+id/AdditemShoppingList"
+            android:id="@+id/Additem2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.33"
+            android:layout_weight="0.25"
             android:background= "#f37370"
             android:src="@mipmap/ic_add_black_24dp"/>
         <ImageButton
-            android:id="@+id/IncreaseItemShoppingList"
+            android:id="@+id/IncreaseItem2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.33"
+            android:layout_weight="0.25"
             android:background= "#f37370"
             android:src="@mipmap/ic_arrow_upward_black_24dp"
             />
-
         <ImageButton
-            android:id="@+id/RemoveItemShoppingList"
+            android:id="@+id/DecreaseItem2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.34"
+            android:layout_weight="0.25"
+            android:background= "#f37370"
+            android:src="@mipmap/ic_arrow_downward_black_24dp"/>
+        <ImageButton
+            android:id="@+id/RemoveItem2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
             android:background="#f37370"
             android:src="@mipmap/ic_clear_black_24dp"/>
 
     </LinearLayout>
+
 </RelativeLayout>

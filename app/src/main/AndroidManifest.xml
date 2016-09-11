@@ -109,6 +109,25 @@
             android:label="@string/title_activity_daily_report"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Barcode2"></activity>
+
+        <activity
+            android:name=".ShoppinglistShowlistActivity"
+            android:label="ShowShoppingList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Tab6" />
+        <activity android:name=".Tab7" />
+        <activity android:name=".Tab8" />
+        <activity android:name=".Tab9" />
+        <activity android:name=".Tab10" />
+        <activity android:name=".Tab11" />
+        <activity android:name=".Tab12" />
+        <activity android:name=".Tab13" />
+        <activity android:name=".Tab14" />
+        <activity android:name=".Tab15" />
+        <activity
+            android:name=".SelectItemShop"
+            android:label="SelectItem"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
