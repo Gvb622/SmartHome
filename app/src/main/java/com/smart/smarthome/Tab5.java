@@ -3,20 +3,16 @@ package com.smart.smarthome;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.graphics.Color;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +27,7 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.squareup.picasso.Picasso;
 
 
-public class Tab2 extends AppCompatActivity {
+public class Tab5 extends AppCompatActivity {
 
     private RecyclerView mList;
     private ImageButton Additem;
@@ -58,7 +54,7 @@ public class Tab2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tab3);
+        setContentView(R.layout.activity_tab1);
 
         Additem = (ImageButton) findViewById(R.id.Additem2);
         Increaseitem = (ImageButton) findViewById(R.id.IncreaseItem2);
@@ -74,7 +70,7 @@ public class Tab2 extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("Drink");
+        qType = mDatabase.orderByChild("Type").equalTo("Etc");
 
 
         mList = (RecyclerView) findViewById(R.id.item_list2);
@@ -110,7 +106,7 @@ public class Tab2 extends AppCompatActivity {
                 Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
 
                 CharSequence colors[] = new CharSequence[] {"Barcode", "Manual"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(Tab2.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Tab5.this);
                 builder.setTitle("Choose One");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
 
@@ -119,11 +115,11 @@ public class Tab2 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
 
-                            startActivity(new Intent(Tab2.this, ShowBarcode.class));
+                            startActivity(new Intent(Tab5.this, ShowBarcode.class));
 
 
                         }else if(which == 1){
-                            startActivity(new Intent(Tab2.this, AddItemActivity.class));
+                            startActivity(new Intent(Tab5.this, AddItemActivity.class));
                         }
                     }
                 });
@@ -242,7 +238,7 @@ public class Tab2 extends AppCompatActivity {
                             });
 
                         }else if (removeitem == true){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Tab2.this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Tab5.this);
                             builder.setTitle("Are you sure ?");
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
@@ -269,7 +265,7 @@ public class Tab2 extends AppCompatActivity {
                             builder.show();
                         }else{
 
-                            Intent i = new Intent(Tab2.this, ShowInformationItem.class);
+                            Intent i = new Intent(Tab5.this, ShowInformationItem.class);
                             i.putExtra("key",s.getKey());
 
                             startActivity(i);

@@ -95,6 +95,11 @@
         <activity android:name=".Tab1" />
         <activity android:name=".Tab2" />
         <activity android:name=".Tab3" />
+        <activity android:name=".Tab4" />
+        <activity android:name=".Tab5" />
+
+
+
         <activity
             android:name=".DailyReportActivity"
             android:label="@string/title_activity_daily_report"

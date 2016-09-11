@@ -1,8 +1,10 @@
 package com.smart.smarthome;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -37,19 +41,23 @@ public class ShowBarcode extends AppCompatActivity {
     private Button Submit3;
     private String image;
     private Uri imageUri = null;
+    private String value;
 
     private static final int GALLERY_REQUEST = 1;
 
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
+    static final int GET_BAR_CODE = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_barcode);
 
-        Bundle extras = getIntent().getExtras();
-        String value = extras.getString("key");
+//        Bundle extras = getIntent().getExtras();
+//        String value = extras.getString("key");
 
         addImageButton2 = (ImageButton) findViewById(R.id.addImageButton6);
         Barcode2 = (EditText) findViewById(R.id.addBarcodeEdit3);
@@ -67,9 +75,10 @@ public class ShowBarcode extends AppCompatActivity {
         mStorage = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = firebaseAuth.getCurrentUser();
-        System.out.println(value);
+        Intent intent = new Intent(ShowBarcode.this, BarcodeCaptureActivity.class);
+        startActivityForResult(intent, GET_BAR_CODE);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("system").child("items").child(value);
+        /*mDatabase = FirebaseDatabase.getInstance().getReference().child("system").child("items").child(value);
 
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -92,6 +101,7 @@ public class ShowBarcode extends AppCompatActivity {
 
             }
         });
+        */
 
         addImageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +189,83 @@ public class ShowBarcode extends AppCompatActivity {
             imageUri = data.getData();
             System.out.println(imageUri);
             addImageButton2.setImageURI(imageUri);
+        }
+
+        if (requestCode == GET_BAR_CODE) {
+            if (resultCode == RESULT_OK) {
+                final String barcodeValue2 = data.getStringExtra("Barcode");
+                DatabaseReference mDatabse = FirebaseDatabase.getInstance().getReference().child("system").child("items");
+                System.out.println(barcodeValue2);
+                Query queryRef = mDatabse.orderByChild("Barcode").equalTo(barcodeValue2);
+                queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if(dataSnapshot.getChildrenCount() == 0){
+                            Toast.makeText(ShowBarcode.this, "Barcode not Found", Toast.LENGTH_LONG).show();
+
+                            // TODO Try to capture barcdoe agian
+                        }else {
+                            for (final com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                value = postSnapshot.getKey();
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ShowBarcode.this);
+                                builder.setTitle("OK ?");
+                                builder.setMessage(barcodeValue2);
+                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("system").child("items").child(value);
+
+                                        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                System.out.println(dataSnapshot.getChildrenCount());
+                                                item i2 = dataSnapshot.getValue(item.class);
+                                                Picasso.with(ShowBarcode.this).load(i2.getImage()).fit().placeholder(R.mipmap.no_image_icon_6).into(addImageButton2);
+                                                Barcode2.setText(i2.getBarcode());
+                                                Name2.setText(i2.getName());
+                                                Type2.setText(i2.getType());
+                                                Unit2.setText(i2.getUnit());
+                                                Price2.setText(i2.getPrice());
+                                                Madein2.setText(i2.getMadein());
+                                                image = i2.getImage();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+            } else {
+                Toast.makeText(ShowBarcode.this, "Barcode not Found", Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
     }
 

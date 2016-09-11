@@ -39,6 +39,8 @@ public class Tab1 extends AppCompatActivity {
     private ImageButton Decreaseitem;
     private ImageButton Removeitem;
     private Query qType;
+    private Query q2Type;
+
 
     private ImageView imageView;
 
@@ -72,7 +74,8 @@ public class Tab1 extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("Box");
+        qType = mDatabase.orderByChild("Type").equalTo("Food");
+
 
         mList = (RecyclerView) findViewById(R.id.item_list2);
         mList.setHasFixedSize(true);
@@ -116,7 +119,7 @@ public class Tab1 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
 
-                            startActivity(new Intent(Tab1.this, Barcode2.class));
+                            startActivity(new Intent(Tab1.this, ShowBarcode.class));
 
 
                         }else if(which == 1){
@@ -178,6 +181,7 @@ public class Tab1 extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
+
 
         final FirebaseRecyclerAdapter<item, ItemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<item, ItemViewHolder>(
 

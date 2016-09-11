@@ -3,10 +3,13 @@ package com.smart.smarthome;
 import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.graphics.Typeface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -66,26 +69,75 @@ public class MainActivity extends AppCompatActivity
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost2);
         tabHost.setup(mLocalActivityManager);
 
+        /*
+        TextView textTab = new TextView(this);
+        textTab.setText("Food");
+        textTab.setTextSize(18);
+        textTab.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        TextView textTab2 = new TextView(this);
+        textTab2.setText("Drink");
+        textTab2.setTextSize(18);
+        textTab2.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        TextView textTab3 = new TextView(this);
+        textTab3.setText("Food");
+        textTab3.setTextSize(18);
+        textTab3.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+*/
+
+        TextView textTab = new TextView(this);
+        textTab.setText("Health & Beauty");
+        textTab.setTextSize(12);
+        textTab.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab.setTextColor(Color.BLACK);
+        textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        TextView textTab2 = new TextView(this);
+        textTab2.setText("Household");
+        textTab2.setTextSize(12);
+        textTab2.setTextColor(Color.BLACK);
+        textTab2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
 
         TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab 111");
-        tab1.setIndicator("Tab1");
+        tab1.setIndicator("Food");
         Intent intent = new Intent(MainActivity.this, Tab1.class);
         tab1.setContent(intent);
 
         TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab 222");
-        tab2.setIndicator("Tab2");
+        tab2.setIndicator("Drink");
         Intent intent2 = new Intent(MainActivity.this, Tab2.class);
         tab2.setContent(intent2);
 
-        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab 333");
-        tab3.setIndicator("Tab3");
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab333");
+        tab3.setIndicator("Health ");
         Intent intent3 = new Intent(MainActivity.this, Tab3.class);
         tab3.setContent(intent3);
+
+        TabHost.TabSpec tab4 = tabHost.newTabSpec("Tab 444");
+        tab4.setIndicator("HouseHold Item");
+        Intent intent4 = new Intent(MainActivity.this, Tab4.class);
+        tab4.setContent(intent4);
+
+        TabHost.TabSpec tab5 = tabHost.newTabSpec("Tab 555");
+        tab5.setIndicator("Etc.");
+        Intent intent5 = new Intent(MainActivity.this, Tab5.class);
+        tab5.setContent(intent5);
+
 
 
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
+        tabHost.addTab(tab4);
+        tabHost.addTab(tab5);
+
+
 
 
 
