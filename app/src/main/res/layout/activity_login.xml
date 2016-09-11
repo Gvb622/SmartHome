@@ -41,6 +41,9 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:layout_margin="15dp"
             android:inputType="textEmailAddress"
@@ -48,6 +51,11 @@
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:layout_margin="15dp"
             android:inputType="textPassword"
@@ -55,8 +63,11 @@
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
 
-        <Button
+
+
+    <Button
             android:layout_margin="15dp"
             android:id="@+id/buttonSignin"
             android:text="Sign In"
