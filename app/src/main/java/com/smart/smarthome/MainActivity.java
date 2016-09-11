@@ -1,10 +1,15 @@
 package com.smart.smarthome;
 
 import android.app.LocalActivityManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.graphics.Typeface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TabHost;
@@ -26,8 +32,12 @@ import android.widget.TabHost;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
@@ -40,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     private Button buttonAdditem;
     private EditText editTextProductName;
     private EditText editTextBarcode;
+    static final int GET_BAR_CODE = 1;
+
 
     LocalActivityManager mLocalActivityManager;
 
@@ -59,25 +71,93 @@ public class MainActivity extends AppCompatActivity
         tabHost.setup(mLocalActivityManager);
 
 
+        /*
+        TextView textTab = new TextView(this);
+        textTab.setText("Food");
+        textTab.setTextSize(18);
+        textTab.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        TextView textTab2 = new TextView(this);
+        textTab2.setText("Drink");
+        textTab2.setTextSize(18);
+        textTab2.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        TextView textTab3 = new TextView(this);
+        textTab3.setText("Food");
+        textTab3.setTextSize(18);
+        textTab3.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+*/
+
+        TextView textTab = new TextView(this);
+        textTab.setText("Health & Beauty");
+        textTab.setTextSize(12);
+        textTab.setTypeface(Typeface.DEFAULT_BOLD);
+        textTab.setTextColor(Color.BLACK);
+        textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        TextView textTab2 = new TextView(this);
+        textTab2.setText("Household");
+        textTab2.setTextSize(12);
+        textTab2.setTextColor(Color.BLACK);
+        textTab2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+
         TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab 111");
-        tab1.setIndicator("Tab1");
+        tab1.setIndicator("Food");
         Intent intent = new Intent(MainActivity.this, Tab1.class);
         tab1.setContent(intent);
 
         TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab 222");
-        tab2.setIndicator("Tab2");
+        tab2.setIndicator("Drink");
         Intent intent2 = new Intent(MainActivity.this, Tab2.class);
         tab2.setContent(intent2);
 
-        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab 333");
-        tab3.setIndicator("Tab3");
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab333");
+        tab3.setIndicator("Health & Beauty");
         Intent intent3 = new Intent(MainActivity.this, Tab3.class);
         tab3.setContent(intent3);
+
+        TabHost.TabSpec tab4 = tabHost.newTabSpec("Tab 444");
+        tab4.setIndicator("HouseHold Item");
+        Intent intent4 = new Intent(MainActivity.this, Tab4.class);
+        tab4.setContent(intent4);
+
+        TabHost.TabSpec tab5 = tabHost.newTabSpec("Tab 555");
+        tab5.setIndicator("Etc.");
+        Intent intent5 = new Intent(MainActivity.this, Tab5.class);
+        tab5.setContent(intent5);
+
 
 
         tabHost.addTab(tab1);
         tabHost.addTab(tab2);
         tabHost.addTab(tab3);
+        tabHost.addTab(tab4);
+        tabHost.addTab(tab5);
+
+        TabWidget tw = (TabWidget)tabHost.findViewById(android.R.id.tabs);
+        View tabView = tw.getChildTabViewAt(2);
+        TextView tv = (TextView)tabView.findViewById(android.R.id.title);
+        tv.setText("Health & Beauty");
+        tv.setTextSize(12);
+        tv.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        tv.setSingleLine();
+
+        TabWidget tw2 = (TabWidget)tabHost.findViewById(android.R.id.tabs);
+        View tabView2 = tw2.getChildTabViewAt(3);
+        TextView tv2 = (TextView)tabView2.findViewById(android.R.id.title);
+        tv2.setText("HouseHold");
+        tv2.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        tv2.setTextSize(12);
+
+
+
+
+
 
 
 
@@ -208,6 +288,55 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GET_BAR_CODE) {
+            if (resultCode == RESULT_OK) {
+                final String barcodeValue2 = data.getStringExtra("Barcode");
+                DatabaseReference mDatabse = FirebaseDatabase.getInstance().getReference().child("system").child("items");
+                Query queryRef = mDatabse.orderByChild("Barcode").equalTo(barcodeValue2);
+                queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (final com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("OK ?");
+                            builder.setMessage(barcodeValue2);
+                            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent i = new Intent(MainActivity.this, ShowBarcode.class);
+                                    i.putExtra("key", postSnapshot.getKey());
+                                    startActivity(i);
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            builder.show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+            } else {
+                Toast.makeText(MainActivity.this, "Barcode not Found", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }

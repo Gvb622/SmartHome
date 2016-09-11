@@ -13,36 +13,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lecho.lib.hellocharts.gesture.ZoomType;
-import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Column;
-import lecho.lib.hellocharts.model.ColumnChartData;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.SubcolumnValue;
-import lecho.lib.hellocharts.model.ValueShape;
-import lecho.lib.hellocharts.model.Viewport;
-import lecho.lib.hellocharts.util.ChartUtils;
-import lecho.lib.hellocharts.view.Chart;
-import lecho.lib.hellocharts.view.ColumnChartView;
-import lecho.lib.hellocharts.view.LineChartView;
+import im.dacer.androidcharts.LineView;
+
 
 public class WeeklyReportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public final static String[] months = new String[]{"1", "2", "3", "4"};
 
-   // public final static String[] days = new String[]{"Mon", "Tue", "Wen", "Thu", "Fri", "Sat", "Sun",};
 
-    private ColumnChartView chartBottom;
 
-    private ColumnChartData columnData;
+    int randomint = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +34,30 @@ public class WeeklyReportActivity extends AppCompatActivity
         setContentView(R.layout.activity_monthly_report);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final LineView lineView = (LineView)findViewById(R.id.line_view);
 
+        //must*
+        ArrayList<String> test = new ArrayList<String>();
 
-        // *** BOTTOM COLUMN CHART ***
+        test.add("Week1");
+        test.add("Week2");
+        test.add("Week3");
+        test.add("Week4");
 
-        chartBottom = (ColumnChartView)findViewById(R.id.chart);
+        lineView.setBottomTextList(test);
+        lineView.setDrawDotLine(true);
+        lineView.setShowPopup(LineView.SHOW_POPUPS_All);
 
-        generateColumnData();
+        Button lineButton = (Button)findViewById(R.id.line_button);
+        lineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                randomSet(lineView);
 
+            }
+        });
+
+        randomSet(lineView);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,81 +69,31 @@ public class WeeklyReportActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void generateColumnData() {
-
-        int numSubcolumns = 1;
-        int numColumns = months.length;
-
-        List<AxisValue> axisValues = new ArrayList<AxisValue>();
-        List<Column> columns = new ArrayList<Column>();
-        List<SubcolumnValue> values;
-
-            values = new ArrayList<SubcolumnValue>();
-            values.add(new SubcolumnValue(1300, ChartUtils.pickColor()));
-            axisValues.add(new AxisValue(0).setLabel(months[0]));
-            columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
-
-        values = new ArrayList<SubcolumnValue>();
-        values.add(new SubcolumnValue(300, ChartUtils.pickColor()));
-        axisValues.add(new AxisValue(1).setLabel(months[1]));
-        columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
-
-        values = new ArrayList<SubcolumnValue>();
-        values.add(new SubcolumnValue(3500, ChartUtils.pickColor()));
-        axisValues.add(new AxisValue(2).setLabel(months[2]));
-        columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
-
-        values = new ArrayList<SubcolumnValue>();
-        values.add(new SubcolumnValue(770, ChartUtils.pickColor()));
-        axisValues.add(new AxisValue(3).setLabel(months[3]));
-        columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
-
-
-        columnData = new ColumnChartData(columns);
-
-        columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
-        columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(2));
-
-        chartBottom.setColumnChartData(columnData);
-
-        // Set value touch listener that will trigger changes for chartTop.
-        chartBottom.setOnValueTouchListener(new ValueTouchListener());
-
-        // Set selection mode to keep selected month column highlighted.
-        chartBottom.setValueSelectionEnabled(true);
-
-        chartBottom.setZoomType(ZoomType.HORIZONTAL);
-
-        // chartBottom.setOnClickListener(new View.OnClickListener() {
-        //
-        // @Override
-        // public void onClick(View v) {
-        // SelectedValue sv = chartBottom.getSelectedValue();
-        // if (!sv.isSet()) {
-        // generateInitialLineData();
-        // }
-        //
-        // }
-        // });
-
-    }
-
-
-
-
-    private class ValueTouchListener implements ColumnChartOnValueSelectListener {
-
-        @Override
-        public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-
+    private void randomSet(LineView lineView){
+        ArrayList<Integer> dataList = new ArrayList<Integer>();
+        int random = (int)(Math.random()*9+1);
+        for (int i=0; i<randomint; i++){
+            dataList.add((int)(Math.random()*random));
         }
 
-        @Override
-        public void onValueDeselected() {
-
-
-
+        ArrayList<Integer> dataList2 = new ArrayList<Integer>();
+        random = (int)(Math.random()*9+1);
+        for (int i=0; i<randomint; i++){
+            dataList2.add((int)(Math.random()*random));
         }
+
+        ArrayList<Integer> dataList3 = new ArrayList<Integer>();
+        random = (int)(Math.random()*9+1);
+        for (int i=0; i<randomint; i++){
+            dataList3.add((int)(Math.random()*random));
+        }
+
+        ArrayList<ArrayList<Integer>> dataLists = new ArrayList<ArrayList<Integer>>();
+        dataLists.add(dataList);
+        dataLists.add(dataList2);
+//        dataLists.add(dataList3);
+
+        lineView.setDataList(dataLists);
     }
 
     @Override

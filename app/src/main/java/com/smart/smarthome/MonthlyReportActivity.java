@@ -17,32 +17,21 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import im.dacer.androidcharts.LineView;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.view.LineChartView;
+
 
 public class MonthlyReportActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public final static String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-            "Sep", "Oct", "Nov", "Dec",};
 
 
 
-    int randomint = 9;
+    int randomint = 12;
 
 
     @Override
@@ -57,9 +46,20 @@ public class MonthlyReportActivity extends AppCompatActivity
 
         //must*
         ArrayList<String> test = new ArrayList<String>();
-        for (int i=0; i<randomint; i++){
-            test.add("sdfsdf");
-        }
+
+        test.add("Jan");
+        test.add("Feb");
+        test.add("Mar");
+        test.add("Apr");
+        test.add("May");
+        test.add("Jun");
+        test.add("Jul");
+        test.add("Aug");
+        test.add("Sep");
+        test.add("Oct");
+        test.add("Nov");
+        test.add("Dec");
+
         lineView.setBottomTextList(test);
         lineView.setDrawDotLine(true);
         lineView.setShowPopup(LineView.SHOW_POPUPS_All);

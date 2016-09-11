@@ -60,6 +60,7 @@ public class InventoryActivity extends AppCompatActivity
     public String key;
     public boolean finish;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -411,10 +412,12 @@ public class InventoryActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 final String barcodeValue2 = data.getStringExtra("Barcode");
                 DatabaseReference mDatabse = FirebaseDatabase.getInstance().getReference().child("system").child("items");
+                System.out.println(barcodeValue2);
                 Query queryRef = mDatabse.orderByChild("Barcode").equalTo(barcodeValue2);
                 queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        System.out.println(barcodeValue2);
                         for (final com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             final String key2 =postSnapshot.getKey();
 

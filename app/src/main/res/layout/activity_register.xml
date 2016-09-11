@@ -10,26 +10,56 @@
     tools:context="com.smart.smarthome.RegisterActivity">
 
     <LinearLayout
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
-        <EditText
-            android:layout_margin="15dp"
-            android:inputType="textEmailAddress"
-            android:hint="Enter your email"
-            android:id="@+id/editTextEmail"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:layout_margin="15dp"
-            android:inputType="textPassword"
-            android:hint="Enter your password"
-            android:id="@+id/editTextPassword"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_marginTop="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Account"
+                android:textSize="25dp"
+                android:layout_marginBottom="100dp"
+                />
+
+        </LinearLayout>
+
+
+
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_margin="15dp"
+                android:inputType="textEmailAddress"
+                android:hint="Enter your email"
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_margin="15dp"
+                android:inputType="textPassword"
+                android:hint="Enter your password"
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:layout_margin="15dp"
@@ -38,12 +68,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:textAlignment="center"
-            android:text="Already register ? Sign in here"
-            android:id="@+id/textViewSignin"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
 
+
+            <TextView
+                android:text="Already register ? "
+                android:id="@+id/textnot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:text="Sign in here"
+                android:id="@+id/textViewSignin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#992031"
+                />
+
+        </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

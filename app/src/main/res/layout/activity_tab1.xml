@@ -8,13 +8,14 @@
     <LinearLayout
         android:clickable="true"
         android:focusable="true"
-        android:background="#FFFFFF"
+        android:background="#FFCDD2"
         android:id="@+id/Top"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="1"
+        >
 
 
         <TextView
@@ -47,7 +48,7 @@
 
         android:clickable="true"
         android:focusable="true"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="#FAFAFA"
         android:layout_above="@+id/bottom"
         android:layout_below="@+id/Top"
         android:id="@+id/item_list2"
