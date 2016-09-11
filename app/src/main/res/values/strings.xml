@@ -42,4 +42,17 @@
     <string name="title_activity_weekly_report">WeeklyReportActivity</string>
     <string name="title_activity_daily_report">DailyReportActivity</string>
 
+    <string-array name="brew_array">
+        <item>bottles</item>
+        <item>box</item>
+        <item>can</item>
+        <item>eggs</item>
+        <item>g.</item>
+        <item>kg</item>
+        <item>pack</item>
+        <item>pcs.</item>
+        <item>sheet</item>
+    </string-array>
+
+
 </resources>

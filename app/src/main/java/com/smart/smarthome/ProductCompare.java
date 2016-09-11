@@ -7,14 +7,16 @@ public class ProductCompare {
     String name;
     Double price;
     int volume;
-    int unit;
+    String unit;
+    int quantity;
     String barcode;
 
-    public ProductCompare(String name, Double price, int volume, int unit, String barcode) {
+    public ProductCompare(String name, Double price, int volume, String unit, int quantity, String barcode) {
         this.name = name;
         this.price = price;
         this.volume = volume;
         this.unit = unit;
+        this.quantity = quantity;
     }
 
     public String getName() {
@@ -41,19 +43,27 @@ public class ProductCompare {
         this.volume = volume;
     }
 
-    public int getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(int unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getBarcode() {
         return barcode;
     }
 
-    public void setUnit(String barcode) {
+    public void setBarcode(String barcode) {
         this.barcode = barcode;
     }
 }

@@ -36,6 +36,19 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/pricecomparebarcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:hint="@string/product_price" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
             android:id="@+id/input_volume_scan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

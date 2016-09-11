@@ -64,10 +64,11 @@ public class CompareActivity extends AppCompatActivity
             String nameproducts = extras.getString("nameproduct");
             Double pricecompares = extras.getDouble("pricecompare");
             Integer volumecompares = extras.getInt("volumecompare");
-            Integer unitcompares = extras.getInt("unitcompare");
+            String unitcompares = extras.getString("unitcompare");
+            Integer quantitycompare = extras.getInt("quantitycompare");
 
 
-            ProductCompare pp = new ProductCompare(nameproducts,pricecompares,volumecompares,unitcompares,null);
+            ProductCompare pp = new ProductCompare(nameproducts,pricecompares,volumecompares,unitcompares,quantitycompare,null);
 
             ProductCompareData.add(pp);
             ListView showinfor = (ListView) findViewById(R.id.listViewProductCompare);

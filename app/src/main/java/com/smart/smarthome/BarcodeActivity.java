@@ -45,7 +45,7 @@ public class BarcodeActivity extends AppCompatActivity
     ProductCompare productCompare;
     static final int GET_BAR_CODE = 1;
     EditText inputUnitsScan ;
-    EditText inputVolumeScan ;
+    EditText inputVolumeScan,pricecomparebarcode;
     Button buttonAddScan ;
 
 
@@ -59,6 +59,7 @@ public class BarcodeActivity extends AppCompatActivity
 
         inputUnitsScan = (EditText)findViewById(R.id.input_units_scan);
         inputVolumeScan = (EditText)findViewById(R.id.input_volume_scan);
+        pricecomparebarcode = (EditText)findViewById(R.id.pricecomparebarcode);
         buttonAddScan = (Button)findViewById(R.id.buttonAddScan);
 
         Intent intent = new Intent(BarcodeActivity.this, BarcodeCaptureActivity.class);
@@ -156,7 +157,7 @@ public class BarcodeActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
+  @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == GET_BAR_CODE) {
             if (resultCode == RESULT_OK) {
@@ -176,8 +177,10 @@ public class BarcodeActivity extends AppCompatActivity
                                 productCompare = new ProductCompare(child.child("Name").getValue().toString(),
                                         Double.valueOf(child.child("SalePrice").getValue().toString()),
                                         0,
+                                        child.child("Quantity").getValue().toString(),
                                         0,
                                         child.child("Barcode").getValue().toString());
+
                                 StorageReference pathReference = storage.getReferenceFromUrl("gs://test-b32cf.appspot.com/" + child.child("Barcode").getValue().toString() + ".jpg");
                                 pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -187,7 +190,8 @@ public class BarcodeActivity extends AppCompatActivity
                                         buttonAddScan.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                productCompare.setUnit(Integer.valueOf(inputUnitsScan.getText().toString()));
+                                                productCompare.setPrice(Double.valueOf(pricecomparebarcode.getText().toString()));
+                                                productCompare.setQuantity(Integer.valueOf(inputUnitsScan.getText().toString()));
                                                 productCompare.setVolume(Integer.valueOf(inputVolumeScan.getText().toString()));
                                                 ProductCompareData.add(productCompare);
                                                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);

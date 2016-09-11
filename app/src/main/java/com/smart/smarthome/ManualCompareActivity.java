@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class ManualCompareActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,11 +27,13 @@ public class ManualCompareActivity extends AppCompatActivity
     EditText nameProductCompare;
     EditText pricecomparemanual;
     EditText volumecomparemanual;
-    EditText unitcomparemanual;
+    EditText quantitycomparemanual;
     Button AddCompare;
     String nameproduct;
     Double pricecompare;
-    Integer volumecompare,unitcompare;
+    Integer volumecompare,quantitycompare;
+    String unit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +54,36 @@ public class ManualCompareActivity extends AppCompatActivity
         nameProductCompare = (EditText) findViewById(R.id.nameProductCompare);
         pricecomparemanual = (EditText) findViewById(R.id.pricecomparemanual);
         volumecomparemanual = (EditText) findViewById(R.id.volumecomparemanual);
-        unitcomparemanual = (EditText) findViewById(R.id.unitcomparemanual);
+        quantitycomparemanual = (EditText) findViewById(R.id.quantitycomparemanual);
         AddCompare = (Button) findViewById(R.id.AddCompare);
+
+        Spinner staticSpinner = (Spinner) findViewById(R.id.static_spinner);
+
+        // Create an ArrayAdapter using the string array and a default spinner
+        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
+                .createFromResource(this, R.array.brew_array,
+                        android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        staticSpinner.setAdapter(staticAdapter);
+
+
+
+        staticSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                unit = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
 
 
         AddCompare.setOnClickListener(new View.OnClickListener() {
@@ -59,14 +93,16 @@ public class ManualCompareActivity extends AppCompatActivity
                 nameproduct = nameProductCompare.getText().toString();
                 pricecompare = Double.parseDouble(pricecomparemanual.getText().toString());
                 volumecompare = Integer.parseInt(volumecomparemanual.getText().toString());
-                unitcompare = Integer.parseInt(unitcomparemanual.getText().toString());
+                quantitycompare = Integer.parseInt(quantitycomparemanual.getText().toString());
+
 
                 Intent i = new Intent(getApplicationContext(), CompareActivity.class);
 
                 i.putExtra("nameproduct",nameproduct);
                 i.putExtra("pricecompare",pricecompare);
                 i.putExtra("volumecompare",volumecompare);
-                i.putExtra("unitcompare",unitcompare);
+                i.putExtra("unitcompare",unit);
+                i.putExtra("quantitycompare",quantitycompare);
                 startActivity(i);
             }
         });

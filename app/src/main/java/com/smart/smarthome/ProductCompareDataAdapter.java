@@ -48,14 +48,16 @@ public class ProductCompareDataAdapter extends BaseAdapter {
         TextView productVolume = (TextView) view.findViewById(R.id.textViewProductVolume);
         TextView productUnit = (TextView) view.findViewById(R.id.textViewProductUnit);
         TextView productCompare = (TextView) view.findViewById(R.id.textViewProductcompare);
+        TextView Quantity = (TextView) view.findViewById(R.id.textViewQuantity);
         Double compare;
-        compare = productCompares.get(position).getPrice()/(productCompares.get(position).getUnit()*productCompares.get(position).getVolume());
+        compare = productCompares.get(position).getPrice()/(productCompares.get(position).getQuantity()*productCompares.get(position).getVolume());
 
         productCompare.setText(String.format( "%.3f", compare ));
         productUnit.setText(""+productCompares.get(position).getUnit());
         productVolume.setText(""+productCompares.get(position).getVolume());
         productPrice.setText(productCompares.get(position).getPrice().toString());
         productName.setText(productCompares.get(position).getName());
+        Quantity.setText(""+productCompares.get(position).getQuantity());
         return view;
     }
 
