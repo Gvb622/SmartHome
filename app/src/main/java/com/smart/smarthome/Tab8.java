@@ -50,7 +50,7 @@ public class Tab8 extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child(value).child("item");
-        qType = mDatabase.orderByChild("Type").equalTo("Health");
+        qType = mDatabase.orderByChild("Type").equalTo("Health and Beauty");
 
         mList = (RecyclerView) findViewById(R.id.item_listShopping);
         mList.setHasFixedSize(true);

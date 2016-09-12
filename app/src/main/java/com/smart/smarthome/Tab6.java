@@ -51,7 +51,7 @@ public class Tab6 extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child(value).child("item");
-        qType = mDatabase.orderByChild("Type").equalTo("Food");
+        qType = mDatabase.orderByChild("Type").equalTo("Food and Ingredients");
 
         mList = (RecyclerView) findViewById(R.id.item_listShopping);
         mList.setHasFixedSize(true);

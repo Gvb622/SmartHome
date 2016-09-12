@@ -70,7 +70,7 @@ public class Tab1 extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("Food");
+        qType = mDatabase.orderByChild("Type").equalTo("Food and Ingredients");
 
 
         mList = (RecyclerView) findViewById(R.id.item_list2);
@@ -114,10 +114,7 @@ public class Tab1 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
-
                             startActivity(new Intent(Tab1.this, ShowBarcode.class));
-
-
                         }else if(which == 1){
                             startActivity(new Intent(Tab1.this, AddItemActivity.class));
                         }

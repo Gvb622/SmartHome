@@ -70,7 +70,7 @@ public class Tab2 extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("Drink");
+        qType = mDatabase.orderByChild("Type").equalTo("Beverage and Drink Powder");
 
 
         mList = (RecyclerView) findViewById(R.id.item_list2);
