@@ -54,5 +54,14 @@
         <item>sheet</item>
     </string-array>
 
+    <string-array name="Type_array">
+        <item>Food and Ingredients</item>
+        <item>Beverage and Drink Powder</item>
+        <item>Health and Beauty</item>
+        <item>Household Product</item>
+        <item>etc</item>
+
+    </string-array>
+
 
 </resources>

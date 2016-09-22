@@ -6,9 +6,12 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +33,8 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText Madein;
     private Button Submit;
     private Uri imageUri = null;
+    private String Type2;
+
 
     private static final int GALLERY_REQUEST = 1;
 
@@ -54,11 +59,35 @@ public class AddItemActivity extends AppCompatActivity {
         addImageButton = (ImageButton) findViewById(R.id.addImageButton);
         Barcode = (EditText)findViewById(R.id.addBarcodeEdit);
         Name = (EditText)findViewById(R.id.addNameEdit);
-        Type = (EditText)findViewById(R.id.addTypeEdit);
+        //Type = (EditText)findViewById(R.id.addTypeEdit);
         Unit = (EditText)findViewById(R.id.addUnitEdit);
         Price = (EditText)findViewById(R.id.addPriceEdit);
         Madein = (EditText)findViewById(R.id.addMadeinEdit);
         Submit = (Button)findViewById(R.id.addSubmitButton);
+
+        Spinner staticSpinner = (Spinner) findViewById(R.id.static_spinner);
+
+        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
+                .createFromResource(this, R.array.Type_array,
+                        android.R.layout.simple_spinner_item);
+
+        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        staticSpinner.setAdapter(staticAdapter);
+
+        staticSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Type2 = (String) adapterView.getItemAtPosition(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
 
         addImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +105,7 @@ public class AddItemActivity extends AppCompatActivity {
 
                 final String barcode_val = Barcode.getText().toString().trim();
                 final String name_val    = Name.getText().toString().trim();
-                final String type_val    = Type.getText().toString().trim();
+                final String type_val    = Type2;
                 final String unit_val    = Unit.getText().toString().trim();
                 final String price_val   = Price.getText().toString().trim();
                 final String madein_val  = Madein.getText().toString().trim();

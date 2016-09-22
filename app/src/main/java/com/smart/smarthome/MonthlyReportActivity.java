@@ -64,14 +64,14 @@ public class MonthlyReportActivity extends AppCompatActivity
         lineView.setDrawDotLine(true);
         lineView.setShowPopup(LineView.SHOW_POPUPS_All);
 
-        Button lineButton = (Button)findViewById(R.id.line_button);
+        /*Button lineButton = (Button)findViewById(R.id.line_button);
         lineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 randomSet(lineView);
 
             }
-        });
+        });*/
 
         randomSet(lineView);
 
@@ -87,23 +87,41 @@ public class MonthlyReportActivity extends AppCompatActivity
 
 
     private void randomSet(LineView lineView){
+
+
         ArrayList<Integer> dataList = new ArrayList<Integer>();
-        int random = (int)(Math.random()*9+1);
-        for (int i=0; i<randomint; i++){
-            dataList.add((int)(Math.random()*random));
-        }
+
+        dataList.add(1000);
+        dataList.add(1000);
+        dataList.add(500);
+        dataList.add(700);
+        dataList.add(1500);
+        dataList.add(1300);
+        dataList.add(1100);
+        dataList.add(1200);
+        dataList.add(800);
+        dataList.add(500);
+        dataList.add(1500);
+        dataList.add(600);
+
 
         ArrayList<Integer> dataList2 = new ArrayList<Integer>();
-        random = (int)(Math.random()*9+1);
-        for (int i=0; i<randomint; i++){
-            dataList2.add((int)(Math.random()*random));
-        }
 
-        ArrayList<Integer> dataList3 = new ArrayList<Integer>();
-        random = (int)(Math.random()*9+1);
-        for (int i=0; i<randomint; i++){
-            dataList3.add((int)(Math.random()*random));
-        }
+        dataList2.add(1200);
+        dataList2.add(2200);
+        dataList2.add(800);
+        dataList2.add(1500);
+        dataList2.add(1600);
+        dataList2.add(1800);
+        dataList2.add(2200);
+        dataList2.add(1500);
+        dataList2.add(1300);
+        dataList2.add(1400);
+        dataList2.add(1900);
+        dataList2.add(1500);
+
+
+
 
         ArrayList<ArrayList<Integer>> dataLists = new ArrayList<ArrayList<Integer>>();
         dataLists.add(dataList);

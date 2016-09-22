@@ -3,7 +3,6 @@ package com.smart.smarthome;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.graphics.Color;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +70,7 @@ public class Tab1 extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("Food");
+        qType = mDatabase.orderByChild("Type").equalTo("Food and Ingredients");
 
 
         mList = (RecyclerView) findViewById(R.id.item_list2);
@@ -118,10 +114,7 @@ public class Tab1 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
-
                             startActivity(new Intent(Tab1.this, ShowBarcode.class));
-
-
                         }else if(which == 1){
                             startActivity(new Intent(Tab1.this, AddItemActivity.class));
                         }
@@ -310,11 +303,10 @@ public class Tab1 extends AppCompatActivity {
             volumn.setText(Volumn);
         }
         public void setImage(Context ctx , String image){
-            ImageView imageView = (ImageView) mView.findViewById(R.id.imageItem);
-            Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageView);
+            ImageView imageV = (ImageView) mView.findViewById(R.id.imageItem);
+            Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageV);
 
         }
-
 
     }
 

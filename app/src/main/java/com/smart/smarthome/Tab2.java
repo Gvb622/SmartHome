@@ -3,7 +3,6 @@ package com.smart.smarthome;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.graphics.Color;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +70,7 @@ public class Tab2 extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("Drink");
+        qType = mDatabase.orderByChild("Type").equalTo("Beverage and Drink Powder");
 
 
         mList = (RecyclerView) findViewById(R.id.item_list2);

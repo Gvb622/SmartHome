@@ -180,8 +180,21 @@ public class BarcodeActivity extends AppCompatActivity
                                         child.child("Quantity").getValue().toString(),
                                         0,
                                         child.child("Barcode").getValue().toString());
+                                ImageView imageViewScan = (ImageView) findViewById(R.id.imageViewScan);
+                                Picasso.with(getApplicationContext()).load(child.child("Image").getValue().toString()).into(imageViewScan);
+                                buttonAddScan.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        productCompare.setPrice(Double.valueOf(pricecomparebarcode.getText().toString()));
+                                        productCompare.setQuantity(Integer.valueOf(inputUnitsScan.getText().toString()));
+                                        productCompare.setVolume(Integer.valueOf(inputVolumeScan.getText().toString()));
+                                        ProductCompareData.add(productCompare);
+                                        Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
 
-                                StorageReference pathReference = storage.getReferenceFromUrl("gs://test-b32cf.appspot.com/" + child.child("Barcode").getValue().toString() + ".jpg");
+                               /* StorageReference pathReference = storage.getReferenceFromUrl("gs://test-b32cf.appspot.com/" + child.child("Barcode").getValue().toString() + ".jpg");
                                 pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
@@ -204,7 +217,7 @@ public class BarcodeActivity extends AppCompatActivity
                                     public void onFailure(@NonNull Exception exception) {
                                         // Handle any errors
                                     }
-                                });
+                                });*/
                             }
                         }
                     }
