@@ -5,6 +5,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="album_name">CameraSample</string>
+
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_barcode">BarcodeActivity</string>
@@ -46,12 +48,16 @@
         <item>bottles</item>
         <item>box</item>
         <item>can</item>
-        <item>eggs</item>
-        <item>g.</item>
-        <item>kg</item>
         <item>pack</item>
-        <item>pcs.</item>
+    </string-array>
+
+    <string-array name="Quan_array">
+        <item>cc</item>
+        <item>ml</item>
+        <item>g.</item>
         <item>sheet</item>
+        <item>Oz.</item>
+        <item>piece</item>
     </string-array>
 
     <string-array name="Type_array">
@@ -59,7 +65,7 @@
         <item>Beverage and Drink Powder</item>
         <item>Health and Beauty</item>
         <item>Household Product</item>
-        <item>etc</item>
+        <item>Etc</item>
 
     </string-array>
 

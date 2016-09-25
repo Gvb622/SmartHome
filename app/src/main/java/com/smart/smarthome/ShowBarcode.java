@@ -3,14 +3,19 @@ package com.smart.smarthome;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,27 +33,51 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Date;
+
 public class ShowBarcode extends AppCompatActivity {
 
-    private ImageButton addImageButton2;
-    private EditText Barcode2;
-    private EditText Name2;
-    private EditText Type2;
-    private EditText Unit2;
-    private EditText Price2;
-    private EditText Madein2;
-    private Button Submit2;
-    private Button Submit3;
-    private String image;
-    private Uri imageUri = null;
+    private ImageButton addImageButton;
+    private EditText Barcode;
+    private EditText Name;
+    private EditText Type;
+    private EditText Unit;
+    private EditText Price;
+    private EditText Madein;
+    private EditText Volumn;
+    private Button Submit;
+    private String Type2;
+    private String Quantity;
+    private String Pack;
     private String value;
+    private String image;
+    private String barcodeValue2;
+    String volume_val;
+    String unit_val;
+    String price_val;
+
+    Spinner staticSpinner;
+    Spinner staticSpinner2;
+    Spinner staticSpinner3;
+
+    private Uri imageUri = null;
+    Uri downloadUrl = null;
+
+    String mCurrentPhotoPath;
+    private int checkLast ;
 
     private static final int GALLERY_REQUEST = 1;
+    private static final int CAMERA_REQUEST = 999;
+    private static final int GET_BAR_CODE = 555;
+
 
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase2;
+
     private FirebaseAuth firebaseAuth;
-    static final int GET_BAR_CODE = 1;
+    private ProgressDialog mProgress;
 
 
     @Override
@@ -56,25 +85,90 @@ public class ShowBarcode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_barcode);
 
-//        Bundle extras = getIntent().getExtras();
-//        String value = extras.getString("key");
+        addImageButton = (ImageButton) findViewById(R.id.addImageButton);
+        Barcode = (EditText) findViewById(R.id.addBarcodeEdit);
+        Name = (EditText) findViewById(R.id.addNameEdit);
+        //Type = (EditText)findViewById(R.id.addTypeEdit);
+        Unit = (EditText) findViewById(R.id.addUnitEdit);
+        Price = (EditText) findViewById(R.id.addPriceEdit);
+        Madein = (EditText) findViewById(R.id.addMadeinEdit);
+        Submit = (Button) findViewById(R.id.addSubmitButton);
+        Volumn = (EditText) findViewById(R.id.addVolumeEdit);
 
-        addImageButton2 = (ImageButton) findViewById(R.id.addImageButton6);
-        Barcode2 = (EditText) findViewById(R.id.addBarcodeEdit3);
-        Name2 = (EditText) findViewById(R.id.addNameEdit3);
-        Type2 = (EditText) findViewById(R.id.addTypeEdit3);
-        Unit2 = (EditText) findViewById(R.id.addUnitEdit3);
-        Price2 = (EditText) findViewById(R.id.addPriceEdit3);
-        Madein2 = (EditText) findViewById(R.id.addMadeinEdit3);
-        Submit2 = (Button) findViewById(R.id.addSubmitButton4);
-        Submit3 = (Button) findViewById(R.id.addSubmitButton5);
+        staticSpinner = (Spinner) findViewById(R.id.static_spinner);
 
-        final ProgressDialog mProgress = new ProgressDialog(this);
+        ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
+                .createFromResource(this, R.array.Type_array,
+                        android.R.layout.simple_spinner_item);
 
+        staticAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        staticSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Type2 = (String) adapterView.getItemAtPosition(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        staticSpinner.setAdapter(staticAdapter);
+
+        staticSpinner2 = (Spinner) findViewById(R.id.static_spinnerUnit);
+
+        ArrayAdapter<CharSequence> staticAdapter2 = ArrayAdapter
+                .createFromResource(this, R.array.Quan_array,
+                        android.R.layout.simple_spinner_item);
+
+        staticAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        staticSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Quantity = (String) adapterView.getItemAtPosition(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        staticSpinner2.setAdapter(staticAdapter2);
+
+
+        staticSpinner3 = (Spinner) findViewById(R.id.static_spinner3);
+
+        ArrayAdapter<CharSequence> staticAdapter3 = ArrayAdapter
+                .createFromResource(this, R.array.brew_array,
+                        android.R.layout.simple_spinner_item);
+
+        staticAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        staticSpinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Pack = (String) adapterView.getItemAtPosition(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        staticSpinner3.setAdapter(staticAdapter3);
 
         mStorage = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        final FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
+
+        mProgress = new ProgressDialog(this);
+
+        checkLast = 0;
+
+
         Intent intent = new Intent(ShowBarcode.this, BarcodeCaptureActivity.class);
         startActivityForResult(intent, GET_BAR_CODE);
 
@@ -103,39 +197,89 @@ public class ShowBarcode extends AppCompatActivity {
         });
         */
 
-        addImageButton2.setOnClickListener(new View.OnClickListener() {
+        addImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                CharSequence colors[] = new CharSequence[]{"Camera", "Gallery"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(ShowBarcode.this);
+                builder.setTitle("Choose One");
+                builder.setItems(colors, new DialogInterface.OnClickListener() {
+
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, CAMERA_REQUEST);
+
+
+                        } else if (which == 1) {
+                            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                            galleryIntent.setType("image/*");
+                            startActivityForResult(galleryIntent, GALLERY_REQUEST);
+                        }
+                    }
+                });
+                builder.show();
 
             }
         });
 
-        Submit3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
-        Submit2.setOnClickListener(new View.OnClickListener() {
+        Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final String barcode_val = Barcode2.getText().toString().trim();
-                final String name_val = Name2.getText().toString().trim();
-                final String type_val = Type2.getText().toString().trim();
-                final String unit_val = Unit2.getText().toString().trim();
-                final String price_val = Price2.getText().toString().trim();
-                final String madein_val = Madein2.getText().toString().trim();
+                final String barcode_val = Barcode.getText().toString().trim();
+                final String name_val = Name.getText().toString().trim();
+                final String type_val = Type2;
+                volume_val = Volumn.getText().toString().trim();
+                if(volume_val.equals("")){
+                    volume_val = "0";
+                }
+
+                final String quantity_val = Quantity;
+
+                unit_val = Unit.getText().toString().trim();
+
+                if(unit_val.equals("")){
+                    unit_val = "0";
+                }
+
+                final String pack_val = Pack;
+                price_val = Price.getText().toString().trim();
+
+                if(price_val.equals("")){
+                    price_val = "0";
+                }
 
 
-                if (imageUri != null) {
+                final String madein_val = Madein.getText().toString().trim();
 
-                    mProgress.setMessage("Changing information . . .");
+
+                if (downloadUrl != null && checkLast == 2) {
+
+                    mProgress.setMessage("Adding to inventory . . .");
+                    mProgress.show();
+
+                    DatabaseReference newItem = mDatabase.child(type_val).push();
+                    newItem.child("Barcode").setValue(barcode_val);
+                    newItem.child("Name").setValue(name_val);
+                    newItem.child("Volume").setValue(volume_val);
+                    newItem.child("Quantity").setValue(quantity_val);
+                    newItem.child("Unit").setValue(unit_val);
+                    newItem.child("Classifier").setValue(pack_val);
+                    newItem.child("RetailPrice").setValue(price_val);
+                    newItem.child("Madein").setValue(madein_val);
+                    newItem.child("Image").setValue(downloadUrl.toString());
+                    mProgress.dismiss();
+                    finish();
+
+
+                } else if (imageUri != null && checkLast == 1) {
+
+                    mProgress.setMessage("Adding to inventory . . .");
                     mProgress.show();
 
                     StorageReference filepath = mStorage.child("Item_Image").child(imageUri.getLastPathSegment());
@@ -144,13 +288,16 @@ public class ShowBarcode extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            DatabaseReference newItem = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items").push();
+                            downloadUrl = taskSnapshot.getDownloadUrl();
+
+                            DatabaseReference newItem = mDatabase.child(type_val).push();
                             newItem.child("Barcode").setValue(barcode_val);
                             newItem.child("Name").setValue(name_val);
-                            newItem.child("Type").setValue(type_val);
+                            newItem.child("Volume").setValue(volume_val);
+                            newItem.child("Quantity").setValue(quantity_val);
                             newItem.child("Unit").setValue(unit_val);
-                            newItem.child("Price").setValue(price_val);
+                            newItem.child("Classifier").setValue(pack_val);
+                            newItem.child("RetailPrice").setValue(price_val);
                             newItem.child("Madein").setValue(madein_val);
                             newItem.child("Image").setValue(downloadUrl.toString());
 
@@ -159,19 +306,40 @@ public class ShowBarcode extends AppCompatActivity {
 
                         }
                     });
+
+                }else if (checkLast == 3) {
+
+                    mProgress.setMessage("Adding to inventory . . .");
+                    mProgress.show();
+
+                    DatabaseReference newItem = mDatabase.child(type_val).push();
+                    newItem.child("Barcode").setValue(barcode_val);
+                    newItem.child("Name").setValue(name_val);
+                    newItem.child("Volume").setValue(volume_val);
+                    newItem.child("Quantity").setValue(quantity_val);
+                    newItem.child("Unit").setValue(unit_val);
+                    newItem.child("Classifier").setValue(pack_val);
+                    newItem.child("RetailPrice").setValue(price_val);
+                    newItem.child("Madein").setValue(madein_val);
+                    newItem.child("Image").setValue(image);
+                    mProgress.dismiss();
+                    finish();
+
                 } else {
 
                     mProgress.setMessage("Adding to inventory . . .");
                     mProgress.show();
 
-                    DatabaseReference newItem = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items").push();
+                    DatabaseReference newItem = mDatabase.child(type_val).push();
                     newItem.child("Barcode").setValue(barcode_val);
                     newItem.child("Name").setValue(name_val);
-                    newItem.child("Type").setValue(type_val);
+                    newItem.child("Volume").setValue(volume_val);
+                    newItem.child("Quantity").setValue(quantity_val);
                     newItem.child("Unit").setValue(unit_val);
-                    newItem.child("Price").setValue(price_val);
+                    newItem.child("Classifier").setValue(pack_val);
+                    newItem.child("RetailPrice").setValue(price_val);
                     newItem.child("Madein").setValue(madein_val);
-                    newItem.child("Image").setValue(image);
+                    newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/Item_Image%2Fno_image_icon_6.png?alt=media&token=72197c0c-2159-4c66-a7de-7dbf6a2da4fb");
 
                     mProgress.dismiss();
                     finish();
@@ -185,24 +353,68 @@ public class ShowBarcode extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode ==  GALLERY_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+
             imageUri = data.getData();
-            System.out.println(imageUri);
-            addImageButton2.setImageURI(imageUri);
+            addImageButton.setImageURI(imageUri);
+            checkLast = 1;
+
+        }
+
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+
+
+            Uri selectImage = data.getData();
+            System.out.println(selectImage);
+
+            Bundle extras = data.getExtras();
+            Bitmap bitmap = (Bitmap) extras.get("data");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] dataBAOS = baos.toByteArray();
+            //addImageButton.setImageBitmap(bitmap);
+
+            StorageReference filepath = mStorage.child("Item_Image").child("Item" + new Date().getTime());
+            UploadTask uploadTask = filepath.putBytes(dataBAOS);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    downloadUrl = taskSnapshot.getDownloadUrl();
+                    Picasso.with(ShowBarcode.this).load(downloadUrl).fit().centerCrop().into(addImageButton);
+                    checkLast = 2;
+                }
+            });
         }
 
         if (requestCode == GET_BAR_CODE) {
             if (resultCode == RESULT_OK) {
-                final String barcodeValue2 = data.getStringExtra("Barcode");
+                barcodeValue2 = data.getStringExtra("Barcode");
+                final String barcodeValue = barcodeValue2;
                 DatabaseReference mDatabse = FirebaseDatabase.getInstance().getReference().child("system").child("items");
-                System.out.println(barcodeValue2);
                 Query queryRef = mDatabse.orderByChild("Barcode").equalTo(barcodeValue2);
                 queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         if(dataSnapshot.getChildrenCount() == 0){
-                            Toast.makeText(ShowBarcode.this, "Barcode not Found", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ShowBarcode.this, "Barcode not Match in Database", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(ShowBarcode.this);
+                            builder2.setTitle("No item match in Database");
+                            builder2.setMessage("Scan Again ");
+                            builder2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(ShowBarcode.this, BarcodeCaptureActivity.class);
+                                    startActivityForResult(intent, GET_BAR_CODE);
+                                }
+                            });
+                            builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                            builder2.show();
 
                             // TODO Try to capture barcdoe agian
                         }else {
@@ -212,26 +424,67 @@ public class ShowBarcode extends AppCompatActivity {
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(ShowBarcode.this);
                                 builder.setTitle("OK ?");
-                                builder.setMessage(barcodeValue2);
+                                builder.setMessage(barcodeValue);
                                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
 
-                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("system").child("items").child(value);
+                                        mDatabase2 = FirebaseDatabase.getInstance().getReference().child("system").child("items").child(value);
 
-                                        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        mDatabase2.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                System.out.println(dataSnapshot.getChildrenCount());
                                                 item i2 = dataSnapshot.getValue(item.class);
-                                                Picasso.with(ShowBarcode.this).load(i2.getImage()).fit().placeholder(R.mipmap.no_image_icon_6).into(addImageButton2);
-                                                Barcode2.setText(i2.getBarcode());
-                                                Name2.setText(i2.getName());
-                                                Type2.setText(i2.getType());
-                                                Unit2.setText(i2.getUnit());
-                                                Price2.setText(i2.getPrice());
-                                                Madein2.setText(i2.getMadein());
+
+                                                Picasso.with(ShowBarcode.this).load(i2.getImage()).fit().into(addImageButton);
+                                                Barcode.setText(i2.getBarcode());
+                                                Name.setText(i2.getName());
+
+                                                if(i2.getType().equals("Food and Ingredients") ) {
+                                                    staticSpinner.setSelection(0, true);
+                                                }else if(i2.getType().equals("Beverage and Drink Powder") ) {
+                                                    staticSpinner.setSelection(1, true);
+                                                }else if(i2.getType().equals("Health and Beauty") ) {
+                                                    staticSpinner.setSelection(2, true);
+                                                }else if(i2.getType().equals("Household Product")  ) {
+                                                    staticSpinner.setSelection(3,true);
+                                                }else if(i2.getType().equals("etc")) {
+                                                    staticSpinner.setSelection(4, true);
+                                                }
+
+
+                                                if(i2.getQuantity().equals("cc")){
+                                                    staticSpinner2.setSelection(0, true);
+                                                }else if(i2.getQuantity().equals("ml")){
+                                                    staticSpinner2.setSelection(1, true);
+                                                }else if(i2.getQuantity().equals("g.")){
+                                                    staticSpinner2.setSelection(2, true);
+                                                }else if(i2.getQuantity().equals("sheet")){
+                                                    staticSpinner2.setSelection(3, true);
+                                                }else if(i2.getQuantity().equals("Oz.")){
+                                                    staticSpinner2.setSelection(4, true);
+                                                }else if(i2.getQuantity().equals("piece")){
+                                                    staticSpinner2.setSelection(5, true);
+                                                }
+
+                                                if(i2.getClassifier().equals("bottles")){
+                                                    staticSpinner3.setSelection(0, true);
+                                                }else if(i2.getClassifier().equals("box")){
+                                                    staticSpinner3.setSelection(1, true);
+                                                }else if(i2.getClassifier().equals("can")){
+                                                    staticSpinner3.setSelection(2, true);
+                                                }else if(i2.getClassifier().equals("pack")){
+                                                    staticSpinner3.setSelection(3, true);
+                                                }
+
+
+
+                                                Volumn.setText(i2.getVolume());
+                                                Unit.setText(i2.getUnit());
+                                                Price.setText(i2.getRetailPrice());
+                                                Madein.setText(i2.getMadein());
                                                 image = i2.getImage();
+                                                checkLast = 3;
                                             }
 
                                             @Override
@@ -259,12 +512,13 @@ public class ShowBarcode extends AppCompatActivity {
                     }
                 });
 
+                barcodeValue2 = "";
+
 
 
 
             } else {
                 Toast.makeText(ShowBarcode.this, "Barcode not Found", Toast.LENGTH_LONG).show();
-                finish();
             }
         }
     }

@@ -179,7 +179,7 @@ public class Tab7 extends AppCompatActivity {
             Volumn.setText(volumn);
         }
         public void setPrice2(String price){
-            TextView Price = (TextView) mView.findViewById(R.id.priceShopItem);
+            TextView Price = (TextView) mView.findViewById(R.id.priceShopItem2);
             Price.setText(price);
         }
         public void setImage2(Context ctx , String image){

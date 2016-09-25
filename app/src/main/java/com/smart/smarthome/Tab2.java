@@ -31,19 +31,14 @@ public class Tab2 extends AppCompatActivity {
 
     private RecyclerView mList;
     private ImageButton Additem;
-    private ImageButton Increaseitem;
-    private ImageButton Decreaseitem;
-    private ImageButton Removeitem;
+    static public ImageButton Increaseitem;
+    static public ImageButton Decreaseitem;
+    static public ImageButton Removeitem;
     private Query qType;
     private Query q2Type;
 
 
     private ImageView imageView;
-
-
-    private boolean additem ;
-    private boolean decreaseitem;
-    private boolean removeitem;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
@@ -63,14 +58,12 @@ public class Tab2 extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.imageItem);
         firebaseAuth = FirebaseAuth.getInstance();
-        additem = false;
-        decreaseitem = false;
-        removeitem = false;
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("Beverage and Drink Powder");
+        qType = mDatabase.child("Beverage and Drink Powder").orderByChild("Name");
+
 
 
         mList = (RecyclerView) findViewById(R.id.item_list2);
@@ -81,13 +74,13 @@ public class Tab2 extends AppCompatActivity {
         Removeitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean r = !removeitem;
-                removeitem = r;
+                boolean r = ! MainActivity.removeitem;
+                MainActivity.removeitem = r;
                 if(r == true){
                     Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    additem = false;
+                    MainActivity.additem = false;
                     Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                    decreaseitem = false;
+                    MainActivity.decreaseitem = false;
                     Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
 
                 }else{
@@ -98,11 +91,11 @@ public class Tab2 extends AppCompatActivity {
         Additem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeitem = false;
+                MainActivity.removeitem = false;
                 Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                additem = false;
+                MainActivity.additem = false;
                 Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                decreaseitem = false;
+                MainActivity.decreaseitem = false;
                 Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
 
                 CharSequence colors[] = new CharSequence[] {"Barcode", "Manual"};
@@ -133,13 +126,13 @@ public class Tab2 extends AppCompatActivity {
         Decreaseitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean a = !decreaseitem;
-                decreaseitem = a;
+                boolean a = ! MainActivity.decreaseitem;
+                MainActivity.decreaseitem = a;
                 if(a == true){
                     Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_white_24dp);
-                    additem = false;
+                    MainActivity.additem = false;
                     Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                    removeitem = false;
+                    MainActivity.removeitem = false;
                     Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
 
                 }else{
@@ -152,15 +145,15 @@ public class Tab2 extends AppCompatActivity {
         Increaseitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean b = !additem ;
-                additem = b;
+                boolean b = ! MainActivity.additem ;
+                MainActivity.additem = b;
 
                 if(b == true){
 
                     Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                    decreaseitem = false;
+                    MainActivity.decreaseitem = false;
                     Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                    removeitem = false;
+                    MainActivity.removeitem = false;
                     Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
 
                 }else{
@@ -178,7 +171,6 @@ public class Tab2 extends AppCompatActivity {
 
         super.onStart();
 
-
         final FirebaseRecyclerAdapter<item, ItemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<item, ItemViewHolder>(
 
                 item.class,
@@ -190,7 +182,7 @@ public class Tab2 extends AppCompatActivity {
             protected void populateViewHolder(ItemViewHolder viewHolder, item model, int position) {
 
                 viewHolder.setName(model.getName());
-                viewHolder.setVolumn(model.getUnit());
+                viewHolder.setVolumn(model.getUnit() +"  "+ model.getClassifier());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
             }
         };
@@ -201,7 +193,7 @@ public class Tab2 extends AppCompatActivity {
 
                         final DatabaseReference s = firebaseRecyclerAdapter.getRef(position);
 
-                        if(decreaseitem == true) {
+                        if( MainActivity.decreaseitem == true) {
 
                             s.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -219,7 +211,7 @@ public class Tab2 extends AppCompatActivity {
                                 }
                             });
 
-                        }else  if (additem == true){
+                        }else  if ( MainActivity.additem == true){
 
                             s.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -237,7 +229,7 @@ public class Tab2 extends AppCompatActivity {
                                 }
                             });
 
-                        }else if (removeitem == true){
+                        }else if (MainActivity.removeitem == true){
                             AlertDialog.Builder builder = new AlertDialog.Builder(Tab2.this);
                             builder.setTitle("Are you sure ?");
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -267,6 +259,8 @@ public class Tab2 extends AppCompatActivity {
 
                             Intent i = new Intent(Tab2.this, ShowInformationItem.class);
                             i.putExtra("key",s.getKey());
+                            i.putExtra("Type",s.getParent().getKey());
+
 
                             startActivity(i);
 
@@ -288,6 +282,12 @@ public class Tab2 extends AppCompatActivity {
         mList.setAdapter(firebaseRecyclerAdapter);
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public static class ItemViewHolder extends RecyclerView.ViewHolder{
 
         View mView;

@@ -82,7 +82,7 @@ public class Tab13 extends AppCompatActivity {
             protected void populateViewHolder(ItemViewHolder viewHolder, item model, int position) {
 
                 viewHolder.setName(model.getName());
-                viewHolder.setVolumn(model.getUnit());
+                viewHolder.setVolumn(model.getUnit() +"  "+ model.getClassifier());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
             }
         };
@@ -111,7 +111,7 @@ public class Tab13 extends AppCompatActivity {
                                         DatabaseReference Shoplist = Shoplist2.push();
                                         Shoplist.child("ItemImage").setValue(item.getImage());
                                         Shoplist.child("ItemName").setValue(item.getName());
-                                        Shoplist.child("ItemPrice").setValue(item.getPrice());
+                                        Shoplist.child("ItemPrice").setValue(item.getRetailPrice());
                                         Shoplist.child("Type").setValue(item.getType());
                                         Shoplist.child("Key").setValue(s.getKey());
                                         Shoplist.child("ItemVolumn").setValue(m_Text);

@@ -108,7 +108,7 @@ public class SettingActivity extends AppCompatActivity
 
         if (id == R.id.nav_inventory) {
             // Handle the camera action
-            Intent bar = new Intent(SettingActivity.this,InventoryActivity.class);
+            Intent bar = new Intent(SettingActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
             Intent bar = new Intent(SettingActivity.this,ShoppinglistActivity.class);

@@ -126,7 +126,7 @@ public class WeeklyReportActivity extends AppCompatActivity
 
         if (id == R.id.nav_inventory) {
             // Handle the camera action
-            Intent bar = new Intent(WeeklyReportActivity.this,InventoryActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
             Intent bar = new Intent(WeeklyReportActivity.this,ShoppinglistActivity.class);

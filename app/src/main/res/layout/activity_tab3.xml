@@ -12,7 +12,7 @@
         android:id="@+id/Top"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         android:weightSum="1">
 
@@ -25,7 +25,7 @@
             />
         <TextView
             android:text="        Name"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -33,7 +33,7 @@
             />
         <TextView
             android:text="Volumn left"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="match_parent"

@@ -145,7 +145,7 @@ public class DailyReportActivity extends AppCompatActivity
 
         if (id == R.id.nav_inventory) {
             // Handle the camera action
-            Intent bar = new Intent(DailyReportActivity.this,InventoryActivity.class);
+            Intent bar = new Intent(DailyReportActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
             Intent bar = new Intent(DailyReportActivity.this,ShoppinglistActivity.class);

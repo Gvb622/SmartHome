@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,33 +23,35 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Calendar;
 
 
 public class Tab5 extends AppCompatActivity {
 
     private RecyclerView mList;
     private ImageButton Additem;
-    private ImageButton Increaseitem;
-    private ImageButton Decreaseitem;
-    private ImageButton Removeitem;
+    static public ImageButton Increaseitem;
+    static public ImageButton Decreaseitem;
+    static public ImageButton Removeitem;
     private Query qType;
     private Query q2Type;
+    Date date;
 
 
     private ImageView imageView;
 
 
-    private boolean additem ;
-    private boolean decreaseitem;
-    private boolean removeitem;
-
     private DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
     static final int GET_BAR_CODE = 1;
-
 
 
     @Override
@@ -63,14 +66,12 @@ public class Tab5 extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.imageItem);
         firebaseAuth = FirebaseAuth.getInstance();
-        additem = false;
-        decreaseitem = false;
-        removeitem = false;
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("etc");
+        qType = mDatabase.child("Etc").orderByChild("Name");
+
 
 
         mList = (RecyclerView) findViewById(R.id.item_list2);
@@ -81,13 +82,13 @@ public class Tab5 extends AppCompatActivity {
         Removeitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean r = !removeitem;
-                removeitem = r;
+                boolean r = ! MainActivity.removeitem;
+                MainActivity.removeitem = r;
                 if(r == true){
                     Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    additem = false;
+                    MainActivity.additem = false;
                     Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                    decreaseitem = false;
+                    MainActivity.decreaseitem = false;
                     Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
 
                 }else{
@@ -98,12 +99,13 @@ public class Tab5 extends AppCompatActivity {
         Additem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeitem = false;
+                MainActivity.removeitem = false;
                 Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                additem = false;
+                MainActivity.additem = false;
                 Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                decreaseitem = false;
+                MainActivity. decreaseitem = false;
                 Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+
 
                 CharSequence colors[] = new CharSequence[] {"Barcode", "Manual"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(Tab5.this);
@@ -126,6 +128,37 @@ public class Tab5 extends AppCompatActivity {
                 builder.show();
 
 
+//TODO FIXIT
+              //  DatabaseReference m = FirebaseDatabase.getInstance().getReference().child("system");
+              //  DatabaseReference newItem = m.push();
+              //  newItem.child("Time").setValue(ServerValue.TIMESTAMP);
+
+              //  Long timestamp = L;
+              //  Date date = new Date(timestamp);
+              //  SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy",Locale.JAPAN);
+              //  String date2 = sfd.format(date);
+              //  System.out.println(date2);
+
+               /* Calendar c = Calendar.getInstance();
+                int day = c.get(Calendar.DATE);
+                int month = c.get(Calendar.MONTH);
+                int year = c.get(Calendar.YEAR);
+                long mill = c.getTimeInMillis();
+
+                System.out.println(day);
+                System.out.println(month);
+                System.out.println(year);
+                System.out.println(mill);
+*/
+               // long timestamp = 1474600655000L;
+               // Date date = new Date(timestamp);
+               // SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
+               // String date2 = sfd.format(date);
+               // System.out.println(date2);
+
+
+
+
             }
         });
 
@@ -133,13 +166,13 @@ public class Tab5 extends AppCompatActivity {
         Decreaseitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean a = !decreaseitem;
-                decreaseitem = a;
+                boolean a = ! MainActivity.decreaseitem;
+                MainActivity.decreaseitem = a;
                 if(a == true){
                     Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_white_24dp);
-                    additem = false;
+                    MainActivity.additem = false;
                     Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                    removeitem = false;
+                    MainActivity.removeitem = false;
                     Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
 
                 }else{
@@ -152,15 +185,15 @@ public class Tab5 extends AppCompatActivity {
         Increaseitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean b = !additem ;
-                additem = b;
+                boolean b = ! MainActivity.additem ;
+                MainActivity.additem = b;
 
                 if(b == true){
 
                     Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                    decreaseitem = false;
+                    MainActivity.decreaseitem = false;
                     Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                    removeitem = false;
+                    MainActivity.removeitem = false;
                     Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
 
                 }else{
@@ -190,7 +223,7 @@ public class Tab5 extends AppCompatActivity {
             protected void populateViewHolder(ItemViewHolder viewHolder, item model, int position) {
 
                 viewHolder.setName(model.getName());
-                viewHolder.setVolumn(model.getUnit());
+                viewHolder.setVolumn(model.getUnit() +"  "+ model.getClassifier());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
             }
         };
@@ -201,7 +234,7 @@ public class Tab5 extends AppCompatActivity {
 
                         final DatabaseReference s = firebaseRecyclerAdapter.getRef(position);
 
-                        if(decreaseitem == true) {
+                        if(MainActivity.decreaseitem == true) {
 
                             s.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -219,7 +252,7 @@ public class Tab5 extends AppCompatActivity {
                                 }
                             });
 
-                        }else  if (additem == true){
+                        }else  if (MainActivity.additem == true){
 
                             s.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -237,7 +270,7 @@ public class Tab5 extends AppCompatActivity {
                                 }
                             });
 
-                        }else if (removeitem == true){
+                        }else if (MainActivity.removeitem == true){
                             AlertDialog.Builder builder = new AlertDialog.Builder(Tab5.this);
                             builder.setTitle("Are you sure ?");
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -267,6 +300,8 @@ public class Tab5 extends AppCompatActivity {
 
                             Intent i = new Intent(Tab5.this, ShowInformationItem.class);
                             i.putExtra("key",s.getKey());
+                            i.putExtra("Type",s.getParent().getKey());
+
 
                             startActivity(i);
 
