@@ -16,10 +16,28 @@ public class item {
     private String Quantity;
     private String Classifier;
     private String RetailPrice;
+    private String SalePriceLotus;
+    private String SalePriceTops;
 
 
     public item() {
 
+    }
+
+    public String getSalePriceLotus() {
+        return SalePriceLotus;
+    }
+
+    public void setSalePriceLotus(String salePriceLotus) {
+        SalePriceLotus = salePriceLotus;
+    }
+
+    public String getSalePriceTops() {
+        return SalePriceTops;
+    }
+
+    public void setSalePriceTops(String salePriceTops) {
+        SalePriceTops = salePriceTops;
     }
 
     public String getVolume() {

@@ -12,12 +12,13 @@
         android:id="@+id/Top"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         android:weightSum="1">
 
 
         <TextView
+            android:textSize="16sp"
             android:gravity="center"
             android:text="Image"
             android:layout_width="0dp"
@@ -25,6 +26,8 @@
             android:layout_weight="0.25"
             />
         <TextView
+            android:textSize="16sp"
+
             android:gravity="center"
             android:text="Name"
             android:layout_width="0dp"
@@ -32,6 +35,8 @@
             android:layout_weight="0.25"
             />
         <TextView
+            android:textSize="16sp"
+
             android:text="Price"
             android:gravity="center"
             android:layout_width="0dp"
@@ -39,6 +44,8 @@
             android:layout_weight="0.25"
             />
         <TextView
+            android:textSize="16sp"
+
             android:text="Volumn"
             android:gravity="center"
             android:layout_width="0dp"

@@ -109,8 +109,6 @@ public class Tab1 extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Tab1.this);
                 builder.setTitle("Choose One");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
-
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){

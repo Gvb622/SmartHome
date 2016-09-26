@@ -158,6 +158,17 @@
 
             </LinearLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addMadeinEdit"
+                    android:hint="Enter Your Product Made in"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -176,12 +187,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:id="@+id/addMadeinEdit"
-                    android:hint="Enter Your Product Made in"
+                    android:id="@+id/addPriceTopsEdit"
+                    android:hint="Enter Your Product Price From Tops"
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:inputType="number"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addPriceLotusEdit"
+                    android:hint="Enter Your Product Price From Lotus"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"/>
             </android.support.design.widget.TextInputLayout>
 
             <Button

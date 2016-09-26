@@ -49,6 +49,8 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText Price;
     private EditText Madein;
     private EditText Volumn;
+    private EditText TopsPrice;
+    private EditText LotusPrice;
     private Button Submit;
     private Uri imageUri = null;
     private String Type2;
@@ -57,6 +59,10 @@ public class AddItemActivity extends AppCompatActivity {
     String volume_val;
     String unit_val;
     String price_val;
+    String priceTops_val;
+    String priceLotus_val;
+
+
     Spinner staticSpinner;
     Spinner staticSpinner2;
     Spinner staticSpinner3;
@@ -98,6 +104,9 @@ public class AddItemActivity extends AppCompatActivity {
         Madein = (EditText) findViewById(R.id.addMadeinEdit);
         Submit = (Button) findViewById(R.id.addSubmitButton);
         Volumn = (EditText) findViewById(R.id.addVolumeEdit);
+        TopsPrice = (EditText) findViewById(R.id.addPriceTopsEdit);
+        LotusPrice = (EditText) findViewById(R.id.addPriceLotusEdit);
+
 
         staticSpinner = (Spinner) findViewById(R.id.static_spinner);
 
@@ -216,15 +225,31 @@ public class AddItemActivity extends AppCompatActivity {
                     unit_val = "0";
                 }
 
+
+
                 final String pack_val = Pack;
+
                 price_val = Price.getText().toString().trim();
 
                 if(price_val.equals("")){
                     price_val = "0";
                 }
 
+                priceTops_val = TopsPrice.getText().toString().trim();
+
+                if(priceTops_val.equals("")){
+                    priceTops_val = price_val;
+                }
+
+                priceLotus_val = LotusPrice.getText().toString().trim();
+
+                if(priceLotus_val.equals("")){
+                    priceLotus_val = price_val;
+                }
+
 
                 final String madein_val = Madein.getText().toString().trim();
+
 
 
 
@@ -244,6 +269,9 @@ public class AddItemActivity extends AppCompatActivity {
                     newItem.child("RetailPrice").setValue(price_val);
                     newItem.child("Madein").setValue(madein_val);
                     newItem.child("Image").setValue(downloadUrl.toString());
+                    newItem.child("SalePriceTops").setValue(priceTops_val);
+                    newItem.child("SalePriceLotus").setValue(priceLotus_val);
+
                     mProgress.dismiss();
                     finish();
 
@@ -271,6 +299,8 @@ public class AddItemActivity extends AppCompatActivity {
                             newItem.child("RetailPrice").setValue(price_val);
                             newItem.child("Madein").setValue(madein_val);
                             newItem.child("Image").setValue(downloadUrl.toString());
+                            newItem.child("SalePriceTops").setValue(priceTops_val);
+                            newItem.child("SalePriceLotus").setValue(priceLotus_val);
 
                             mProgress.dismiss();
                             finish();
@@ -293,6 +323,8 @@ public class AddItemActivity extends AppCompatActivity {
                     newItem.child("RetailPrice").setValue(price_val);
                     newItem.child("Madein").setValue(madein_val);
                     newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/Item_Image%2Fno_image_icon_6.png?alt=media&token=72197c0c-2159-4c66-a7de-7dbf6a2da4fb");
+                    newItem.child("SalePriceTops").setValue(priceTops_val);
+                    newItem.child("SalePriceLotus").setValue(priceLotus_val);
 
                     mProgress.dismiss();
                     finish();

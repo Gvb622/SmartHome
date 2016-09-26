@@ -34,9 +34,6 @@ public class SelectItemShop extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle extras = getIntent().getExtras();
-        value = extras.getString("key");
-
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
 
@@ -60,31 +57,26 @@ public class SelectItemShop extends AppCompatActivity
         TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab 111");
         tab1.setIndicator("Food");
         Intent intent = new Intent(SelectItemShop.this, Tab11.class);
-        intent.putExtra("key",value);
         tab1.setContent(intent);
 
         TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab 222");
         tab2.setIndicator("Drink");
         Intent intent2 = new Intent(SelectItemShop.this, Tab12.class);
-        intent2.putExtra("key",value);
         tab2.setContent(intent2);
 
         TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab333");
         tab3.setIndicator("Health & Beauty");
         Intent intent3 = new Intent(SelectItemShop.this, Tab13.class);
-        intent3.putExtra("key",value);
         tab3.setContent(intent3);
 
         TabHost.TabSpec tab4 = tabHost.newTabSpec("Tab 444");
         tab4.setIndicator("HouseHold Item");
         Intent intent4 = new Intent(SelectItemShop.this, Tab14.class);
-        intent4.putExtra("key",value);
         tab4.setContent(intent4);
 
         TabHost.TabSpec tab5 = tabHost.newTabSpec("Tab 555");
         tab5.setIndicator("Etc.");
         Intent intent5 = new Intent(SelectItemShop.this, Tab15.class);
-        intent5.putExtra("key",value);
         tab5.setContent(intent5);
 
 
@@ -177,7 +169,7 @@ public class SelectItemShop extends AppCompatActivity
             Intent bar = new Intent(SelectItemShop.this, MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(SelectItemShop.this, ShoppinglistActivity.class);
+            Intent bar = new Intent(SelectItemShop.this, ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(SelectItemShop.this, CalculatorActivity.class);

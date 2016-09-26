@@ -21,13 +21,34 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.25" />
-    <TextView
 
-        android:gravity="center"
-        android:id="@+id/priceShopItem2"
-        android:layout_weight="0.25"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:orientation="vertical"
+        android:weightSum="1"
+        >
+
+        <TextView
+
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:id="@+id/priceShopItem2"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+        <TextView
+
+            android:gravity="center_horizontal"
+            android:id="@+id/priceShopItem3"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="#FF0000"/>
+
+    </LinearLayout>
+
     <TextView
         android:gravity="center"
         android:id="@+id/volumnShopItem"

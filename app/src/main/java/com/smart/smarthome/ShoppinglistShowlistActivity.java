@@ -32,6 +32,9 @@ public class ShoppinglistShowlistActivity extends AppCompatActivity
     private String value;
     static final int GET_BAR_CODE = 1;
 
+    static public boolean increase;
+    static public boolean remove ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,6 @@ public class ShoppinglistShowlistActivity extends AppCompatActivity
         setContentView(R.layout.activity_shoppinglist_showlist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Bundle extras = getIntent().getExtras();
-        value = extras.getString("key");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -52,41 +52,120 @@ public class ShoppinglistShowlistActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        remove = false;
+        increase = false;
+
+
+
         mLocalActivityManager = new LocalActivityManager(this, false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
 
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost4);
         tabHost.setup(mLocalActivityManager);
 
-        TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab 111");
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String s) {
+
+                if(s.equals("Tab1")){
+                    if(increase == true){
+                        Tab6.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
+                        Tab6.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab6.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    }else if(remove == true){
+                        Tab6.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab6.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab6.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
+                    }else{
+                        Tab6.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab6.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab6.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    }
+
+                }else if(s.equals("Tab2")) {
+                    if (increase == true) {
+                        Tab7.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
+                        Tab7.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab7.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    }else if (remove == true) {
+                        Tab7.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab7.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab7.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
+                    } else {
+                        Tab7.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab7.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab7.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    }
+                }else if(s.equals("Tab3")) {
+                    if (increase == true) {
+                        Tab8.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
+                        Tab8.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab8.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    } else if (remove == true) {
+                        Tab8.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab8.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab8.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
+                    } else {
+                        Tab8.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab8.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab8.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    }
+                }else if(s.equals("Tab4")) {
+                    if (increase == true) {
+                        Tab9.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
+                        Tab9.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab9.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    } else if (remove == true) {
+                        Tab9.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab9.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab9.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
+                    } else {
+                        Tab9.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab9.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab9.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    }
+                }else if(s.equals("Tab5")) {
+                    if (increase == true) {
+                        Tab10.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
+                        Tab10.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab10.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    } else if (remove == true) {
+                        Tab10.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab10.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab10.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
+                    } else {
+                        Tab10.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
+                        Tab10.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                        Tab10.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
+                    }
+                }
+
+            }
+        });
+
+        TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab1");
         tab1.setIndicator("Food");
         Intent intent = new Intent(ShoppinglistShowlistActivity.this, Tab6.class);
-        intent.putExtra("key",value);
         tab1.setContent(intent);
 
-
-        TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab 222");
+        TabHost.TabSpec tab2 = tabHost.newTabSpec("Tab2");
         tab2.setIndicator("Drink");
         Intent intent2 = new Intent(ShoppinglistShowlistActivity.this, Tab7.class);
-        intent2.putExtra("key",value);
         tab2.setContent(intent2);
 
-        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab333");
+        TabHost.TabSpec tab3 = tabHost.newTabSpec("Tab3");
         tab3.setIndicator("Health & Beauty");
         Intent intent3 = new Intent(ShoppinglistShowlistActivity.this, Tab8.class);
-        intent3.putExtra("key",value);
         tab3.setContent(intent3);
 
-        TabHost.TabSpec tab4 = tabHost.newTabSpec("Tab 444");
+        TabHost.TabSpec tab4 = tabHost.newTabSpec("Tab4");
         tab4.setIndicator("HouseHold Item");
         Intent intent4 = new Intent(ShoppinglistShowlistActivity.this, Tab9.class);
-        intent4.putExtra("key",value);
         tab4.setContent(intent4);
 
-        TabHost.TabSpec tab5 = tabHost.newTabSpec("Tab 555");
+        TabHost.TabSpec tab5 = tabHost.newTabSpec("Tab5");
         tab5.setIndicator("Etc.");
         Intent intent5 = new Intent(ShoppinglistShowlistActivity.this, Tab10.class);
-        intent5.putExtra("key",value);
         tab5.setContent(intent5);
 
 
@@ -117,8 +196,6 @@ public class ShoppinglistShowlistActivity extends AppCompatActivity
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child(value).child("items");
-
     }
 
     @Override
@@ -154,7 +231,7 @@ public class ShoppinglistShowlistActivity extends AppCompatActivity
             Intent bar = new Intent(ShoppinglistShowlistActivity.this, MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(ShoppinglistShowlistActivity.this, ShoppinglistActivity.class);
+            Intent bar = new Intent(ShoppinglistShowlistActivity.this, ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(ShoppinglistShowlistActivity.this, CalculatorActivity.class);

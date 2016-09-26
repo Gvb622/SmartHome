@@ -275,7 +275,7 @@ public class ShoppinglistActivity extends AppCompatActivity
             Intent bar = new Intent(ShoppinglistActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(ShoppinglistActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(ShoppinglistActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(ShoppinglistActivity.this,CalculatorActivity.class);

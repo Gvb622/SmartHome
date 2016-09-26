@@ -129,7 +129,7 @@ public class WeeklyReportActivity extends AppCompatActivity
             Intent bar = new Intent(WeeklyReportActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(WeeklyReportActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(WeeklyReportActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(WeeklyReportActivity.this,CalculatorActivity.class);

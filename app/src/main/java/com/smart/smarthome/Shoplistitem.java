@@ -9,8 +9,53 @@ public class Shoplistitem {
     private String ItemPrice;
     private String ItemVolumn;
     private String Type;
+    private String ItemClassifier;
+    private String Key;
+    private String ItemTopsPrice;
+    private String ItemLotusPrice;
+    private String KeyAll;
 
     public Shoplistitem() {
+    }
+
+    public String getKeyAll() {
+        return KeyAll;
+    }
+
+    public void setKeyAll(String keyAll) {
+        KeyAll = keyAll;
+    }
+
+    public String getKey() {
+        return Key;
+    }
+
+    public String getItemTopsPrice() {
+        return ItemTopsPrice;
+    }
+
+    public void setItemTopsPrice(String itemTopsPrice) {
+        ItemTopsPrice = itemTopsPrice;
+    }
+
+    public String getItemLotusPrice() {
+        return ItemLotusPrice;
+    }
+
+    public void setItemLotusPrice(String itemLotusPrice) {
+        ItemLotusPrice = itemLotusPrice;
+    }
+
+    public void setKey(String key) {
+        Key = key;
+    }
+
+    public String getItemClassifier() {
+        return ItemClassifier;
+    }
+
+    public void setItemClassifier(String itemClassifier) {
+        ItemClassifier = itemClassifier;
     }
 
     public String getItemImage() {

@@ -132,10 +132,10 @@ public class BarcodeActivity extends AppCompatActivity
 
         if (id == R.id.nav_inventory) {
             // Handle the camera action
-            Intent bar = new Intent(BarcodeActivity.this,InventoryActivity.class);
+            Intent bar = new Intent(BarcodeActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(BarcodeActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(BarcodeActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(BarcodeActivity.this,CalculatorActivity.class);

@@ -136,7 +136,7 @@ public class CompareActivity extends AppCompatActivity
             Intent bar = new Intent(CompareActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(CompareActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(CompareActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(CompareActivity.this,CalculatorActivity.class);

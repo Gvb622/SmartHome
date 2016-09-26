@@ -46,6 +46,8 @@ public class ShowBarcode extends AppCompatActivity {
     private EditText Price;
     private EditText Madein;
     private EditText Volumn;
+    private EditText TopsPrice;
+    private EditText LotusPrice;
     private Button Submit;
     private String Type2;
     private String Quantity;
@@ -56,6 +58,8 @@ public class ShowBarcode extends AppCompatActivity {
     String volume_val;
     String unit_val;
     String price_val;
+    String priceTops_val;
+    String priceLotus_val;
 
     Spinner staticSpinner;
     Spinner staticSpinner2;
@@ -94,6 +98,8 @@ public class ShowBarcode extends AppCompatActivity {
         Madein = (EditText) findViewById(R.id.addMadeinEdit);
         Submit = (Button) findViewById(R.id.addSubmitButton);
         Volumn = (EditText) findViewById(R.id.addVolumeEdit);
+        TopsPrice = (EditText) findViewById(R.id.addPriceTopsEdit);
+        LotusPrice = (EditText) findViewById(R.id.addPriceLotusEdit);
 
         staticSpinner = (Spinner) findViewById(R.id.static_spinner);
 
@@ -254,6 +260,18 @@ public class ShowBarcode extends AppCompatActivity {
                     price_val = "0";
                 }
 
+                priceTops_val = TopsPrice.getText().toString().trim();
+
+                if(priceTops_val.equals("")){
+                    priceTops_val = price_val;
+                }
+
+                priceLotus_val = LotusPrice.getText().toString().trim();
+
+                if(priceLotus_val.equals("")){
+                    priceLotus_val = price_val;
+                }
+
 
                 final String madein_val = Madein.getText().toString().trim();
 
@@ -272,6 +290,8 @@ public class ShowBarcode extends AppCompatActivity {
                     newItem.child("Classifier").setValue(pack_val);
                     newItem.child("RetailPrice").setValue(price_val);
                     newItem.child("Madein").setValue(madein_val);
+                    newItem.child("SalePriceTops").setValue(priceTops_val);
+                    newItem.child("SalePriceLotus").setValue(priceLotus_val);
                     newItem.child("Image").setValue(downloadUrl.toString());
                     mProgress.dismiss();
                     finish();
@@ -300,6 +320,8 @@ public class ShowBarcode extends AppCompatActivity {
                             newItem.child("RetailPrice").setValue(price_val);
                             newItem.child("Madein").setValue(madein_val);
                             newItem.child("Image").setValue(downloadUrl.toString());
+                            newItem.child("SalePriceTops").setValue(priceTops_val);
+                            newItem.child("SalePriceLotus").setValue(priceLotus_val);
 
                             mProgress.dismiss();
                             finish();
@@ -322,6 +344,8 @@ public class ShowBarcode extends AppCompatActivity {
                     newItem.child("RetailPrice").setValue(price_val);
                     newItem.child("Madein").setValue(madein_val);
                     newItem.child("Image").setValue(image);
+                    newItem.child("SalePriceTops").setValue(priceTops_val);
+                    newItem.child("SalePriceLotus").setValue(priceLotus_val);
                     mProgress.dismiss();
                     finish();
 
@@ -339,6 +363,8 @@ public class ShowBarcode extends AppCompatActivity {
                     newItem.child("Classifier").setValue(pack_val);
                     newItem.child("RetailPrice").setValue(price_val);
                     newItem.child("Madein").setValue(madein_val);
+                    newItem.child("SalePriceTops").setValue(priceTops_val);
+                    newItem.child("SalePriceLotus").setValue(priceLotus_val);
                     newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/Item_Image%2Fno_image_icon_6.png?alt=media&token=72197c0c-2159-4c66-a7de-7dbf6a2da4fb");
 
                     mProgress.dismiss();
@@ -457,7 +483,7 @@ public class ShowBarcode extends AppCompatActivity {
                                                     staticSpinner2.setSelection(0, true);
                                                 }else if(i2.getQuantity().equals("ml")){
                                                     staticSpinner2.setSelection(1, true);
-                                                }else if(i2.getQuantity().equals("g.")){
+                                                }else if(i2.getQuantity().equals("gram")){
                                                     staticSpinner2.setSelection(2, true);
                                                 }else if(i2.getQuantity().equals("sheet")){
                                                     staticSpinner2.setSelection(3, true);
@@ -484,6 +510,9 @@ public class ShowBarcode extends AppCompatActivity {
                                                 Price.setText(i2.getRetailPrice());
                                                 Madein.setText(i2.getMadein());
                                                 image = i2.getImage();
+                                                TopsPrice.setText(i2.getSalePriceTops());
+                                                LotusPrice.setText(i2.getSalePriceLotus());
+
                                                 checkLast = 3;
                                             }
 

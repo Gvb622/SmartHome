@@ -170,7 +170,7 @@ public class MonthlyReportActivity extends AppCompatActivity
             Intent bar = new Intent(MonthlyReportActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(MonthlyReportActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(MonthlyReportActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(MonthlyReportActivity.this,CalculatorActivity.class);

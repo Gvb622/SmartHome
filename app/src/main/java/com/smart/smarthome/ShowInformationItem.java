@@ -43,6 +43,8 @@ public class ShowInformationItem extends AppCompatActivity {
     private EditText Price;
     private EditText Madein;
     private EditText Volumn;
+    private EditText TopsPrice;
+    private EditText LotusPrice;
     private String image;
     private Button Submit;
     private Uri imageUri = null;
@@ -52,6 +54,9 @@ public class ShowInformationItem extends AppCompatActivity {
     String volume_val;
     String unit_val;
     String price_val;
+    String priceTops_val;
+    String priceLotus_val;
+
     Spinner staticSpinner;
     Spinner staticSpinner2;
     Spinner staticSpinner3;
@@ -93,6 +98,8 @@ public class ShowInformationItem extends AppCompatActivity {
         Madein = (EditText) findViewById(R.id.addMadeinEdit);
         Submit = (Button) findViewById(R.id.addSubmitButton);
         Volumn = (EditText) findViewById(R.id.addVolumeEdit);
+        TopsPrice = (EditText) findViewById(R.id.addPriceTopsEdit);
+        LotusPrice = (EditText) findViewById(R.id.addPriceLotusEdit);
 
 
         mProgress = new ProgressDialog(this);
@@ -225,6 +232,8 @@ public class ShowInformationItem extends AppCompatActivity {
                 Price.setText(i2.getRetailPrice());
                 Madein.setText(i2.getMadein());
                 image = i2.getImage();
+                TopsPrice.setText(i2.getSalePriceTops());
+                LotusPrice.setText(i2.getSalePriceLotus());
 
             }
 
@@ -294,6 +303,18 @@ public class ShowInformationItem extends AppCompatActivity {
                     price_val = "0";
                 }
 
+                priceTops_val = TopsPrice.getText().toString().trim();
+
+                if(priceTops_val.equals("")){
+                    priceTops_val = price_val;
+                }
+
+                priceLotus_val = LotusPrice.getText().toString().trim();
+
+                if(priceLotus_val.equals("")){
+                    priceLotus_val = price_val;
+                }
+
 
                 final String madein_val = Madein.getText().toString().trim();
 
@@ -311,6 +332,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("RetailPrice").setValue(price_val);
                         newItem2.child("Madein").setValue(madein_val);
                         newItem2.child("Image").setValue(image);
+                        newItem2.child("SalePriceTops").setValue(priceTops_val);
+                        newItem2.child("SalePriceLotus").setValue(priceLotus_val);
                         mProgress.dismiss();
                         mDatabase.removeValue();
                         finish();
@@ -337,6 +360,8 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem2.child("RetailPrice").setValue(price_val);
                                 newItem2.child("Madein").setValue(madein_val);
                                 newItem2.child("Image").setValue(downloadUrl.toString());
+                                newItem2.child("SalePriceTops").setValue(priceTops_val);
+                                newItem2.child("SalePriceLotus").setValue(priceLotus_val);
                                 mProgress.dismiss();
                                 mDatabase.removeValue();
                                 finish();
@@ -357,6 +382,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("RetailPrice").setValue(price_val);
                         newItem2.child("Madein").setValue(madein_val);
                         newItem2.child("Image").setValue(downloadUrl.toString());
+                        newItem2.child("SalePriceTops").setValue(priceTops_val);
+                        newItem2.child("SalePriceLotus").setValue(priceLotus_val);
                         mProgress.dismiss();
                         mDatabase.removeValue();
                         finish();
@@ -377,6 +404,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("RetailPrice").setValue(price_val);
                         newItem.child("Madein").setValue(madein_val);
                         newItem.child("Image").setValue(downloadUrl.toString());
+                        newItem.child("SalePriceTops").setValue(priceTops_val);
+                        newItem.child("SalePriceLotus").setValue(priceLotus_val);
                         mProgress.dismiss();
                         finish();
 
@@ -404,6 +433,8 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem.child("RetailPrice").setValue(price_val);
                                 newItem.child("Madein").setValue(madein_val);
                                 newItem.child("Image").setValue(downloadUrl.toString());
+                                newItem.child("SalePriceTops").setValue(priceTops_val);
+                                newItem.child("SalePriceLotus").setValue(priceLotus_val);
 
                                 mProgress.dismiss();
                                 finish();
@@ -426,6 +457,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("RetailPrice").setValue(price_val);
                         newItem.child("Madein").setValue(madein_val);
                         newItem.child("Image").setValue(image);
+                        newItem.child("SalePriceTops").setValue(priceTops_val);
+                        newItem.child("SalePriceLotus").setValue(priceLotus_val);
 
                         mProgress.dismiss();
                         finish();

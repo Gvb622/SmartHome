@@ -111,7 +111,7 @@ public class SettingActivity extends AppCompatActivity
             Intent bar = new Intent(SettingActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(SettingActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(SettingActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(SettingActivity.this,CalculatorActivity.class);

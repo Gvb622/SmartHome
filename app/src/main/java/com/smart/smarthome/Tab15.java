@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,19 +39,19 @@ public class Tab15 extends AppCompatActivity {
     private Button finishButton;
     private String m_Text;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab7);
 
-        Bundle extras = getIntent().getExtras();
-        value = extras.getString("key");
-
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
-        qType = mDatabase.orderByChild("Type").equalTo("etc");
+        qType = mDatabase.child("Etc").orderByChild("Name");
 
         mList = (RecyclerView) findViewById(R.id.item_listShopping2);
         mList.setHasFixedSize(true);
@@ -64,6 +65,8 @@ public class Tab15 extends AppCompatActivity {
                 finish();
             }
         });
+
+
 
     }
 
@@ -102,20 +105,41 @@ public class Tab15 extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 m_Text = input.getText().toString().trim();
-
+                                final String Type = s.getParent().getKey();
                                 s.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         item item = dataSnapshot.getValue(item.class);
+
+                                        DatabaseReference TotalPrice = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
+                                                .child("all");
+                                        DatabaseReference Total = TotalPrice.push();
+                                        Total.child("ItemPrice").setValue(item.getRetailPrice());
+                                        Total.child("ItemTopsPrice").setValue(item.getSalePriceTops());
+                                        Total.child("ItemLotusPrice").setValue(item.getSalePriceLotus());
+                                        if(m_Text.equals("")){
+                                            m_Text = "0";
+                                        }
+                                        Total.child("ItemVolumn").setValue(m_Text);
+
+
                                         DatabaseReference Shoplist2 = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
-                                                .child(value).child("item");
+                                                .child(Type);
                                         DatabaseReference Shoplist = Shoplist2.push();
                                         Shoplist.child("ItemImage").setValue(item.getImage());
                                         Shoplist.child("ItemName").setValue(item.getName());
                                         Shoplist.child("ItemPrice").setValue(item.getRetailPrice());
-                                        Shoplist.child("Type").setValue(item.getType());
                                         Shoplist.child("Key").setValue(s.getKey());
+                                        Shoplist.child("KeyAll").setValue(Total.getKey());
+                                        Shoplist.child("ItemClassifier").setValue(item.getClassifier());
                                         Shoplist.child("ItemVolumn").setValue(m_Text);
+                                        Shoplist.child("ItemTopsPrice").setValue(item.getSalePriceTops());
+                                        Shoplist.child("ItemLotusPrice").setValue(item.getSalePriceLotus());
+
+
+
+
+                                        Toast.makeText(Tab15.this, item.getName() + " already add to shoppinglist", Toast.LENGTH_LONG).show();
 
                                     }
 
@@ -143,7 +167,6 @@ public class Tab15 extends AppCompatActivity {
                     }
                 })
         );
-
 
         mList.setAdapter(firebaseRecyclerAdapter);
 

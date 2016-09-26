@@ -119,7 +119,7 @@ public class CalculatorActivity extends AppCompatActivity
             Intent bar = new Intent(CalculatorActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(CalculatorActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(CalculatorActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(CalculatorActivity.this,CalculatorActivity.class);

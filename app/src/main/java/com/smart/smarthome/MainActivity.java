@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity
             Intent bar = new Intent(MainActivity.this, MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(MainActivity.this, ShoppinglistActivity.class);
+            Intent bar = new Intent(MainActivity.this, ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(MainActivity.this, CalculatorActivity.class);

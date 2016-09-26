@@ -148,7 +148,7 @@ public class DailyReportActivity extends AppCompatActivity
             Intent bar = new Intent(DailyReportActivity.this,MainActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_shoppinglist) {
-            Intent bar = new Intent(DailyReportActivity.this,ShoppinglistActivity.class);
+            Intent bar = new Intent(DailyReportActivity.this,ShoppinglistShowlistActivity.class);
             startActivity(bar);
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(DailyReportActivity.this,CalculatorActivity.class);
