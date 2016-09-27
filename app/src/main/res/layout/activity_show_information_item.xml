@@ -211,6 +211,158 @@
                     android:layout_height="match_parent"
                     android:inputType="number"/>
             </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Low Volume Setting"
+                android:textSize="24dp"
+                android:textColor="#FF0000"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:layout_margin="10dp"
+
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp"
+                android:layout_margin="10dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Set Low by : "
+                    android:textSize="18dp"
+                    android:gravity="center"
+                    android:layout_weight="0.4"/>
+
+                <Spinner
+                    android:id="@+id/static_spinnerLowVolume"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:weightSum="1"
+                >
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8">
+                    <EditText
+                        android:id="@+id/addLowVolumeEdit"
+                        android:hint="Enter Your Softline"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvQuan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text=""
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_gravity="center"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:weightSum="1"
+                >
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8">
+                    <EditText
+                        android:id="@+id/addLowVolumeEdit2"
+                        android:hint="Enter Your Deadline"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvQuan2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text=""
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_gravity="center"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:weightSum="1"
+                >
+
+
+                />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8">
+                    <EditText
+                        android:id="@+id/addLowVolumeEdit3"
+                        android:hint="Enter Your Decrease Per One Click"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvDecrease"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="aaa"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_gravity="center"
+
+                    />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/addSubmitButton"

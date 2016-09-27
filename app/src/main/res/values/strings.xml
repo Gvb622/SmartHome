@@ -54,10 +54,17 @@
     <string-array name="Quan_array">
         <item>cc</item>
         <item>ml</item>
-        <item>gram</item>
+        <item>g.</item>
         <item>sheet</item>
         <item>Oz.</item>
         <item>piece</item>
+    </string-array>
+
+    <string-array name="LowVolume_array">
+        <item>Quantity</item>
+        <item>Volume</item>
+
+
     </string-array>
 
     <string-array name="Type_array">

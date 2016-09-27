@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,19 @@ public class AddItemActivity extends AppCompatActivity {
 
 
     private ImageButton addImageButton;
+    private TextView tvQuan;
+    private TextView tvQuan2;
+    private TextView tvQuan3;
+
+    private EditText Softline;
+    private EditText Deadline;
+    private EditText DecreaseperClick;
+
+    String sofeline_val;
+    String deadline_val;
+    String decreaseperclick_val;
+
+
     private EditText Barcode;
     private EditText Name;
     private EditText Type;
@@ -56,16 +70,20 @@ public class AddItemActivity extends AppCompatActivity {
     private String Type2;
     private String Quantity;
     private String Pack;
+    private String LowVolume = "Quantity";
     String volume_val;
     String unit_val;
     String price_val;
     String priceTops_val;
     String priceLotus_val;
+    String totalVolume_val;
 
 
     Spinner staticSpinner;
     Spinner staticSpinner2;
     Spinner staticSpinner3;
+    Spinner staticSpinner4;
+
     Uri downloadUrl = null;
     String mCurrentPhotoPath;
     private int checkLast ;
@@ -94,6 +112,14 @@ public class AddItemActivity extends AppCompatActivity {
 
         checkLast = 0;
 
+
+        tvQuan = (TextView)findViewById(R.id.tvQuan);
+        tvQuan2 = (TextView)findViewById(R.id.tvQuan2);
+        tvQuan3 = (TextView)findViewById(R.id.tvDecrease);
+
+        Softline = (EditText) findViewById(R.id.addLowVolumeEdit);
+        Deadline = (EditText) findViewById(R.id.addLowVolumeEdit2);
+        DecreaseperClick = (EditText) findViewById(R.id.addLowVolumeEdit3);
 
         addImageButton = (ImageButton) findViewById(R.id.addImageButton);
         Barcode = (EditText) findViewById(R.id.addBarcodeEdit);
@@ -143,6 +169,13 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Quantity = (String) adapterView.getItemAtPosition(i);
+
+                if(LowVolume.equals("Volume")) {
+                    tvQuan.setText(Quantity);
+                    tvQuan2.setText(Quantity);
+                    tvQuan3.setText(Quantity);
+                }
+
             }
 
             @Override
@@ -165,6 +198,11 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Pack = (String) adapterView.getItemAtPosition(i);
+                if(LowVolume.equals("Quantity")) {
+                    tvQuan.setText(Pack);
+                    tvQuan2.setText(Pack);
+                    tvQuan3.setText(Pack);
+                }
             }
 
             @Override
@@ -173,6 +211,37 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
         staticSpinner3.setAdapter(staticAdapter3);
+
+        staticSpinner4 = (Spinner) findViewById(R.id.static_spinnerLowVolume);
+
+        ArrayAdapter<CharSequence> staticAdapter4 = ArrayAdapter
+                .createFromResource(this, R.array.LowVolume_array,
+                        android.R.layout.simple_spinner_item);
+
+        staticAdapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        staticSpinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                LowVolume = (String) adapterView.getItemAtPosition(i);
+                if(LowVolume.equals("Quantity")){
+                    tvQuan.setText(Pack);
+                    tvQuan2.setText(Pack);
+                    tvQuan3.setText(Pack);
+                }else  if(LowVolume.equals("Volume")) {
+                    tvQuan.setText(Quantity);
+                    tvQuan2.setText(Quantity);
+                    tvQuan3.setText(Quantity);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        staticSpinner4.setAdapter(staticAdapter4);
 
 
         addImageButton.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +281,7 @@ public class AddItemActivity extends AppCompatActivity {
                 final String barcode_val = Barcode.getText().toString().trim();
                 final String name_val = Name.getText().toString().trim();
                 final String type_val = Type2;
+                final String LowBy_val = LowVolume;
                 volume_val = Volumn.getText().toString().trim();
                 if(volume_val.equals("")){
                     volume_val = "0";
@@ -225,6 +295,10 @@ public class AddItemActivity extends AppCompatActivity {
                     unit_val = "0";
                 }
 
+                int volume = Integer.parseInt(volume_val);
+                int unitItem10   = Integer.parseInt(unit_val);
+                int TotalVolume = volume * unitItem10 ;
+                totalVolume_val = TotalVolume+"";
 
 
                 final String pack_val = Pack;
@@ -250,6 +324,21 @@ public class AddItemActivity extends AppCompatActivity {
 
                 final String madein_val = Madein.getText().toString().trim();
 
+                sofeline_val = Softline.getText().toString().trim();
+                if(sofeline_val.equals("")){
+                    sofeline_val = "0";
+                }
+
+                deadline_val = Deadline.getText().toString().trim();
+                if(deadline_val.equals("")){
+                    deadline_val = "0";
+                }
+
+                decreaseperclick_val = DecreaseperClick.getText().toString().trim();
+                if(decreaseperclick_val.equals("")){
+                    decreaseperclick_val = "1";
+                }
+
 
 
 
@@ -271,6 +360,11 @@ public class AddItemActivity extends AppCompatActivity {
                     newItem.child("Image").setValue(downloadUrl.toString());
                     newItem.child("SalePriceTops").setValue(priceTops_val);
                     newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                    newItem.child("Softline").setValue(sofeline_val);
+                    newItem.child("Deadline").setValue(deadline_val);
+                    newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
+                    newItem.child("LowBy").setValue(LowBy_val);
+                    newItem.child("TotalVolume").setValue(totalVolume_val);
 
                     mProgress.dismiss();
                     finish();
@@ -301,6 +395,13 @@ public class AddItemActivity extends AppCompatActivity {
                             newItem.child("Image").setValue(downloadUrl.toString());
                             newItem.child("SalePriceTops").setValue(priceTops_val);
                             newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                            newItem.child("Softline").setValue(sofeline_val);
+                            newItem.child("Deadline").setValue(deadline_val);
+                            newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
+                            newItem.child("LowBy").setValue(LowBy_val);
+                            newItem.child("TotalVolume").setValue(totalVolume_val);
+
+
 
                             mProgress.dismiss();
                             finish();
@@ -325,6 +426,13 @@ public class AddItemActivity extends AppCompatActivity {
                     newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/Item_Image%2Fno_image_icon_6.png?alt=media&token=72197c0c-2159-4c66-a7de-7dbf6a2da4fb");
                     newItem.child("SalePriceTops").setValue(priceTops_val);
                     newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                    newItem.child("Softline").setValue(sofeline_val);
+                    newItem.child("Deadline").setValue(deadline_val);
+                    newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
+                    newItem.child("LowBy").setValue(LowBy_val);
+                    newItem.child("TotalVolume").setValue(totalVolume_val);
+
+
 
                     mProgress.dismiss();
                     finish();

@@ -18,10 +18,55 @@ public class item {
     private String RetailPrice;
     private String SalePriceLotus;
     private String SalePriceTops;
+    private String Softline;
+    private String Deadline;
+    private String DecreasePerClick;
+    private String LowBy;
+    private String TotalVolume;
 
 
     public item() {
 
+    }
+
+    public String getTotalVolume() {
+        return TotalVolume;
+    }
+
+    public void setTotalVolume(String totalVolume) {
+        TotalVolume = totalVolume;
+    }
+
+    public String getLowBy() {
+        return LowBy;
+    }
+
+    public void setLowBy(String lowBy) {
+        LowBy = lowBy;
+    }
+
+    public String getSoftline() {
+        return Softline;
+    }
+
+    public void setSoftline(String softline) {
+        Softline = softline;
+    }
+
+    public String getDeadline() {
+        return Deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        Deadline = deadline;
+    }
+
+    public String getDecreasePerClick() {
+        return DecreasePerClick;
+    }
+
+    public void setDecreasePerClick(String decreasePerClick) {
+        DecreasePerClick = decreasePerClick;
     }
 
     public String getSalePriceLotus() {

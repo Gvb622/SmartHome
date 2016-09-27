@@ -222,8 +222,17 @@ public class Tab5 extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ItemViewHolder viewHolder, item model, int position) {
 
+
+                try{
+                    if(model.getLowBy().equals("Quantity")) {
+                        viewHolder.setVolumn(model.getUnit() + "  " + model.getClassifier());
+                    }else if(model.getLowBy().equals("Volume")){
+                        viewHolder.setVolumn(model.getTotalVolume() + "  " + model.getQuantity());
+                    }
+                }catch (Exception e){
+
+                }
                 viewHolder.setName(model.getName());
-                viewHolder.setVolumn(model.getUnit() +"  "+ model.getClassifier());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
             }
         };
@@ -240,10 +249,23 @@ public class Tab5 extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     item item = dataSnapshot.getValue(item.class);
-                                    int i = Integer.parseInt(item.getUnit());
-                                    i = i - 1;
-                                    s.child("Unit").setValue(Integer.toString(i));
+                                    int i ;
+                                    if(item.getLowBy().equals("Volume")){
+                                        i = Integer.parseInt(item.getTotalVolume());
+                                    }else{
+                                        i = Integer.parseInt(item.getUnit());
+                                    }
 
+                                    int j = Integer.parseInt(item.getDecreasePerClick());
+                                    i = i - j;
+                                    if(i < 0){
+                                        i = 0;
+                                    }
+                                    if(item.getLowBy().equals("Volume")){
+                                        s.child("TotalVolume").setValue(Integer.toString(i));
+                                    }else {
+                                        s.child("Unit").setValue(Integer.toString(i));
+                                    }
                                 }
 
                                 @Override
@@ -343,7 +365,6 @@ public class Tab5 extends AppCompatActivity {
         public void setImage(Context ctx , String image){
             ImageView imageView = (ImageView) mView.findViewById(R.id.imageItem);
             Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageView);
-
         }
 
 
