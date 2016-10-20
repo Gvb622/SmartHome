@@ -1,9 +1,15 @@
 package com.smart.smarthome;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,8 +20,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.awareness.snapshot.DetectedActivityResult;
+import com.google.android.gms.awareness.snapshot.HeadphoneStateResult;
+import com.google.android.gms.awareness.snapshot.LocationResult;
+import com.google.android.gms.awareness.snapshot.PlacesResult;
+import com.google.android.gms.awareness.state.HeadphoneState;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.ActivityRecognitionResult;
+import com.google.android.gms.location.DetectedActivity;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
+import java.util.List;
+
 public class LocationbaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private GoogleApiClient mGoogleApiClient;
+    private static final String TAG = "Awareness";
+    int PLACE_PICKER_REQUEST = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +53,35 @@ public class LocationbaseActivity extends AppCompatActivity
         setContentView(R.layout.activity_locationbase);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        mGoogleApiClient = new GoogleApiClient.Builder(LocationbaseActivity.this)
+                .addApi(Awareness.API)
+                .build();
+        mGoogleApiClient.connect();
+
+
+
+        /*
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        Intent intent;
+        try {
+            intent = builder.build(LocationbaseActivity.this);
+            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+            //
+            //
+        }
+        */
+
+
+
+        initSnapshots();
+
+
 
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +100,61 @@ public class LocationbaseActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initSnapshots() {
+
+        if (ContextCompat.checkSelfPermission(
+                LocationbaseActivity.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    LocationbaseActivity.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    12345
+            );
+        }else {
+            Awareness.SnapshotApi.getLocation(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<LocationResult>() {
+                        @Override
+                        public void onResult(@NonNull LocationResult locationResult) {
+                            if (!locationResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get location.");
+                                return;
+                            }
+                            Location location = locationResult.getLocation();
+                            Log.i(TAG, "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
+                        }
+                    });
+
+
+            Awareness.SnapshotApi.getPlaces(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<PlacesResult>() {
+                        @Override
+                        public void onResult(@NonNull PlacesResult placesResult) {
+                            if (!placesResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get places.");
+                                return;
+                            }
+                            List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
+                            // Show the top 5 possible location results.
+                            if (placeLikelihoodList != null) {
+                                for (int i = 0; i < 1 && i < placeLikelihoodList.size(); i++) {
+                                    PlaceLikelihood p = placeLikelihoodList.get(i);
+                                    Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
+                                    Log.i(TAG, p.getPlace().getPlaceTypes().toString());
+
+                                    if(p.getPlace().getPlaceTypes().contains(34)){
+                                        Log.i(TAG, "OK HOME");
+                                    }
+
+                                }
+                            } else {
+                                Log.e(TAG, "Place is null.");
+                            }
+                        }
+                    });
+        }
     }
 
     @Override
@@ -106,5 +220,20 @@ public class LocationbaseActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+
+                Place place = PlacePicker.getPlace(data, this);
+                // if(place.getPlaceTypes() == )
+                String name = String.format("Place : %s", place.getPlaceTypes());
+                Log.e(TAG, name);
+
+            }
+        }
     }
 }

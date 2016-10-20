@@ -61,6 +61,7 @@ public class ShowBarcode extends AppCompatActivity {
     String priceTops_val;
     String priceLotus_val;
     String totalVolume_val;
+    String barcodeValue;
 
 
     Spinner staticSpinner;
@@ -538,7 +539,8 @@ public class ShowBarcode extends AppCompatActivity {
         if (requestCode == GET_BAR_CODE) {
             if (resultCode == RESULT_OK) {
                 barcodeValue2 = data.getStringExtra("Barcode");
-                final String barcodeValue = barcodeValue2;
+                System.out.println(barcodeValue2);
+                barcodeValue = barcodeValue2;
                 DatabaseReference mDatabse = FirebaseDatabase.getInstance().getReference().child("system").child("items");
                 Query queryRef = mDatabse.orderByChild("Barcode").equalTo(barcodeValue2);
                 queryRef.addListenerForSingleValueEvent(new ValueEventListener() {

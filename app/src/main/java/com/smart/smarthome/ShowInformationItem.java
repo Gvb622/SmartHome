@@ -437,8 +437,9 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("Deadline").setValue(deadline_val);
                         newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem2.child("LowBy").setValue(LowBy_val);
-                        newItem2.child("TotalVolume").setValue(totalVolume_val);
-
+                        if(LowBy_val.equals("Quantity")) {
+                            newItem2.child("TotalVolume").setValue(totalVolume_val);
+                        }
                         mProgress.dismiss();
                         mDatabase.removeValue();
                         finish();
@@ -471,8 +472,9 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem2.child("Deadline").setValue(deadline_val);
                                 newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
                                 newItem2.child("LowBy").setValue(LowBy_val);
-                                newItem2.child("TotalVolume").setValue(totalVolume_val);
-
+                                if(LowBy_val.equals("Quantity")) {
+                                    newItem2.child("TotalVolume").setValue(totalVolume_val);
+                                }
                                 mProgress.dismiss();
                                 mDatabase.removeValue();
                                 finish();
@@ -499,8 +501,9 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("Deadline").setValue(deadline_val);
                         newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem2.child("LowBy").setValue(LowBy_val);
-                        newItem2.child("TotalVolume").setValue(totalVolume_val);
-
+                        if(LowBy_val.equals("Quantity")) {
+                            newItem2.child("TotalVolume").setValue(totalVolume_val);
+                        }
                         mProgress.dismiss();
                         mDatabase.removeValue();
                         finish();
@@ -527,8 +530,9 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem.child("LowBy").setValue(LowBy_val);
-                        newItem.child("TotalVolume").setValue(totalVolume_val);
-
+                        if(LowBy_val.equals("Quantity")) {
+                            newItem.child("TotalVolume").setValue(totalVolume_val);
+                        }
                         mProgress.dismiss();
                         finish();
 
@@ -562,8 +566,9 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem.child("Deadline").setValue(deadline_val);
                                 newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
                                 newItem.child("LowBy").setValue(LowBy_val);
-                                newItem.child("TotalVolume").setValue(totalVolume_val);
-
+                                if(LowBy_val.equals("Quantity")) {
+                                    newItem.child("TotalVolume").setValue(totalVolume_val);
+                                }
 
                                 mProgress.dismiss();
                                 finish();
@@ -592,8 +597,9 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem.child("LowBy").setValue(LowBy_val);
-                        newItem.child("TotalVolume").setValue(totalVolume_val);
-
+                        if(LowBy_val.equals("Quantity")) {
+                            newItem.child("TotalVolume").setValue(totalVolume_val);
+                        }
 
                         mProgress.dismiss();
                         finish();

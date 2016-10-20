@@ -3,6 +3,7 @@ package com.smart.smarthome;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -190,6 +191,33 @@ public class Tab4 extends AppCompatActivity {
                 }
                 viewHolder.setName(model.getName());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
+
+                try{
+                    int softline = Integer.parseInt(model.getSoftline());
+                    int deadline = Integer.parseInt(model.getDeadline());
+                    if(model.getLowBy().equals("Quantity")){
+                        int unit = Integer.parseInt(model.getUnit());
+                        if (unit <= deadline){
+                            viewHolder.setBackground(3);
+                        }else if (unit <= softline){
+                            viewHolder.setBackground(2);
+                        }else{
+                            viewHolder.setBackground(1);
+                        }
+                    }else if(model.getLowBy().equals("Volume")){
+                        int totalunit = Integer.parseInt(model.getTotalVolume());
+
+                        if (totalunit <= deadline){
+                            viewHolder.setBackground(3);
+                        }else if (totalunit <= softline){
+                            viewHolder.setBackground(2);
+                        }else{
+                            viewHolder.setBackground(1);
+                        }
+                    }
+                }catch (Exception e){
+
+                }
             }
         };
 
@@ -236,12 +264,25 @@ public class Tab4 extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     item item = dataSnapshot.getValue(item.class);
-                                    int i = Integer.parseInt(item.getUnit());
-                                    i = i + 1;
-                                    s.child("Unit").setValue(Integer.toString(i));
+                                    int i ;
+                                    if(item.getLowBy().equals("Volume")){
+                                        i = Integer.parseInt(item.getTotalVolume());
+                                    }else{
+                                        i = Integer.parseInt(item.getUnit());
+                                    }
+
+                                    int j = Integer.parseInt(item.getDecreasePerClick());
+                                    i = i + j;
+                                    if(i < 0){
+                                        i = 0;
+                                    }
+                                    if(item.getLowBy().equals("Volume")){
+                                        s.child("TotalVolume").setValue(Integer.toString(i));
+                                    }else {
+                                        s.child("Unit").setValue(Integer.toString(i));
+                                    }
 
                                 }
-
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
 
@@ -321,6 +362,20 @@ public class Tab4 extends AppCompatActivity {
         public void setImage(Context ctx , String image){
             ImageView imageView = (ImageView) mView.findViewById(R.id.imageItem);
             Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageView);
+
+        }
+        public void setBackground (int i){
+            ImageView imageB = (ImageView) mView.findViewById(R.id.sign);
+            if(i == 1) {
+                imageB.setBackgroundColor(Color.GREEN);
+                imageB.invalidate();
+            }else if(i == 2){
+                imageB.setBackgroundColor(Color.YELLOW);
+                imageB.invalidate();
+            }else{
+                imageB.setBackgroundColor(Color.RED);
+                imageB.invalidate();
+            }
 
         }
 

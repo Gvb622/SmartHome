@@ -8,6 +8,7 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,12 +86,14 @@ public class AddItemActivity extends AppCompatActivity {
     Spinner staticSpinner4;
 
     Uri downloadUrl = null;
-    String mCurrentPhotoPath;
+    String mCurrentPhotoPath = null;
     private int checkLast ;
 
 
     private static final int GALLERY_REQUEST = 1;
     private static final int CAMERA_REQUEST = 999;
+
+
 
 
     private StorageReference mStorage;
@@ -257,10 +260,23 @@ public class AddItemActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, CAMERA_REQUEST);
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            // Ensure that there's a camera activity to handle the intent
+                            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                // Create the File where the photo should go
+                                File f ;
 
-
+                                try {
+                                    f = setUpPhotoFile();
+                                    mCurrentPhotoPath = f.getAbsolutePath();
+                                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    f = null;
+                                    mCurrentPhotoPath = null;
+                                }
+                                    startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+                                }
 
                         } else if (which == 1) {
                             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -455,7 +471,27 @@ public class AddItemActivity extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
 
 
-            Uri selectImage = data.getData();
+            setPic();
+            /*
+            File f = new File(mCurrentPhotoPath);
+            Uri contentUri = Uri.fromFile(f);
+            StorageReference filepath = mStorage.child("Item_Image2").child(mCurrentPhotoPath);
+            filepath.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    downloadUrl = taskSnapshot.getDownloadUrl();
+                    Picasso.with(AddItemActivity.this).load(downloadUrl).fit().centerCrop().into(addImageButton);
+                    checkLast = 2;
+                    mCurrentPhotoPath = null;
+
+
+                }
+            });
+
+*/
+
+            /*Uri selectImage = data.getData();
             System.out.println(selectImage);
 
             Bundle extras = data.getExtras();
@@ -475,6 +511,7 @@ public class AddItemActivity extends AppCompatActivity {
                     checkLast = 2;
                 }
             });
+            */
 
 
 
@@ -482,6 +519,85 @@ public class AddItemActivity extends AppCompatActivity {
         }
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+    private void galleryAddPic() {
+
+    }
+
+    private void setPic() {
+
+		/* There isn't enough memory to open up more than a couple camera photos */
+		/* So pre-scale the target bitmap into which the file is decoded */
+
+		/* Get the size of the ImageView */
+        int targetW = addImageButton.getWidth();
+        int targetH = addImageButton.getHeight();
+
+		/* Get the size of the image */
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+		/* Figure out which way needs to be reduced less */
+        int scaleFactor = 1;
+        if ((targetW > 0) || (targetH > 0)) {
+            scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        }
+
+		/* Set bitmap options to scale the image decode target */
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+		/* Decode the JPEG file into a Bitmap */
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+        byte[] dataBAOS = baos.toByteArray();
+        StorageReference filepath = mStorage.child("Item_Image2").child(mCurrentPhotoPath);
+        UploadTask uploadTask = filepath.putBytes(dataBAOS);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                downloadUrl = taskSnapshot.getDownloadUrl();
+                System.out.println("Good");
+                Picasso.with(AddItemActivity.this).load(downloadUrl).fit().centerCrop().into(addImageButton);
+                checkLast = 2;
+            }
+        });
+
+
+
+		/* Associate the Bitmap to the ImageView */
+        // addImageButton.setImageBitmap(bitmap);
+        //addImageButton.setVisibility(View.VISIBLE);
+    }
+
+    private File setUpPhotoFile() throws IOException {
+
+        File f = createImageFile();
+        mCurrentPhotoPath = f.getAbsolutePath();
+
+        return f;
+    }
 
 
 

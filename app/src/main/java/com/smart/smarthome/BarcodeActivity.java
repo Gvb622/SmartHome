@@ -175,7 +175,7 @@ public class BarcodeActivity extends AppCompatActivity
                             Log.i("TEST", "IN");
                             for (DataSnapshot child : dataSnapshot.getChildren()) {
                                 productCompare = new ProductCompare(child.child("Name").getValue().toString(),
-                                        Double.valueOf(child.child("SalePrice").getValue().toString()),
+                                        Double.valueOf(child.child("SalePriceLotus").getValue().toString()),
                                         0,
                                         child.child("Quantity").getValue().toString(),
                                         0,

@@ -84,10 +84,6 @@ public class MainActivity extends AppCompatActivity
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String s) {
-                System.out.println(s);
-                System.out.println(additem);
-                System.out.println(decreaseitem);
-                System.out.println(removeitem);
                 if(s.equals("Tab1")){
                     if(additem == true){
                         Tab1.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);

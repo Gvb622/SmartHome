@@ -25,6 +25,10 @@
             class="im.dacer.androidcharts.LineView"
             android:id="@+id/line_view"/>
     </HorizontalScrollView>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Blue: Retail price, Red: Sale price"/>-->
     <!--<Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

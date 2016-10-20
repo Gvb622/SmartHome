@@ -373,6 +373,12 @@ public class Tab6 extends AppCompatActivity {
                                                         addReport.child("Image").setValue(i.getImage());
                                                         Toast.makeText(Tab6.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
                                                         User.child("Unit").setValue(Integer.toString(volumnFin));
+
+                                                        int j = Integer.parseInt(i.getTotalVolume());
+                                                        int k = Integer.parseInt(i.getVolume());
+                                                        int z = 0;
+                                                        z = j+ (k * volumnadd);
+                                                        User.child("TotalVolume").setValue(z+"");
                                                         s.removeValue();
                                                         DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(Shopitem.getKeyAll());
                                                         Price.removeValue();
@@ -400,6 +406,11 @@ public class Tab6 extends AppCompatActivity {
                                                         addReport.child("Image").setValue(i.getImage());
                                                         Toast.makeText(Tab6.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
                                                         User.child("Unit").setValue(Integer.toString(volumnFin));
+                                                        int j = Integer.parseInt(i.getTotalVolume());
+                                                        int k = Integer.parseInt(i.getVolume());
+                                                        int z = 0;
+                                                        z = j+ (k * volumnadd);
+                                                        User.child("TotalVolume").setValue(z+"");
                                                         s.removeValue();
                                                         DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(Shopitem.getKeyAll());
                                                         Price.removeValue();
@@ -426,6 +437,11 @@ public class Tab6 extends AppCompatActivity {
                                                         addReport.child("Image").setValue(i.getImage());
                                                         Toast.makeText(Tab6.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
                                                         User.child("Unit").setValue(Integer.toString(volumnFin));
+                                                        int j = Integer.parseInt(i.getTotalVolume());
+                                                        int k = Integer.parseInt(i.getVolume());
+                                                        int z = 0;
+                                                        z = j+ (k * volumnadd);
+                                                        User.child("TotalVolume").setValue(z+"");
                                                         s.removeValue();
                                                         DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(Shopitem.getKeyAll());
                                                         Price.removeValue();
