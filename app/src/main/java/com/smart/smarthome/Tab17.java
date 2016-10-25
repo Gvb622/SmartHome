@@ -1,15 +1,21 @@
 package com.smart.smarthome;
 
+import android.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,6 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.awareness.snapshot.LocationResult;
+import com.google.android.gms.awareness.snapshot.PlacesResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,8 +44,9 @@ import com.squareup.picasso.Picasso;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
-public class Tab7 extends AppCompatActivity {
+public class Tab17 extends AppCompatActivity {
 
     private String value;
     private RecyclerView mList;
@@ -63,10 +77,18 @@ public class Tab7 extends AppCompatActivity {
     double volumnadd;
     double volumnFin;
 
+    private GoogleApiClient mGoogleApiClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab6);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(Tab17.this)
+                .addApi(Awareness.API)
+                .addApi(AppIndex.API).build();
+        mGoogleApiClient.connect();
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -97,7 +119,7 @@ public class Tab7 extends AppCompatActivity {
                 pType.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Tab7.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Tab17.this);
                         builder.setTitle("The Shop that sale in Cheapest Price");
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
@@ -166,7 +188,7 @@ public class Tab7 extends AppCompatActivity {
                 IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
                 DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
 
-                Intent intent5 = new Intent(Tab7.this, SelectItemShop.class);
+                Intent intent5 = new Intent(Tab17.this, SelectItemShop.class);
                 startActivity(intent5);
             }
         });
@@ -269,36 +291,8 @@ public class Tab7 extends AppCompatActivity {
 
                         if (ShoppinglistShowlistActivity.remove == true) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Tab7.this);
-                            builder.setTitle("Are you sure to remove ?");
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    s.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            Shoplistitem Shopitem = dataSnapshot.getValue(Shoplistitem.class);
-                                            DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(Shopitem.getKeyAll());
-                                            System.out.println(Price);
-                                            System.out.println(s);
-                                            Price.removeValue();
-                                            s.removeValue();
-                                        }
+                            initSnapshots();
 
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }
-                            });
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            builder.show();
 
 
                         } else if (ShoppinglistShowlistActivity.increase == true) {
@@ -337,7 +331,7 @@ public class Tab7 extends AppCompatActivity {
                                             // }
 
                                             CharSequence priceItem[] = new CharSequence[]{"Retailprice : " + i.getRetailPrice(), price, price2, "Update All"};
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(Tab7.this);
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(Tab17.this);
                                             builder.setTitle("Choose Shop and Price that You buy");
 
                                             builder.setItems(priceItem, new DialogInterface.OnClickListener() {
@@ -369,7 +363,7 @@ public class Tab7 extends AppCompatActivity {
                                                         addReport.child("TotalPrice").setValue(String.valueOf(TotalPrice));
                                                         addReport.child("TotalBuyPrice").setValue(TotalPrice);
                                                         addReport.child("Image").setValue(i.getImage());
-                                                        Toast.makeText(Tab7.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(Tab17.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
                                                         User.child("Unit").setValue(Double.toString(volumnFin));
 
                                                         double totalVol = volumnFin * Double.parseDouble(i.getVolume());
@@ -398,7 +392,7 @@ public class Tab7 extends AppCompatActivity {
                                                         double TotalBuyPrice = Double.parseDouble(i.getSalePriceLotus()) * volumnadd;
                                                         addReport.child("TotalBuyPrice").setValue(TotalBuyPrice);
                                                         addReport.child("Image").setValue(i.getImage());
-                                                        Toast.makeText(Tab7.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(Tab17.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
                                                         User.child("Unit").setValue(Double.toString(volumnFin));
 
                                                         double totalVol = volumnFin * Double.parseDouble(i.getVolume());
@@ -428,7 +422,7 @@ public class Tab7 extends AppCompatActivity {
                                                         double TotalBuyPrice = Double.parseDouble(i.getSalePriceTops()) * volumnadd;
                                                         addReport.child("TotalBuyPrice").setValue(TotalBuyPrice);
                                                         addReport.child("Image").setValue(i.getImage());
-                                                        Toast.makeText(Tab7.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(Tab17.this, i.getName() + " Already add to inventory ", Toast.LENGTH_LONG).show();
                                                         User.child("Unit").setValue(Double.toString(volumnFin));
 
                                                         double totalVol = volumnFin * Double.parseDouble(i.getVolume());
@@ -683,7 +677,7 @@ public class Tab7 extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Shoplistitem Shopitem = dataSnapshot.getValue(Shoplistitem.class);
-                                    final AlertDialog.Builder builder2 = new AlertDialog.Builder(Tab7.this);
+                                    final AlertDialog.Builder builder2 = new AlertDialog.Builder(Tab17.this);
                                     //TextView title = new TextView(Tab6.this);
                                     //title.setText(Shopitem.getItemName());
                                     //title.setGravity(Gravity.CENTER);
@@ -784,6 +778,78 @@ public class Tab7 extends AppCompatActivity {
             Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageView);
         }
 
+
+    }
+    private void initSnapshots() {
+
+        if (ContextCompat.checkSelfPermission(
+                Tab17.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    Tab17.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    12345
+            );
+        } else {
+
+            Awareness.SnapshotApi.getLocation(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<LocationResult>() {
+
+                        public String TAG;
+
+                        @Override
+                        public void onResult(@NonNull LocationResult locationResult) {
+                            if (!locationResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get location.");
+                                return;
+                            }
+                            Location location = locationResult.getLocation();
+                            Log.i(TAG, "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
+                        }
+                    });
+
+
+            Awareness.SnapshotApi.getPlaces(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<PlacesResult>() {
+                        public static final String TAG = "";
+
+                        @Override
+                        public void onResult(@NonNull PlacesResult placesResult) {
+                            if (!placesResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get places.");
+                                return;
+                            }
+                            List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
+                            String g  = "";
+
+                            // Show the top 5 possible location results.
+                            if (placeLikelihoodList != null) {
+                                for (int i = 0; i < placeLikelihoodList.size(); i++) {
+                                    PlaceLikelihood p = placeLikelihoodList.get(i);
+                                    Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
+                                    Log.i(TAG, p.getPlace().getPlaceTypes().toString());
+
+                                    if (p.getPlace().getPlaceTypes().contains(43)) {
+                                        g = p.getPlace().getName().toString();
+                                        break;
+                                    }
+
+                                }
+
+
+                                if(!g.equals("")){
+                                    Toast.makeText(Tab17.this, g + "  " + "    near you", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(Tab17.this, "No supermarket nearby", Toast.LENGTH_SHORT).show();
+                                }
+                                g = "";
+                            } else {
+                                Log.e(TAG, "Place is null.");
+                            }
+                        }
+                    });
+        }
 
     }
 }

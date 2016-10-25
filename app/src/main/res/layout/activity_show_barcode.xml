@@ -24,7 +24,7 @@
             <ImageButton
                 android:id="@+id/addImageButton"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:src="@mipmap/no_image_icon_6"
                 />
 
@@ -102,7 +102,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </android.support.design.widget.TextInputLayout>
 
@@ -142,7 +142,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"/>
+                        android:inputType="numberDecimal"/>
                 </android.support.design.widget.TextInputLayout>
                 />
 
@@ -181,7 +181,7 @@
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -194,7 +194,7 @@
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -207,7 +207,7 @@
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </android.support.design.widget.TextInputLayout>
 
             <TextView
@@ -268,7 +268,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </android.support.design.widget.TextInputLayout>
 
@@ -304,7 +304,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </android.support.design.widget.TextInputLayout>
 
@@ -343,7 +343,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
 
                 </android.support.design.widget.TextInputLayout>

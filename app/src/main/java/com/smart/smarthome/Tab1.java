@@ -28,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+
 
 public class Tab1 extends AppCompatActivity {
 
@@ -109,7 +111,7 @@ public class Tab1 extends AppCompatActivity {
 
                 CharSequence colors[] = new CharSequence[] {"Barcode", "Manual"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(Tab1.this);
-                builder.setTitle("Choose One");
+                builder.setTitle("Add by");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -121,14 +123,6 @@ public class Tab1 extends AppCompatActivity {
                     }
                 });
                 builder.show();
-
-                //qType = mDatabase.orderByChild("Type");
-                //firebaseRecyclerAdapter.cleanup();
-                //attachRecyclerViewAdapter();
-
-
-
-
 
             }
 
@@ -356,10 +350,21 @@ public class Tab1 extends AppCompatActivity {
 
 
                 try{
+
+                    double value = Double.parseDouble(model.getUnit());
+                    value =Double.parseDouble(new DecimalFormat("##.##").format(value));
+
+                    double TotalVolume = Double.parseDouble(model.getTotalVolume());
+                    TotalVolume =Double.parseDouble(new DecimalFormat("##.##").format(TotalVolume));
+
+
+
+
                     if(model.getLowBy().equals("Quantity")) {
-                        viewHolder.setVolumn(model.getUnit() + "  " + model.getClassifier());
+                        viewHolder.setVolumn(value + "  " + model.getClassifier());
                     }else if(model.getLowBy().equals("Volume")){
-                        viewHolder.setVolumn(model.getTotalVolume() + "  " + model.getQuantity());
+                        viewHolder.setVolumn(TotalVolume + "  " + model.getQuantity()
+                                + "\n" + value + "  " + model.getClassifier() );
                     }
                 }catch (Exception e){
 
@@ -368,10 +373,10 @@ public class Tab1 extends AppCompatActivity {
                 viewHolder.setImage(getApplicationContext(), model.getImage());
 
                 try{
-                    int softline = Integer.parseInt(model.getSoftline());
-                    int deadline = Integer.parseInt(model.getDeadline());
+                    double softline = Double.parseDouble(model.getSoftline());
+                    double deadline = Double.parseDouble(model.getDeadline());
                     if(model.getLowBy().equals("Quantity")){
-                        int unit = Integer.parseInt(model.getUnit());
+                        double unit = Double.parseDouble(model.getUnit());
                         if (unit <= deadline){
                             viewHolder.setBackground(3);
                         }else if (unit <= softline){
@@ -380,7 +385,7 @@ public class Tab1 extends AppCompatActivity {
                             viewHolder.setBackground(1);
                         }
                     }else if(model.getLowBy().equals("Volume")){
-                        int totalunit = Integer.parseInt(model.getTotalVolume());
+                        double totalunit = Double.parseDouble(model.getTotalVolume());
 
                         if (totalunit <= deadline){
                             viewHolder.setBackground(3);
@@ -409,22 +414,31 @@ public class Tab1 extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         item item = dataSnapshot.getValue(item.class);
-                                        int i ;
+
+                                        double i = Double.parseDouble(item.getTotalVolume());
+                                        double j ;
+
                                         if(item.getLowBy().equals("Volume")){
-                                            i = Integer.parseInt(item.getTotalVolume());
+                                            j = Double.parseDouble(item.getDecreasePerClick());
                                         }else{
-                                            i = Integer.parseInt(item.getUnit());
+                                            j = Double.parseDouble(item.getDecreasePerClick()) * Double.parseDouble(item.getVolume());
                                         }
 
-                                        int j = Integer.parseInt(item.getDecreasePerClick());
-                                        i = i - j;
+                                        i = i - j ;
                                         if(i < 0){
                                             i = 0;
                                         }
+
+                                        double k = i / Double.parseDouble(item.getVolume());
+
                                         if(item.getLowBy().equals("Volume")){
-                                            s.child("TotalVolume").setValue(Integer.toString(i));
+                                            s.child("TotalVolume").setValue(Double.toString(i));
+                                            s.child("Unit").setValue(Double.toString(k));
+
                                         }else {
-                                            s.child("Unit").setValue(Integer.toString(i));
+                                            s.child("TotalVolume").setValue(Double.toString(i));
+                                            s.child("Unit").setValue(Double.toString(k));
+
                                         }
                                     }
 
@@ -434,30 +448,38 @@ public class Tab1 extends AppCompatActivity {
                                     }
                                 });
 
-                            }else  if (MainActivity.additem == true){
+                            } else  if (MainActivity.additem == true){
 
                                 s.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         item item = dataSnapshot.getValue(item.class);
-                                        int i ;
+
+                                        double i = Double.parseDouble(item.getTotalVolume());
+                                        double j ;
+
                                         if(item.getLowBy().equals("Volume")){
-                                            i = Integer.parseInt(item.getTotalVolume());
+                                            j = Double.parseDouble(item.getDecreasePerClick());
                                         }else{
-                                            i = Integer.parseInt(item.getUnit());
+                                            j = Double.parseDouble(item.getDecreasePerClick()) * Double.parseDouble(item.getVolume());
                                         }
 
-                                        int j = Integer.parseInt(item.getDecreasePerClick());
-                                        i = i + j;
+                                        i = i + j ;
                                         if(i < 0){
                                             i = 0;
                                         }
-                                        if(item.getLowBy().equals("Volume")){
-                                            s.child("TotalVolume").setValue(Integer.toString(i));
-                                        }else {
-                                            s.child("Unit").setValue(Integer.toString(i));
-                                        }
 
+                                        double k = i / Double.parseDouble(item.getVolume());
+
+                                        if(item.getLowBy().equals("Volume")){
+                                            s.child("TotalVolume").setValue(Double.toString(i));
+                                            s.child("Unit").setValue(Double.toString(k));
+
+                                        }else {
+                                            s.child("TotalVolume").setValue(Double.toString(i));
+                                            s.child("Unit").setValue(Double.toString(k));
+
+                                        }
                                     }
 
                                     @Override
@@ -466,7 +488,8 @@ public class Tab1 extends AppCompatActivity {
                                     }
                                 });
 
-                            }else if (MainActivity.removeitem == true){
+
+                            } else if (MainActivity.removeitem == true){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(Tab1.this);
                                 builder.setTitle("Are you sure ?");
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -546,6 +569,8 @@ public class Tab1 extends AppCompatActivity {
         public void setVolumn(String Volumn){
             TextView volumn = (TextView) mView.findViewById(R.id.volumnItem);
             volumn.setText(Volumn);
+            volumn.setLines(2);
+
         }
         public void setImage(Context ctx , String image){
             ImageView imageV = (ImageView) mView.findViewById(R.id.imageItem);

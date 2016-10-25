@@ -28,6 +28,7 @@
                 android:id="@+id/addImageButton"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
+                android:scaleType="fitXY"
                 android:src="@mipmap/no_image_icon_6"
                 />
 
@@ -98,14 +99,14 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7">
+                    android:layout_weight="0.5">
                     <EditText
                         android:id="@+id/addVolumeEdit"
                         android:hint="Enter Your Product Volumn"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </android.support.design.widget.TextInputLayout>
 
@@ -114,7 +115,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingLeft="20dp"
@@ -137,7 +138,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7">
+                    android:layout_weight="0.5">
                     <EditText
                         android:id="@+id/addUnitEdit"
                         android:hint="Enter Your Product Quantity"
@@ -145,7 +146,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"/>
+                        android:inputType="numberDecimal"/>
                 </android.support.design.widget.TextInputLayout>
                     />
 
@@ -153,7 +154,7 @@
                     android:id="@+id/static_spinner3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingLeft="20dp"
@@ -184,7 +185,7 @@
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -197,7 +198,7 @@
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -210,13 +211,13 @@
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
+                    android:inputType="numberDecimal"/>
             </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Low Volume Setting"
+                android:text="Set Minimum Inventory Level"
                 android:textSize="24dp"
                 android:textColor="#FF0000"
                 android:gravity="center"
@@ -271,7 +272,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </android.support.design.widget.TextInputLayout>
 
@@ -307,7 +308,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
                 </android.support.design.widget.TextInputLayout>
 
@@ -346,7 +347,7 @@
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         />
 
                 </android.support.design.widget.TextInputLayout>

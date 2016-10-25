@@ -4,11 +4,15 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +38,9 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ShowBarcode extends AppCompatActivity {
@@ -82,6 +89,7 @@ public class ShowBarcode extends AppCompatActivity {
     String sofeline_val;
     String deadline_val;
     String decreaseperclick_val;
+    String m_Text;
 
     private String LowVolume = "Quantity";
 
@@ -90,7 +98,7 @@ public class ShowBarcode extends AppCompatActivity {
     private Uri imageUri = null;
     Uri downloadUrl = null;
 
-    String mCurrentPhotoPath;
+    String mCurrentPhotoPath = null;
     private int checkLast ;
 
     private static final int GALLERY_REQUEST = 1;
@@ -246,33 +254,171 @@ public class ShowBarcode extends AppCompatActivity {
         checkLast = 0;
 
 
-        Intent intent = new Intent(ShowBarcode.this, BarcodeCaptureActivity.class);
-        startActivityForResult(intent, GET_BAR_CODE);
-
-        /*mDatabase = FirebaseDatabase.getInstance().getReference().child("system").child("items").child(value);
-
-
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShowBarcode.this);
+        builder.setTitle("How many volumn ?");
+        final EditText input = new EditText(ShowBarcode.this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        builder.setView(input);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println(dataSnapshot.getChildrenCount());
-                item i2 = dataSnapshot.getValue(item.class);
-                Picasso.with(ShowBarcode.this).load(i2.getImage()).fit().placeholder(R.mipmap.no_image_icon_6).into(addImageButton2);
-                Barcode2.setText(i2.getBarcode());
-                Name2.setText(i2.getName());
-                Type2.setText(i2.getType());
-                Unit2.setText(i2.getUnit());
-                Price2.setText(i2.getPrice());
-                Madein2.setText(i2.getMadein());
-                image = i2.getImage();
-            }
+            public void onClick(DialogInterface dialogInterface, int i) {
+                barcodeValue2 = input.getText().toString().trim();
+                DatabaseReference mDatabse = FirebaseDatabase.getInstance().getReference().child("system").child("items");
+                Query queryRef = mDatabse.orderByChild("Barcode").equalTo(barcodeValue2);
+                queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                        if(dataSnapshot.getChildrenCount() == 0){
+                            Toast.makeText(ShowBarcode.this, "Barcode not Match in Database", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(ShowBarcode.this);
+                            builder2.setTitle("No item match in Database");
+                            builder2.setMessage("Scan Again ");
+                            builder2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(ShowBarcode.this, BarcodeCaptureActivity.class);
+                                    startActivityForResult(intent, GET_BAR_CODE);
+                                }
+                            });
+                            builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                            builder2.show();
+
+                            // TODO Try to capture barcdoe agian
+                        }else {
+                            for (final com.google.firebase.database.DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                value = postSnapshot.getKey();
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ShowBarcode.this);
+                                builder.setTitle("OK ?");
+                                builder.setMessage(barcodeValue);
+                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        mDatabase2 = FirebaseDatabase.getInstance().getReference().child("system").child("items").child(value);
+
+                                        mDatabase2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                item i2 = dataSnapshot.getValue(item.class);
+
+                                                Picasso.with(ShowBarcode.this).load(i2.getImage()).fit().into(addImageButton);
+                                                Barcode.setText(i2.getBarcode());
+                                                Name.setText(i2.getName());
+
+                                                if(i2.getType().equals("Food and Ingredients") ) {
+                                                    staticSpinner.setSelection(0, true);
+                                                }else if(i2.getType().equals("Beverage and Drink Powder") ) {
+                                                    staticSpinner.setSelection(1, true);
+                                                }else if(i2.getType().equals("Health and Beauty") ) {
+                                                    staticSpinner.setSelection(2, true);
+                                                }else if(i2.getType().equals("Household Product")  ) {
+                                                    staticSpinner.setSelection(3,true);
+                                                }else if(i2.getType().equals("etc")) {
+                                                    staticSpinner.setSelection(4, true);
+                                                }
+
+
+                                                if(i2.getQuantity().equals("cc")){
+                                                    staticSpinner2.setSelection(0, true);
+                                                }else if(i2.getQuantity().equals("ml")){
+                                                    staticSpinner2.setSelection(1, true);
+                                                }else if(i2.getQuantity().equals("gram")){
+                                                    staticSpinner2.setSelection(2, true);
+                                                }else if(i2.getQuantity().equals("sheet")){
+                                                    staticSpinner2.setSelection(3, true);
+                                                }else if(i2.getQuantity().equals("Oz.")){
+                                                    staticSpinner2.setSelection(4, true);
+                                                }else if(i2.getQuantity().equals("piece")){
+                                                    staticSpinner2.setSelection(5, true);
+                                                }
+
+                                                if(i2.getClassifier().equals("bottles")){
+                                                    staticSpinner3.setSelection(0, true);
+                                                }else if(i2.getClassifier().equals("box")){
+                                                    staticSpinner3.setSelection(1, true);
+                                                }else if(i2.getClassifier().equals("can")){
+                                                    staticSpinner3.setSelection(2, true);
+                                                }else if(i2.getClassifier().equals("pack")){
+                                                    staticSpinner3.setSelection(3, true);
+                                                }
+
+                                                if(i2.getLowBy().equals("Quantity")){
+                                                    staticSpinner4.setSelection(0, true);
+                                                }else if(i2.getLowBy().equals("Volume")){
+                                                    staticSpinner4.setSelection(1, true);
+                                                }else{
+                                                    staticSpinner4.setSelection(0, true);
+                                                }
+
+
+
+
+                                                Volumn.setText(i2.getVolume());
+                                                Unit.setText(i2.getUnit());
+                                                Price.setText(i2.getRetailPrice());
+                                                Madein.setText(i2.getMadein());
+                                                image = i2.getImage();
+                                                TopsPrice.setText(i2.getSalePriceTops());
+                                                LotusPrice.setText(i2.getSalePriceLotus());
+                                                Softline.setText(i2.getSoftline());
+                                                Deadline.setText(i2.getDeadline());
+                                                DecreaseperClick.setText(i2.getDecreasePerClick());
+
+                                                checkLast = 3;
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                    }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                barcodeValue2 = "";
+
 
             }
         });
-        */
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.show();
+
+
+        //Intent intent = new Intent(ShowBarcode.this, BarcodeCaptureActivity.class);
+        //startActivityForResult(intent, GET_BAR_CODE);
+
+
 
         addImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,15 +426,30 @@ public class ShowBarcode extends AppCompatActivity {
 
                 CharSequence colors[] = new CharSequence[]{"Camera", "Gallery"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(ShowBarcode.this);
-                builder.setTitle("Choose One");
+                builder.setTitle("Choose Method");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
 
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, CAMERA_REQUEST);
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            // Ensure that there's a camera activity to handle the intent
+                            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                // Create the File where the photo should go
+                                File f ;
+
+                                try {
+                                    f = setUpPhotoFile();
+                                    mCurrentPhotoPath = f.getAbsolutePath();
+                                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    f = null;
+                                    mCurrentPhotoPath = null;
+                                }
+                                startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+                            }
 
 
                         } else if (which == 1) {
@@ -327,9 +488,9 @@ public class ShowBarcode extends AppCompatActivity {
                     unit_val = "0";
                 }
 
-                int volume = Integer.parseInt(volume_val);
-                int unitItem10   = Integer.parseInt(unit_val);
-                int TotalVolume = volume * unitItem10 ;
+                double volume = Double.parseDouble(volume_val);
+                double unitItem10   = Double.parseDouble(unit_val);
+                double TotalVolume = volume * unitItem10 ;
                 totalVolume_val = TotalVolume+"";
 
                 final String pack_val = Pack;
@@ -514,26 +675,7 @@ public class ShowBarcode extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
 
 
-            Uri selectImage = data.getData();
-            System.out.println(selectImage);
-
-            Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) extras.get("data");
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] dataBAOS = baos.toByteArray();
-            //addImageButton.setImageBitmap(bitmap);
-
-            StorageReference filepath = mStorage.child("Item_Image").child("Item" + new Date().getTime());
-            UploadTask uploadTask = filepath.putBytes(dataBAOS);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    downloadUrl = taskSnapshot.getDownloadUrl();
-                    Picasso.with(ShowBarcode.this).load(downloadUrl).fit().centerCrop().into(addImageButton);
-                    checkLast = 2;
-                }
-            });
+            setPic();
         }
 
         if (requestCode == GET_BAR_CODE) {
@@ -686,6 +828,83 @@ public class ShowBarcode extends AppCompatActivity {
             }
         }
     }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+
+    private void setPic() {
+
+		/* There isn't enough memory to open up more than a couple camera photos */
+		/* So pre-scale the target bitmap into which the file is decoded */
+
+		/* Get the size of the ImageView */
+        int targetW = addImageButton.getWidth();
+        int targetH = addImageButton.getHeight();
+
+		/* Get the size of the image */
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+		/* Figure out which way needs to be reduced less */
+        int scaleFactor = 1;
+        if ((targetW > 0) || (targetH > 0)) {
+            scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        }
+
+		/* Set bitmap options to scale the image decode target */
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+		/* Decode the JPEG file into a Bitmap */
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+        byte[] dataBAOS = baos.toByteArray();
+        StorageReference filepath = mStorage.child("Item_Image2").child(mCurrentPhotoPath);
+        UploadTask uploadTask = filepath.putBytes(dataBAOS);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                downloadUrl = taskSnapshot.getDownloadUrl();
+                System.out.println("Good");
+                Picasso.with(ShowBarcode.this).load(downloadUrl).fit().into(addImageButton);
+                checkLast = 2;
+            }
+        });
+
+
+
+		/* Associate the Bitmap to the ImageView */
+        // addImageButton.setImageBitmap(bitmap);
+        //addImageButton.setVisibility(View.VISIBLE);
+    }
+
+    private File setUpPhotoFile() throws IOException {
+
+        File f = createImageFile();
+        mCurrentPhotoPath = f.getAbsolutePath();
+
+        return f;
+    }
+
 
 
 }

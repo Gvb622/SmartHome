@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,10 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ShowInformationItem extends AppCompatActivity {
@@ -80,7 +86,7 @@ public class ShowInformationItem extends AppCompatActivity {
     private String LowVolume = "Quantity";
 
     Uri downloadUrl = null;
-    String mCurrentPhotoPath;
+    String mCurrentPhotoPath = null;
     private int checkLast ;
 
 
@@ -299,7 +305,11 @@ public class ShowInformationItem extends AppCompatActivity {
                 }
 
                 Volumn.setText(i2.getVolume());
-                Unit.setText(i2.getUnit());
+
+                double TotalUnit = Double.parseDouble(i2.getUnit());
+                TotalUnit =Double.parseDouble(new DecimalFormat("##.##").format(TotalUnit));
+
+                Unit.setText(String.valueOf(TotalUnit));
                 Price.setText(i2.getRetailPrice());
                 Madein.setText(i2.getMadein());
                 image = i2.getImage();
@@ -326,16 +336,30 @@ public class ShowInformationItem extends AppCompatActivity {
 
                 CharSequence colors[] = new CharSequence[]{"Camera", "Gallery"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(ShowInformationItem.this);
-                builder.setTitle("Choose One");
+                builder.setTitle("Choose Mth");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
 
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, CAMERA_REQUEST);
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            // Ensure that there's a camera activity to handle the intent
+                            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                // Create the File where the photo should go
+                                File f ;
 
+                                try {
+                                    f = setUpPhotoFile();
+                                    mCurrentPhotoPath = f.getAbsolutePath();
+                                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    f = null;
+                                    mCurrentPhotoPath = null;
+                                }
+                                startActivityForResult(takePictureIntent, CAMERA_REQUEST);
+                            }
 
 
                         } else if (which == 1) {
@@ -375,9 +399,9 @@ public class ShowInformationItem extends AppCompatActivity {
                     unit_val = "0";
                 }
 
-                int volume = Integer.parseInt(volume_val);
-                int unitItem10   = Integer.parseInt(unit_val);
-                int TotalVolume = volume * unitItem10 ;
+                double volume = Double.parseDouble(volume_val);
+                double unitItem10   = Double.parseDouble(unit_val);
+                double TotalVolume  = volume * unitItem10 ;
                 totalVolume_val = TotalVolume+"";
 
                 final String pack_val = Pack;
@@ -437,9 +461,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("Deadline").setValue(deadline_val);
                         newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem2.child("LowBy").setValue(LowBy_val);
-                        if(LowBy_val.equals("Quantity")) {
                             newItem2.child("TotalVolume").setValue(totalVolume_val);
-                        }
+
                         mProgress.dismiss();
                         mDatabase.removeValue();
                         finish();
@@ -472,9 +495,8 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem2.child("Deadline").setValue(deadline_val);
                                 newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
                                 newItem2.child("LowBy").setValue(LowBy_val);
-                                if(LowBy_val.equals("Quantity")) {
                                     newItem2.child("TotalVolume").setValue(totalVolume_val);
-                                }
+
                                 mProgress.dismiss();
                                 mDatabase.removeValue();
                                 finish();
@@ -501,9 +523,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("Deadline").setValue(deadline_val);
                         newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem2.child("LowBy").setValue(LowBy_val);
-                        if(LowBy_val.equals("Quantity")) {
                             newItem2.child("TotalVolume").setValue(totalVolume_val);
-                        }
+
                         mProgress.dismiss();
                         mDatabase.removeValue();
                         finish();
@@ -530,9 +551,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem.child("LowBy").setValue(LowBy_val);
-                        if(LowBy_val.equals("Quantity")) {
                             newItem.child("TotalVolume").setValue(totalVolume_val);
-                        }
+
                         mProgress.dismiss();
                         finish();
 
@@ -566,9 +586,8 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem.child("Deadline").setValue(deadline_val);
                                 newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
                                 newItem.child("LowBy").setValue(LowBy_val);
-                                if(LowBy_val.equals("Quantity")) {
                                     newItem.child("TotalVolume").setValue(totalVolume_val);
-                                }
+
 
                                 mProgress.dismiss();
                                 finish();
@@ -597,9 +616,8 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem.child("LowBy").setValue(LowBy_val);
-                        if(LowBy_val.equals("Quantity")) {
                             newItem.child("TotalVolume").setValue(totalVolume_val);
-                        }
+
 
                         mProgress.dismiss();
                         finish();
@@ -623,8 +641,10 @@ public class ShowInformationItem extends AppCompatActivity {
         }
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
 
+            setPic();
 
-            Uri selectImage = data.getData();
+
+            /*Uri selectImage = data.getData();
             System.out.println(selectImage);
 
             Bundle extras = data.getExtras();
@@ -645,7 +665,85 @@ public class ShowInformationItem extends AppCompatActivity {
                 }
             });
 
+            */
+
 
         }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+    private void setPic() {
+
+		/* There isn't enough memory to open up more than a couple camera photos */
+		/* So pre-scale the target bitmap into which the file is decoded */
+
+		/* Get the size of the ImageView */
+        int targetW = addImageButton.getWidth();
+        int targetH = addImageButton.getHeight();
+
+		/* Get the size of the image */
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+		/* Figure out which way needs to be reduced less */
+        int scaleFactor = 1;
+        if ((targetW > 0) || (targetH > 0)) {
+            scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        }
+
+		/* Set bitmap options to scale the image decode target */
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+		/* Decode the JPEG file into a Bitmap */
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        byte[] dataBAOS = baos.toByteArray();
+        StorageReference filepath = mStorage.child("Item_Image2").child(mCurrentPhotoPath);
+        UploadTask uploadTask = filepath.putBytes(dataBAOS);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                downloadUrl = taskSnapshot.getDownloadUrl();
+                System.out.println("Good");
+                Picasso.with(ShowInformationItem.this).load(downloadUrl).fit().into(addImageButton);
+                checkLast = 2;
+            }
+        });
+
+
+
+		/* Associate the Bitmap to the ImageView */
+        // addImageButton.setImageBitmap(bitmap);
+        //addImageButton.setVisibility(View.VISIBLE);
+    }
+
+    private File setUpPhotoFile() throws IOException {
+
+        File f = createImageFile();
+        mCurrentPhotoPath = f.getAbsolutePath();
+
+        return f;
     }
 }

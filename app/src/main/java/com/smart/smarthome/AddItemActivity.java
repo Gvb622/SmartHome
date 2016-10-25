@@ -253,7 +253,7 @@ public class AddItemActivity extends AppCompatActivity {
 
                 CharSequence colors[] = new CharSequence[]{"Camera", "Gallery"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddItemActivity.this);
-                builder.setTitle("Choose One");
+                builder.setTitle("Choose Method");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
 
 
@@ -311,9 +311,9 @@ public class AddItemActivity extends AppCompatActivity {
                     unit_val = "0";
                 }
 
-                int volume = Integer.parseInt(volume_val);
-                int unitItem10   = Integer.parseInt(unit_val);
-                int TotalVolume = volume * unitItem10 ;
+                double volume = Double.parseDouble(volume_val);
+                double unitItem10   = Double.parseDouble(unit_val);
+                double TotalVolume = volume * unitItem10 ;
                 totalVolume_val = TotalVolume+"";
 
 
@@ -535,9 +535,6 @@ public class AddItemActivity extends AppCompatActivity {
         return image;
     }
 
-    private void galleryAddPic() {
-
-    }
 
     private void setPic() {
 
@@ -570,7 +567,7 @@ public class AddItemActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
         byte[] dataBAOS = baos.toByteArray();
         StorageReference filepath = mStorage.child("Item_Image2").child(mCurrentPhotoPath);
         UploadTask uploadTask = filepath.putBytes(dataBAOS);
@@ -579,7 +576,7 @@ public class AddItemActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 downloadUrl = taskSnapshot.getDownloadUrl();
                 System.out.println("Good");
-                Picasso.with(AddItemActivity.this).load(downloadUrl).fit().centerCrop().into(addImageButton);
+                Picasso.with(AddItemActivity.this).load(downloadUrl).fit().into(addImageButton);
                 checkLast = 2;
             }
         });

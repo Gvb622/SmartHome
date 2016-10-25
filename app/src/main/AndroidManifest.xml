@@ -147,6 +147,11 @@
         <activity android:name=".Tab13" />
         <activity android:name=".Tab14" />
         <activity android:name=".Tab15" />
+        <activity android:name=".Tab16" />
+        <activity android:name=".Tab17" />
+        <activity android:name=".Tab18" />
+        <activity android:name=".Tab19" />
+        <activity android:name=".Tab20" />
         <activity
             android:name=".SelectItemShop"
             android:label="SelectItem"

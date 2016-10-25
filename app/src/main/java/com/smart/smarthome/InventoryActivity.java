@@ -136,12 +136,11 @@ public class InventoryActivity extends AppCompatActivity
 
                 CharSequence colors[] = new CharSequence[] {"Barcode", "Manual"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(InventoryActivity.this);
-                builder.setTitle("Choose One");
+                builder.setTitle("Add by");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
-
                             Intent intent = new Intent(InventoryActivity.this, BarcodeCaptureActivity.class);
                             startActivityForResult(intent, GET_BAR_CODE);
 

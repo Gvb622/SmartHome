@@ -86,21 +86,28 @@ public class SelectItemShop extends AppCompatActivity
         tabHost.addTab(tab3);
         tabHost.addTab(tab4);
         tabHost.addTab(tab5);
-
         TabWidget tw = (TabWidget)tabHost.findViewById(android.R.id.tabs);
         View tabView = tw.getChildTabViewAt(2);
         TextView tv = (TextView)tabView.findViewById(android.R.id.title);
         tv.setText("Health & Beauty");
-        tv.setTextSize(12);
+        tv.setTextSize(10);
         tv.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
-        tv.setSingleLine();
+        tv.setLines(3);
 
         TabWidget tw2 = (TabWidget)tabHost.findViewById(android.R.id.tabs);
         View tabView2 = tw2.getChildTabViewAt(3);
         TextView tv2 = (TextView)tabView2.findViewById(android.R.id.title);
         tv2.setText("HouseHold");
         tv2.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
-        tv2.setTextSize(12);
+        tv2.setTextSize(10);
+        tv2.setLines(2);
+
+        TabWidget tw3 = (TabWidget)tabHost.findViewById(android.R.id.tabs);
+        View tabView3 = tw3.getChildTabViewAt(1);
+        TextView tv3 = (TextView)tabView3.findViewById(android.R.id.title);
+        tv3.setText("Drink");
+        tv3.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        tv3.setTextSize(13);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -29,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+
 public class Tab14 extends AppCompatActivity {
 
     private String value;
@@ -86,12 +88,22 @@ public class Tab14 extends AppCompatActivity {
             protected void populateViewHolder(ItemViewHolder viewHolder, item model, int position) {
 
                 try{
-                    //if(model.getLowBy().equals("Quantity")) {
-                    viewHolder.setVolumn(model.getUnit() + "  " + model.getClassifier());
-                    //}
-                    //}else if(model.getLowBy().equals("Volume")){
-                    //    viewHolder.setVolumn(model.getTotalVolume() + "  " + model.getQuantity());
-                    // }
+
+                    double value = Double.parseDouble(model.getUnit());
+                    value =Double.parseDouble(new DecimalFormat("##.##").format(value));
+
+                    double TotalVolume = Double.parseDouble(model.getTotalVolume());
+                    TotalVolume =Double.parseDouble(new DecimalFormat("##.##").format(TotalVolume));
+
+
+
+
+                    if(model.getLowBy().equals("Quantity")) {
+                        viewHolder.setVolumn(value + "  " + model.getClassifier());
+                    }else if(model.getLowBy().equals("Volume")){
+                        viewHolder.setVolumn(TotalVolume + "  " + model.getQuantity()
+                                + "\n" + value + "  " + model.getClassifier() );
+                    }
                 }catch (Exception e){
 
                 }
@@ -99,10 +111,10 @@ public class Tab14 extends AppCompatActivity {
                 viewHolder.setImage(getApplicationContext(), model.getImage());
 
                 try{
-                    int softline = Integer.parseInt(model.getSoftline());
-                    int deadline = Integer.parseInt(model.getDeadline());
+                    double softline = Double.parseDouble(model.getSoftline());
+                    double deadline = Double.parseDouble(model.getDeadline());
                     if(model.getLowBy().equals("Quantity")){
-                        int unit = Integer.parseInt(model.getUnit());
+                        double unit = Double.parseDouble(model.getUnit());
                         if (unit <= deadline){
                             viewHolder.setBackground(3);
                         }else if (unit <= softline){
@@ -111,7 +123,7 @@ public class Tab14 extends AppCompatActivity {
                             viewHolder.setBackground(1);
                         }
                     }else if(model.getLowBy().equals("Volume")){
-                        int totalunit = Integer.parseInt(model.getTotalVolume());
+                        double totalunit = Double.parseDouble(model.getTotalVolume());
 
                         if (totalunit <= deadline){
                             viewHolder.setBackground(3);
@@ -124,6 +136,7 @@ public class Tab14 extends AppCompatActivity {
                 }catch (Exception e){
 
                 }
+
             }
         };
 
@@ -134,14 +147,14 @@ public class Tab14 extends AppCompatActivity {
                         final DatabaseReference s = firebaseRecyclerAdapter.getRef(position);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(Tab14.this);
-                        builder.setTitle("How many volumn ?");
+                        builder.setTitle("How many quantity ?");
                         final EditText input = new EditText(Tab14.this);
                         input.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
                         builder.setView(input);
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                m_Text = input.getText().toString().trim();
+                                m_Text = input.getText().toString();
                                 final String Type = s.getParent().getKey();
                                 s.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
