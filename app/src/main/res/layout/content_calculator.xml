@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.smart.smarthome.CalculatorActivity"
     tools:showIn="@layout/app_bar_calculator"
+    android:orientation="vertical"
 
     >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="130dp"
+        android:background="#23ced9"
+        android:orientation="vertical"
+
         >
 
-
-
-      <!--  <TextView
-            android:textColor="#9E9E9E"
-            android:textSize="20sp"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please add by input products detail or scan barcode."
-            />-->
+            android:textColor="#ffffff"
+            android:layout_marginTop="30dp"
+            android:text="CHOOSE"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:text="The ways to input "
+            android:layout_gravity="center"
+            />
 
     </LinearLayout>
 
@@ -41,28 +48,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="center"
+      android:layout_marginTop="10dp"
         >
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Manual"
-            android:layout_toRightOf="@+id/scanbarcodeCompare"
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
             android:id="@+id/manaulCompare"
+            android:src="@drawable/manual"
 
             />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Scan Barcode"
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
             android:id="@+id/scanbarcodeCompare"
+            android:src="@drawable/barcode"
             />
 
     </LinearLayout>
@@ -70,4 +73,4 @@
 
 
 
-</RelativeLayout>
+</LinearLayout>

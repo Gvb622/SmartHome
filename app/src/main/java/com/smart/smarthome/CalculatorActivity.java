@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +28,8 @@ import java.util.ArrayList;
 
 public class CalculatorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    Button ManualCompare;
-    Button ScanBarcode;
+    ImageView ManualCompare;
+    ImageView ScanBarcode;
   TextView nameproduct,pricecompare,volumecompare,unitcompare;
 
     @Override
@@ -37,8 +39,8 @@ public class CalculatorActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ManualCompare = (Button)findViewById(R.id.manaulCompare);
-        ScanBarcode = (Button)findViewById(R.id.scanbarcodeCompare);
+        ManualCompare = (ImageView)findViewById(R.id.manaulCompare);
+        ScanBarcode = (ImageView)findViewById(R.id.scanbarcodeCompare);
 
         ManualCompare.setOnClickListener(new View.OnClickListener() {
             @Override

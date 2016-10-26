@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bgloging"
     tools:context="com.smart.smarthome.LoginActivity">
 
     <LinearLayout
@@ -23,19 +24,20 @@
             android:gravity="center"
             >
 
-            <ImageView
+        <!--    <ImageView
                 android:layout_marginTop="50dp"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:src="@drawable/ic_logo_login"
-                />
+                />-->
 
             <TextView
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="80dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Smart Home Shopping"
-                android:textSize="25dp"
+                android:text="GROCERY"
+                android:textSize="45dp"
+                android:textColor="#5abac0"
                 android:layout_marginBottom="30dp"
                 />
 
@@ -43,7 +45,9 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            >
         <EditText
             android:layout_margin="15dp"
             android:inputType="textEmailAddress"
@@ -55,14 +59,19 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+
+            >
         <EditText
             android:layout_margin="15dp"
             android:inputType="textPassword"
             android:hint="Enter your password"
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+
+
+            />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -71,6 +80,8 @@
             android:layout_margin="15dp"
             android:id="@+id/buttonSignin"
             android:text="Sign In"
+            android:textColor="#ffffff"
+            android:background="#fad46b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -85,6 +96,7 @@
             android:text="Not have Account ? "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#1f5464"
             />
 
         <TextView
@@ -92,7 +104,7 @@
             android:id="@+id/textViewSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#992031"
+            android:textColor="#808889"
             />
 
     </LinearLayout>
