@@ -52,7 +52,11 @@ public class Tab18 extends AppCompatActivity {
     private RecyclerView mList;
     private Query qType;
     private Query pType;
-    private DatabaseReference mDatabase;
+    private TextView name;
+
+    private Query FoodType;
+
+    static DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
     private ImageButton AddItem2;
 
@@ -67,6 +71,11 @@ public class Tab18 extends AppCompatActivity {
     String Volum;
     String key;
     String type;
+    String Poskey;
+    String g = "";
+    String locate = "";
+    FirebaseRecyclerAdapter<Shoplistitem, ItemViewHolder> firebaseRecyclerAdapter;
+
 
     item i;
 
@@ -75,6 +84,8 @@ public class Tab18 extends AppCompatActivity {
     double TotalLotusPrice = 0;
     double volumnadd;
     double volumnFin;
+
+    Shoplistitem shopitem2;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -89,9 +100,76 @@ public class Tab18 extends AppCompatActivity {
                 .addApi(AppIndex.API).build();
         mGoogleApiClient.connect();
 
+        name = (TextView) findViewById(R.id.TextviewShop);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
+        if (ContextCompat.checkSelfPermission(
+                Tab18.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    Tab18.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    12345
+            );
+        } else {
+            Awareness.SnapshotApi.getPlaces(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<PlacesResult>() {
+                        public static final String TAG = "Hi";
+
+                        @Override
+                        public void onResult(@NonNull PlacesResult placesResult) {
+                            if (!placesResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get places.");
+                                return;
+                            }
+
+                            List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
+
+                            if (placeLikelihoodList != null) {
+                                for (int i = 0; i < placeLikelihoodList.size(); i++) {
+                                    PlaceLikelihood p = placeLikelihoodList.get(i);
+
+                                    if (p.getPlace().getPlaceTypes().contains(43)) {
+                                        g = p.getPlace().getName().toString();
+                                        System.out.println("Location " + locate);
+                                        System.out.println("G " + g);
+                                        if (g.contains("Tesco")) {
+                                            locate = "Lotus";
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(Tab18.this);
+                                            builder.setTitle("Now you are near : ");
+                                            builder.setMessage(locate);
+                                            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
+                                                    qType = mDatabase.child("Beverage and Drink Powder").orderByChild("Name");
+                                                    attachRecyclerViewAdapter();
+                                                    name.setText("Now you are at :  " + locate);
+
+                                                }
+                                            });
+                                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                }
+                                            });
+                                            builder.show();
+
+                                        }
+                                    }
+                                }
+                            } else {
+                                Log.e(TAG, "Place is null.");
+                            }
+                        }
+                    });
+        }
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist");
         qType = mDatabase.child("Health and Beauty").orderByChild("Name");
         pType = mDatabase.child("all").orderByKey();
@@ -238,7 +316,116 @@ public class Tab18 extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        final FirebaseRecyclerAdapter<Shoplistitem, ItemViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Shoplistitem, ItemViewHolder>(
+    }
+
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+
+            mView = itemView;
+        }
+
+        public void setName2(String name) {
+            TextView Name = (TextView) mView.findViewById(R.id.nameShopItem);
+            Name.setText(name);
+        }
+
+        public void setVolumn2(String volumn) {
+            TextView Volumn = (TextView) mView.findViewById(R.id.volumnShopItem);
+            Volumn.setText(volumn);
+        }
+
+        public void setPrice2(String price) {
+            TextView Price = (TextView) mView.findViewById(R.id.priceShopItem2);
+            Price.setText(price);
+        }
+
+        public void setPrice3(String price) {
+            TextView Price2 = (TextView) mView.findViewById(R.id.priceShopItem3);
+            Price2.setText(price);
+        }
+
+        public void setPrice3Color(int color) {
+            TextView Price2 = (TextView) mView.findViewById(R.id.priceShopItem3);
+            Price2.setTextColor(color);
+        }
+
+        public void setImage2(Context ctx, String image) {
+            ImageView imageView = (ImageView) mView.findViewById(R.id.imageShopItem);
+            Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageView);
+        }
+
+
+    }
+    private void initSnapshots() {
+
+        if (ContextCompat.checkSelfPermission(
+                Tab18.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    Tab18.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    12345
+            );
+        } else {
+
+            Awareness.SnapshotApi.getLocation(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<LocationResult>() {
+
+                        public String TAG;
+
+                        @Override
+                        public void onResult(@NonNull LocationResult locationResult) {
+                            if (!locationResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get location.");
+                                return;
+                            }
+                            Location location = locationResult.getLocation();
+                            Log.i(TAG, "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
+                        }
+                    });
+
+
+            Awareness.SnapshotApi.getPlaces(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<PlacesResult>() {
+                        public static final String TAG = "";
+
+                        @Override
+                        public void onResult(@NonNull PlacesResult placesResult) {
+                            if (!placesResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get places.");
+                                return;
+                            }
+                            List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
+                            // Show the top 5 possible location results.
+                            if (placeLikelihoodList != null) {
+                                for (int i = 0; i < 10 && i < placeLikelihoodList.size(); i++) {
+                                    PlaceLikelihood p = placeLikelihoodList.get(i);
+                                    Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
+                                    Log.i(TAG, p.getPlace().getPlaceTypes().toString());
+
+                                    if(p.getPlace().getPlaceTypes().contains(43)){
+                                        Toast.makeText(Tab18.this,"Supermarket near you", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(Tab18.this,"No supermarket nearby", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            } else {
+                                Log.e(TAG, "Place is null.");
+                            }
+                        }
+                    });
+        }
+
+    }
+
+    public void attachRecyclerViewAdapter() {
+
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Shoplistitem, ItemViewHolder>(
 
                 Shoplistitem.class,
                 R.layout.shoppinglistitem,
@@ -251,29 +438,16 @@ public class Tab18 extends AppCompatActivity {
                 viewHolder.setName2(model.getItemName());
                 viewHolder.setPrice2(model.getItemPrice() + " /" + model.getItemClassifier());
 
-                double Tops = 0;
-                double Lotus = 0;
+                double Shop = 0;
                 double Retail = 0;
                 try {
-                    Tops = Double.parseDouble(model.getItemTopsPrice());
-                    Lotus = Double.parseDouble(model.getItemLotusPrice());
+                    Shop   = Double.parseDouble(model.getItemShopsPrice());
                     Retail = Double.parseDouble(model.getItemPrice());
                 } catch (Exception e) {
 
                 }
 
-
-                if (Retail <= Tops && Retail <= Lotus) {
-
-                } else if (Tops < Lotus) {
-                    viewHolder.setPrice3("Tops : " + model.getItemTopsPrice());
-                } else if (Tops > Lotus) {
-                    viewHolder.setPrice3("Lotus : " + model.getItemLotusPrice());
-                } else {
-                    //viewHolder.setPrice3("All same price : " + model.getItemTopsPrice());
-                    //viewHolder.setPrice3Color(Color.parseColor("#808080"));
-                }
-
+                viewHolder.setPrice3(locate+  " : " + model.getItemShopsPrice());
                 viewHolder.setVolumn2(model.getItemVolumn() + " " + model.getItemClassifier());
                 viewHolder.setImage2(getApplicationContext(), model.getItemImage());
 
@@ -432,96 +606,7 @@ public class Tab18 extends AppCompatActivity {
 
 
                                                     } else if (which == 3) {
-                                                        /*
 
-                                                        FoodType.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-
-                                                                    shopitem2 = postSnapshot.getValue(Shoplistitem.class);
-
-                                                                    Poskey = postSnapshot.getKey();
-                                                                    System.out.println(Poskey);
-                                                                    key = shopitem2.getKey();
-                                                                    Volum = shopitem2.getItemVolumn();
-
-                                                                    User = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
-                                                                            .child(type).child(key);
-
-                                                                    User.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                        @Override
-                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
-                                                                            i = dataSnapshot.getValue(item.class);
-                                                                            double volumn = Double.parseDouble(i.getUnit());
-                                                                            volumn = Double.parseDouble(new DecimalFormat("##.##").format(volumn));
-
-                                                                            volumnadd = Double.parseDouble(Volum);
-                                                                            volumnFin = volumn + volumnadd;
-
-                                                                            volumnFin = Double.parseDouble(new DecimalFormat("##.##").format(volumnFin));
-
-                                                                            Calendar c = Calendar.getInstance();
-                                                                            long mill = c.getTimeInMillis();
-                                                                            SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd");
-                                                                            SimpleDateFormat sfd2 = new SimpleDateFormat("MM");
-                                                                            String date2 = sfd.format(mill);
-                                                                            String month = sfd2.format(mill);
-
-                                                                            DatabaseReference report = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report").child(String.valueOf(mill));
-                                                                            DatabaseReference addReport = report;
-                                                                            addReport.child("Time").setValue(date2);
-                                                                            addReport.child("Month").setValue(month);
-                                                                            addReport.child("keyValue").setValue(key);
-                                                                            addReport.child("Name").setValue(i.getName());
-                                                                            addReport.child("Type").setValue(type);
-                                                                            addReport.child("Barcode").setValue(i.getBarcode());
-                                                                            addReport.child("Unit").setValue(Volum);
-                                                                            addReport.child("NormalPrice").setValue(i.getRetailPrice());
-                                                                            addReport.child("BuyPrice").setValue(i.getRetailPrice());
-                                                                            addReport.child("Classifier").setValue(i.getClassifier());
-                                                                            double TotalPrice = Double.parseDouble(i.getRetailPrice()) * volumnadd;
-                                                                            addReport.child("TotalPrice").setValue(String.valueOf(TotalPrice));
-                                                                            addReport.child("TotalBuyPrice").setValue(TotalPrice);
-                                                                            addReport.child("Image").setValue(i.getImage());
-
-                                                                            System.out.println(volumnFin);
-                                                                            User.child("Unit").setValue(Double.toString(volumnFin));
-
-                                                                            //double totalVol = volumnFin * Double.parseDouble(i.getVolume());
-                                                                            //User.child("TotalVolume").setValue(totalVol+"");
-
-                                                                            DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(Shopitem.getKeyAll());
-                                                                            System.out.println("KeyAll" + shopitem2.getKeyAll());
-                                                                            Price.removeValue();
-
-                                                                            DatabaseReference This = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("Food and Ingredients").child(Poskey);
-                                                                            This.removeValue();
-
-
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onCancelled(DatabaseError databaseError) {
-
-                                                                        }
-
-                                                                     });
-
-                                                                    }
-
-
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(DatabaseError databaseError) {
-
-                                                            }
-                                                        });
-                                                    */
                                                     }
                                                 }
                                             });
@@ -545,6 +630,8 @@ public class Tab18 extends AppCompatActivity {
                             });
 
 
+
+
                         } else {
                             type = s.getParent().getKey();
 
@@ -554,8 +641,6 @@ public class Tab18 extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Shoplistitem Shopitem = dataSnapshot.getValue(Shoplistitem.class);
                                     final AlertDialog.Builder builder2 = new AlertDialog.Builder(Tab18.this);
-
-
                                     builder2.setTitle(Shopitem.getItemName());
                                     String alert1 = "RetailPrice : " + Shopitem.getItemPrice() + " THB";
                                     String alert2 = "Tops  :  " + Shopitem.getItemTopsPrice() + " THB";
@@ -608,111 +693,7 @@ public class Tab18 extends AppCompatActivity {
         );
 
         mList.setAdapter(firebaseRecyclerAdapter);
-
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
-        View mView;
-
-        public ItemViewHolder(View itemView) {
-            super(itemView);
-
-            mView = itemView;
-        }
-
-        public void setName2(String name) {
-            TextView Name = (TextView) mView.findViewById(R.id.nameShopItem);
-            Name.setText(name);
-        }
-
-        public void setVolumn2(String volumn) {
-            TextView Volumn = (TextView) mView.findViewById(R.id.volumnShopItem);
-            Volumn.setText(volumn);
-        }
-
-        public void setPrice2(String price) {
-            TextView Price = (TextView) mView.findViewById(R.id.priceShopItem2);
-            Price.setText(price);
-        }
-
-        public void setPrice3(String price) {
-            TextView Price2 = (TextView) mView.findViewById(R.id.priceShopItem3);
-            Price2.setText(price);
-        }
-
-        public void setPrice3Color(int color) {
-            TextView Price2 = (TextView) mView.findViewById(R.id.priceShopItem3);
-            Price2.setTextColor(color);
-        }
-
-        public void setImage2(Context ctx, String image) {
-            ImageView imageView = (ImageView) mView.findViewById(R.id.imageShopItem);
-            Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageView);
-        }
-
-
-    }
-    private void initSnapshots() {
-
-        if (ContextCompat.checkSelfPermission(
-                Tab18.this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    Tab18.this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    12345
-            );
-        } else {
-
-            Awareness.SnapshotApi.getLocation(mGoogleApiClient)
-                    .setResultCallback(new ResultCallback<LocationResult>() {
-
-                        public String TAG;
-
-                        @Override
-                        public void onResult(@NonNull LocationResult locationResult) {
-                            if (!locationResult.getStatus().isSuccess()) {
-                                Log.e(TAG, "Could not get location.");
-                                return;
-                            }
-                            Location location = locationResult.getLocation();
-                            Log.i(TAG, "Lat: " + location.getLatitude() + ", Lon: " + location.getLongitude());
-                        }
-                    });
-
-
-            Awareness.SnapshotApi.getPlaces(mGoogleApiClient)
-                    .setResultCallback(new ResultCallback<PlacesResult>() {
-                        public static final String TAG = "";
-
-                        @Override
-                        public void onResult(@NonNull PlacesResult placesResult) {
-                            if (!placesResult.getStatus().isSuccess()) {
-                                Log.e(TAG, "Could not get places.");
-                                return;
-                            }
-                            List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
-                            // Show the top 5 possible location results.
-                            if (placeLikelihoodList != null) {
-                                for (int i = 0; i < 10 && i < placeLikelihoodList.size(); i++) {
-                                    PlaceLikelihood p = placeLikelihoodList.get(i);
-                                    Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
-                                    Log.i(TAG, p.getPlace().getPlaceTypes().toString());
-
-                                    if(p.getPlace().getPlaceTypes().contains(43)){
-                                        Toast.makeText(Tab18.this,"Supermarket near you", Toast.LENGTH_SHORT).show();
-                                    }else{
-                                        Toast.makeText(Tab18.this,"No supermarket nearby", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            } else {
-                                Log.e(TAG, "Place is null.");
-                            }
-                        }
-                    });
-        }
-
-    }
 }

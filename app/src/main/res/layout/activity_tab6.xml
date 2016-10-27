@@ -8,7 +8,7 @@
     <LinearLayout
         android:clickable="true"
         android:focusable="true"
-        android:background="#FFCDD2"
+        android:background="@color/colorPrimary"
         android:id="@+id/Top"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
@@ -18,40 +18,16 @@
 
 
         <TextView
-            android:textSize="16sp"
+            android:id="@+id/TextviewShop"
+            android:textSize="18sp"
             android:gravity="center"
-            android:text="Image"
+            android:text="Now you are at : "
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
+            android:layout_weight="1"
+            android:textColor="#f1f1f1"
             />
-        <TextView
-            android:textSize="16sp"
 
-            android:gravity="center"
-            android:text="Name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            />
-        <TextView
-            android:textSize="16sp"
-
-            android:text="Price"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            />
-        <TextView
-            android:textSize="16sp"
-
-            android:text="Volumn"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            />
 
     </LinearLayout>
 
@@ -82,14 +58,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background= "#f37370"
+            android:background= "@color/colorPrimaryDark"
             android:src="@mipmap/ic_add_black_24dp"/>
         <ImageButton
             android:id="@+id/IncreaseItem2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background= "#f37370"
+            android:background= "@color/colorPrimaryDark"
             android:src="@mipmap/ic_arrow_upward_black_24dp"
             />
         <ImageButton
@@ -97,14 +73,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background= "#f37370"
+            android:background= "@color/colorPrimaryDark"
             android:src="@mipmap/ic_arrow_downward_black_24dp"/>
         <ImageButton
             android:id="@+id/RemoveItem2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background="#f37370"
+            android:background="@color/colorPrimaryDark"
             android:src="@mipmap/ic_clear_black_24dp"/>
 
     </LinearLayout>

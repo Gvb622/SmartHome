@@ -54,6 +54,9 @@ public class Tab9 extends AppCompatActivity {
     String key;
     String type;
 
+    String Poskey;
+    Shoplistitem shopitem2;
+
     item i;
 
     double TotalRetailPrice = 0;
@@ -447,38 +450,34 @@ public class Tab9 extends AppCompatActivity {
 
 
                                                     }else if(which == 3){
-                                                        /*
-
-                                                        FoodType.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        Query FoodTypeForUpdate = mDatabase.child("Food and Ingredients").orderByKey();
+                                                        FoodTypeForUpdate.addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-
-                                                                    shopitem2 = postSnapshot.getValue(Shoplistitem.class);
+                                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                                                                     Poskey = postSnapshot.getKey();
-                                                                    System.out.println(Poskey);
+                                                                    shopitem2 = postSnapshot.getValue(Shoplistitem.class);
                                                                     key = shopitem2.getKey();
                                                                     Volum = shopitem2.getItemVolumn();
+                                                                    System.out.println(Poskey);
+                                                                    System.out.println(key);
 
-                                                                    User = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
-                                                                            .child(type).child(key);
+                                                                    DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(shopitem2.getKeyAll());
+                                                                    Price.removeValue();
 
-                                                                    User.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    final DatabaseReference UserItem =  FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
+                                                                            .child("Food and Ingredients").child(key);
+                                                                    UserItem.addListenerForSingleValueEvent(new ValueEventListener() {
                                                                         @Override
                                                                         public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-
-                                                                            i = dataSnapshot.getValue(item.class);
-                                                                            double volumn = Double.parseDouble(i.getUnit());
+                                                                            item iteminfo = dataSnapshot.getValue(item.class);
+                                                                            double volumn = Double.parseDouble(iteminfo.getUnit());
                                                                             volumn = Double.parseDouble(new DecimalFormat("##.##").format(volumn));
 
-                                                                            volumnadd = Double.parseDouble(Volum);
+                                                                            volumnadd = Double.parseDouble(iteminfo.getVolumeForAdd());
                                                                             volumnFin = volumn + volumnadd;
-
                                                                             volumnFin = Double.parseDouble(new DecimalFormat("##.##").format(volumnFin));
-
                                                                             Calendar c = Calendar.getInstance();
                                                                             long mill = c.getTimeInMillis();
                                                                             SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd");
@@ -491,42 +490,34 @@ public class Tab9 extends AppCompatActivity {
                                                                             addReport.child("Time").setValue(date2);
                                                                             addReport.child("Month").setValue(month);
                                                                             addReport.child("keyValue").setValue(key);
-                                                                            addReport.child("Name").setValue(i.getName());
-                                                                            addReport.child("Type").setValue(type);
-                                                                            addReport.child("Barcode").setValue(i.getBarcode());
-                                                                            addReport.child("Unit").setValue(Volum);
-                                                                            addReport.child("NormalPrice").setValue(i.getRetailPrice());
-                                                                            addReport.child("BuyPrice").setValue(i.getRetailPrice());
-                                                                            addReport.child("Classifier").setValue(i.getClassifier());
-                                                                            double TotalPrice = Double.parseDouble(i.getRetailPrice()) * volumnadd;
+                                                                            addReport.child("Name").setValue(iteminfo.getName());
+                                                                            addReport.child("Type").setValue("Food and Ingredients");
+                                                                            addReport.child("Barcode").setValue(iteminfo.getBarcode());
+                                                                            addReport.child("Unit").setValue(iteminfo.getVolumeForAdd());
+                                                                            addReport.child("NormalPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("BuyPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("Classifier").setValue(iteminfo.getClassifier());
+                                                                            double TotalPrice = Double.parseDouble(iteminfo.getRetailPrice()) * volumnadd;
                                                                             addReport.child("TotalPrice").setValue(String.valueOf(TotalPrice));
                                                                             addReport.child("TotalBuyPrice").setValue(TotalPrice);
                                                                             addReport.child("Image").setValue(i.getImage());
+                                                                            UserItem.child("Unit").setValue(Double.toString(volumnFin));
+                                                                            double TotalV = volumnFin * Double.parseDouble(iteminfo.getVolume());
+                                                                            UserItem.child("TotalVolume").setValue(TotalV+"");
+                                                                            UserItem.child("VolumeForAdd").setValue("0");
 
-                                                                            System.out.println(volumnFin);
-                                                                            User.child("Unit").setValue(Double.toString(volumnFin));
 
-                                                                            //double totalVol = volumnFin * Double.parseDouble(i.getVolume());
-                                                                            //User.child("TotalVolume").setValue(totalVol+"");
-
-                                                                            DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(Shopitem.getKeyAll());
-                                                                            System.out.println("KeyAll" + shopitem2.getKeyAll());
-                                                                            Price.removeValue();
-
-                                                                            DatabaseReference This = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("Food and Ingredients").child(Poskey);
+                                                                            DatabaseReference This = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("Food and Ingredients");
                                                                             This.removeValue();
-
-
                                                                         }
 
                                                                         @Override
                                                                         public void onCancelled(DatabaseError databaseError) {
 
                                                                         }
+                                                                    });
 
-                                                                     });
-
-                                                                    }
+                                                                }
 
 
                                                             }
@@ -536,7 +527,322 @@ public class Tab9 extends AppCompatActivity {
 
                                                             }
                                                         });
-                                                    */}
+
+
+
+                                                        Query DrinkTypeForUpdate = mDatabase.child("Beverage and Drink Powder").orderByKey();
+                                                        DrinkTypeForUpdate.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                                                                    Poskey = postSnapshot.getKey();
+                                                                    shopitem2 = postSnapshot.getValue(Shoplistitem.class);
+                                                                    key = shopitem2.getKey();
+                                                                    Volum = shopitem2.getItemVolumn();
+                                                                    System.out.println(Poskey);
+                                                                    System.out.println(key);
+
+                                                                    DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(shopitem2.getKeyAll());
+                                                                    Price.removeValue();
+
+                                                                    final DatabaseReference UserItem =  FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
+                                                                            .child("Beverage and Drink Powder").child(key);
+                                                                    UserItem.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                            item iteminfo = dataSnapshot.getValue(item.class);
+                                                                            double volumn = Double.parseDouble(iteminfo.getUnit());
+                                                                            volumn = Double.parseDouble(new DecimalFormat("##.##").format(volumn));
+
+                                                                            volumnadd = Double.parseDouble(iteminfo.getVolumeForAdd());
+                                                                            volumnFin = volumn + volumnadd;
+                                                                            volumnFin = Double.parseDouble(new DecimalFormat("##.##").format(volumnFin));
+                                                                            Calendar c = Calendar.getInstance();
+                                                                            long mill = c.getTimeInMillis();
+                                                                            SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd");
+                                                                            SimpleDateFormat sfd2 = new SimpleDateFormat("MM");
+                                                                            String date2 = sfd.format(mill);
+                                                                            String month = sfd2.format(mill);
+
+                                                                            DatabaseReference report = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report").child(String.valueOf(mill));
+                                                                            DatabaseReference addReport = report;
+                                                                            addReport.child("Time").setValue(date2);
+                                                                            addReport.child("Month").setValue(month);
+                                                                            addReport.child("keyValue").setValue(key);
+                                                                            addReport.child("Name").setValue(iteminfo.getName());
+                                                                            addReport.child("Type").setValue("Beverage and Drink Powder");
+                                                                            addReport.child("Barcode").setValue(iteminfo.getBarcode());
+                                                                            addReport.child("Unit").setValue(iteminfo.getVolumeForAdd());
+                                                                            addReport.child("NormalPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("BuyPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("Classifier").setValue(iteminfo.getClassifier());
+                                                                            double TotalPrice = Double.parseDouble(iteminfo.getRetailPrice()) * volumnadd;
+                                                                            addReport.child("TotalPrice").setValue(String.valueOf(TotalPrice));
+                                                                            addReport.child("TotalBuyPrice").setValue(TotalPrice);
+                                                                            addReport.child("Image").setValue(i.getImage());
+                                                                            UserItem.child("Unit").setValue(Double.toString(volumnFin));
+                                                                            double TotalV = volumnFin * Double.parseDouble(iteminfo.getVolume());
+                                                                            UserItem.child("TotalVolume").setValue(TotalV+"");
+                                                                            UserItem.child("VolumeForAdd").setValue("0");
+
+
+                                                                            DatabaseReference This = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("Beverage and Drink Powder");
+                                                                            This.removeValue();
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                                        }
+                                                                    });
+
+                                                                }
+
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+
+                                                            }
+                                                        });
+
+                                                        Query HealthTypeForUpdate = mDatabase.child("Health and Beauty").orderByKey();
+                                                        HealthTypeForUpdate.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                                                                    Poskey = postSnapshot.getKey();
+                                                                    shopitem2 = postSnapshot.getValue(Shoplistitem.class);
+                                                                    key = shopitem2.getKey();
+                                                                    Volum = shopitem2.getItemVolumn();
+                                                                    System.out.println(Poskey);
+                                                                    System.out.println(key);
+
+                                                                    DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(shopitem2.getKeyAll());
+                                                                    Price.removeValue();
+
+                                                                    final DatabaseReference UserItem =  FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
+                                                                            .child("Health and Beauty").child(key);
+                                                                    UserItem.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                            item iteminfo = dataSnapshot.getValue(item.class);
+                                                                            double volumn = Double.parseDouble(iteminfo.getUnit());
+                                                                            volumn = Double.parseDouble(new DecimalFormat("##.##").format(volumn));
+
+                                                                            volumnadd = Double.parseDouble(iteminfo.getVolumeForAdd());
+                                                                            volumnFin = volumn + volumnadd;
+                                                                            volumnFin = Double.parseDouble(new DecimalFormat("##.##").format(volumnFin));
+                                                                            Calendar c = Calendar.getInstance();
+                                                                            long mill = c.getTimeInMillis();
+                                                                            SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd");
+                                                                            SimpleDateFormat sfd2 = new SimpleDateFormat("MM");
+                                                                            String date2 = sfd.format(mill);
+                                                                            String month = sfd2.format(mill);
+
+                                                                            DatabaseReference report = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report").child(String.valueOf(mill));
+                                                                            DatabaseReference addReport = report;
+                                                                            addReport.child("Time").setValue(date2);
+                                                                            addReport.child("Month").setValue(month);
+                                                                            addReport.child("keyValue").setValue(key);
+                                                                            addReport.child("Name").setValue(iteminfo.getName());
+                                                                            addReport.child("Type").setValue("Health and Beauty");
+                                                                            addReport.child("Barcode").setValue(iteminfo.getBarcode());
+                                                                            addReport.child("Unit").setValue(iteminfo.getVolumeForAdd());
+                                                                            addReport.child("NormalPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("BuyPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("Classifier").setValue(iteminfo.getClassifier());
+                                                                            double TotalPrice = Double.parseDouble(iteminfo.getRetailPrice()) * volumnadd;
+                                                                            addReport.child("TotalPrice").setValue(String.valueOf(TotalPrice));
+                                                                            addReport.child("TotalBuyPrice").setValue(TotalPrice);
+                                                                            addReport.child("Image").setValue(i.getImage());
+                                                                            UserItem.child("Unit").setValue(Double.toString(volumnFin));
+                                                                            double TotalV = volumnFin * Double.parseDouble(iteminfo.getVolume());
+                                                                            UserItem.child("TotalVolume").setValue(TotalV+"");
+                                                                            UserItem.child("VolumeForAdd").setValue("0");
+
+
+                                                                            DatabaseReference This = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("Health and Beauty");
+                                                                            This.removeValue();
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                                        }
+                                                                    });
+
+                                                                }
+
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+
+                                                            }
+                                                        });
+
+                                                        Query HouseTypeForUpdate = mDatabase.child("Household Product").orderByKey();
+                                                        HouseTypeForUpdate.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                                                                    Poskey = postSnapshot.getKey();
+                                                                    shopitem2 = postSnapshot.getValue(Shoplistitem.class);
+                                                                    key = shopitem2.getKey();
+                                                                    Volum = shopitem2.getItemVolumn();
+                                                                    System.out.println(Poskey);
+                                                                    System.out.println(key);
+
+                                                                    DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(shopitem2.getKeyAll());
+                                                                    Price.removeValue();
+
+                                                                    final DatabaseReference UserItem =  FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
+                                                                            .child("Household Product").child(key);
+                                                                    UserItem.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                            item iteminfo = dataSnapshot.getValue(item.class);
+                                                                            double volumn = Double.parseDouble(iteminfo.getUnit());
+                                                                            volumn = Double.parseDouble(new DecimalFormat("##.##").format(volumn));
+
+                                                                            volumnadd = Double.parseDouble(iteminfo.getVolumeForAdd());
+                                                                            volumnFin = volumn + volumnadd;
+                                                                            volumnFin = Double.parseDouble(new DecimalFormat("##.##").format(volumnFin));
+                                                                            Calendar c = Calendar.getInstance();
+                                                                            long mill = c.getTimeInMillis();
+                                                                            SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd");
+                                                                            SimpleDateFormat sfd2 = new SimpleDateFormat("MM");
+                                                                            String date2 = sfd.format(mill);
+                                                                            String month = sfd2.format(mill);
+
+                                                                            DatabaseReference report = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report").child(String.valueOf(mill));
+                                                                            DatabaseReference addReport = report;
+                                                                            addReport.child("Time").setValue(date2);
+                                                                            addReport.child("Month").setValue(month);
+                                                                            addReport.child("keyValue").setValue(key);
+                                                                            addReport.child("Name").setValue(iteminfo.getName());
+                                                                            addReport.child("Type").setValue("Household Product");
+                                                                            addReport.child("Barcode").setValue(iteminfo.getBarcode());
+                                                                            addReport.child("Unit").setValue(iteminfo.getVolumeForAdd());
+                                                                            addReport.child("NormalPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("BuyPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("Classifier").setValue(iteminfo.getClassifier());
+                                                                            double TotalPrice = Double.parseDouble(iteminfo.getRetailPrice()) * volumnadd;
+                                                                            addReport.child("TotalPrice").setValue(String.valueOf(TotalPrice));
+                                                                            addReport.child("TotalBuyPrice").setValue(TotalPrice);
+                                                                            addReport.child("Image").setValue(i.getImage());
+                                                                            UserItem.child("Unit").setValue(Double.toString(volumnFin));
+                                                                            UserItem.child("VolumeForAdd").setValue("0");
+                                                                            double TotalV = volumnFin * Double.parseDouble(iteminfo.getVolume());
+                                                                            UserItem.child("TotalVolume").setValue(TotalV+"");
+
+
+                                                                            DatabaseReference This = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("Household Product");
+                                                                            This.removeValue();
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                                        }
+                                                                    });
+
+                                                                }
+
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+
+                                                            }
+                                                        });
+
+
+                                                        Query EtcTypeForUpdate = mDatabase.child("Etc").orderByKey();
+                                                        EtcTypeForUpdate.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                                                                    Poskey = postSnapshot.getKey();
+                                                                    shopitem2 = postSnapshot.getValue(Shoplistitem.class);
+                                                                    key = shopitem2.getKey();
+                                                                    Volum = shopitem2.getItemVolumn();
+                                                                    System.out.println(Poskey);
+                                                                    System.out.println(key);
+
+                                                                    DatabaseReference Price = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("all").child(shopitem2.getKeyAll());
+                                                                    Price.removeValue();
+
+                                                                    final DatabaseReference UserItem =  FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
+                                                                            .child("Etc").child(key);
+                                                                    UserItem.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                            item iteminfo = dataSnapshot.getValue(item.class);
+                                                                            double volumn = Double.parseDouble(iteminfo.getUnit());
+                                                                            volumn = Double.parseDouble(new DecimalFormat("##.##").format(volumn));
+
+                                                                            volumnadd = Double.parseDouble(iteminfo.getVolumeForAdd());
+                                                                            volumnFin = volumn + volumnadd;
+                                                                            volumnFin = Double.parseDouble(new DecimalFormat("##.##").format(volumnFin));
+                                                                            Calendar c = Calendar.getInstance();
+                                                                            long mill = c.getTimeInMillis();
+                                                                            SimpleDateFormat sfd = new SimpleDateFormat("yyyyMMdd");
+                                                                            SimpleDateFormat sfd2 = new SimpleDateFormat("MM");
+                                                                            String date2 = sfd.format(mill);
+                                                                            String month = sfd2.format(mill);
+
+                                                                            DatabaseReference report = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report").child(String.valueOf(mill));
+                                                                            DatabaseReference addReport = report;
+                                                                            addReport.child("Time").setValue(date2);
+                                                                            addReport.child("Month").setValue(month);
+                                                                            addReport.child("keyValue").setValue(key);
+                                                                            addReport.child("Name").setValue(iteminfo.getName());
+                                                                            addReport.child("Type").setValue("Etc");
+                                                                            addReport.child("Barcode").setValue(iteminfo.getBarcode());
+                                                                            addReport.child("Unit").setValue(iteminfo.getVolumeForAdd());
+                                                                            addReport.child("NormalPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("BuyPrice").setValue(iteminfo.getRetailPrice());
+                                                                            addReport.child("Classifier").setValue(iteminfo.getClassifier());
+                                                                            double TotalPrice = Double.parseDouble(iteminfo.getRetailPrice()) * volumnadd;
+                                                                            addReport.child("TotalPrice").setValue(String.valueOf(TotalPrice));
+                                                                            addReport.child("TotalBuyPrice").setValue(TotalPrice);
+                                                                            addReport.child("Image").setValue(iteminfo.getImage());
+                                                                            UserItem.child("Unit").setValue(Double.toString(volumnFin));
+                                                                            double TotalV = volumnFin * Double.parseDouble(iteminfo.getVolume());
+                                                                            UserItem.child("TotalVolume").setValue(TotalV+"");
+                                                                            UserItem.child("VolumeForAdd").setValue("0");
+
+
+                                                                            DatabaseReference This = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist").child("Etc");
+                                                                            This.removeValue();
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                                        }
+                                                                    });
+
+                                                                }
+
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+
+                                                            }
+                                                        });
+                                                    }
                                                 }
                                             });
                                             builder.show();

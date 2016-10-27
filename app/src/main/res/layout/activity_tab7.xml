@@ -8,7 +8,7 @@
     <LinearLayout
         android:clickable="true"
         android:focusable="true"
-        android:background="#FFCDD2"
+        android:background="@color/colorPrimary"
         android:id="@+id/Top"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"

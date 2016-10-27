@@ -46,7 +46,6 @@ public class Tab11 extends AppCompatActivity {
     private String m_Text;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +63,7 @@ public class Tab11 extends AppCompatActivity {
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(this, R.drawable.list_divider), true));
 
-        finishButton = (Button)findViewById(R.id.finishButton);
+        finishButton = (Button) findViewById(R.id.finishButton);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,9 +71,7 @@ public class Tab11 extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(Tab11.this, "     Click on item and add Volume" + " \n " + "After Add all item click finish button" , Toast.LENGTH_LONG).show();
-
-
+        Toast.makeText(Tab11.this, "     Click on item and add Volume" + " \n " + "After Add all item click finish button", Toast.LENGTH_LONG).show();
 
 
     }
@@ -93,53 +90,51 @@ public class Tab11 extends AppCompatActivity {
             @Override
             protected void populateViewHolder(ItemViewHolder viewHolder, item model, int position) {
 
-                try{
+                try {
 
                     double value = Double.parseDouble(model.getUnit());
-                    value =Double.parseDouble(new DecimalFormat("##.##").format(value));
+                    value = Double.parseDouble(new DecimalFormat("##.##").format(value));
 
                     double TotalVolume = Double.parseDouble(model.getTotalVolume());
-                    TotalVolume =Double.parseDouble(new DecimalFormat("##.##").format(TotalVolume));
+                    TotalVolume = Double.parseDouble(new DecimalFormat("##.##").format(TotalVolume));
 
 
-
-
-                    if(model.getLowBy().equals("Quantity")) {
+                    if (model.getLowBy().equals("Quantity")) {
                         viewHolder.setVolumn(value + "  " + model.getClassifier());
-                    }else if(model.getLowBy().equals("Volume")){
+                    } else if (model.getLowBy().equals("Volume")) {
                         viewHolder.setVolumn(TotalVolume + "  " + model.getQuantity()
-                                + "\n" + value + "  " + model.getClassifier() );
+                                + "\n" + value + "  " + model.getClassifier());
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
                 viewHolder.setName(model.getName());
                 viewHolder.setImage(getApplicationContext(), model.getImage());
 
-                try{
+                try {
                     double softline = Double.parseDouble(model.getSoftline());
                     double deadline = Double.parseDouble(model.getDeadline());
-                    if(model.getLowBy().equals("Quantity")){
+                    if (model.getLowBy().equals("Quantity")) {
                         double unit = Double.parseDouble(model.getUnit());
-                        if (unit <= deadline){
+                        if (unit <= deadline) {
                             viewHolder.setBackground(3);
-                        }else if (unit <= softline){
+                        } else if (unit <= softline) {
                             viewHolder.setBackground(2);
-                        }else{
+                        } else {
                             viewHolder.setBackground(1);
                         }
-                    }else if(model.getLowBy().equals("Volume")){
+                    } else if (model.getLowBy().equals("Volume")) {
                         double totalunit = Double.parseDouble(model.getTotalVolume());
 
-                        if (totalunit <= deadline){
+                        if (totalunit <= deadline) {
                             viewHolder.setBackground(3);
-                        }else if (totalunit <= softline){
+                        } else if (totalunit <= softline) {
                             viewHolder.setBackground(2);
-                        }else{
+                        } else {
                             viewHolder.setBackground(1);
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -155,7 +150,7 @@ public class Tab11 extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Tab11.this);
                         builder.setTitle("How many quantity ?");
                         final EditText input = new EditText(Tab11.this);
-                        input.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+                        input.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                         builder.setView(input);
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
@@ -173,7 +168,7 @@ public class Tab11 extends AppCompatActivity {
                                         Total.child("ItemPrice").setValue(item.getRetailPrice());
                                         Total.child("ItemTopsPrice").setValue(item.getSalePriceTops());
                                         Total.child("ItemLotusPrice").setValue(item.getSalePriceLotus());
-                                        if(m_Text.equals("")){
+                                        if (m_Text.equals("")) {
                                             m_Text = "0";
                                         }
                                         Total.child("ItemVolumn").setValue(m_Text);
@@ -191,8 +186,45 @@ public class Tab11 extends AppCompatActivity {
                                         Shoplist.child("ItemVolumn").setValue(m_Text);
                                         Shoplist.child("ItemTopsPrice").setValue(item.getSalePriceTops());
                                         Shoplist.child("ItemLotusPrice").setValue(item.getSalePriceLotus());
+                                        DatabaseReference User = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
+                                                .child(Type).child(s.getKey());
+                                        User.child("VolumeForAdd").setValue(m_Text);
+
+                                        double tops = Double.parseDouble(item.getSalePriceTops());
+                                        double lotus = Double.parseDouble(item.getSalePriceLotus());
+
+                                        if (tops < lotus) {
+                                            DatabaseReference Location = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location")
+                                                    .child("Tops").child(Type);
+                                            DatabaseReference Location2 = Location.push();
+                                            Location2.child("ItemImage").setValue(item.getImage());
+                                            Location2.child("ItemName").setValue(item.getName());
+                                            Location2.child("ItemPrice").setValue(item.getRetailPrice());
+                                            Location2.child("Key").setValue(s.getKey());
+                                            Location2.child("ItemClassifier").setValue(item.getClassifier());
+                                            Location2.child("ItemVolumn").setValue(m_Text);
+                                            Location2.child("ItemShopsPrice").setValue(item.getSalePriceTops());
+                                            Shoplist.child("ShopCheapest").setValue("Tops");
 
 
+                                        } else if (lotus < tops) {
+                                            DatabaseReference Location = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location")
+                                                    .child("Lotus").child(Type);
+
+                                            DatabaseReference Location2 = Location.push();
+                                            Location2.child("ItemImage").setValue(item.getImage());
+                                            Location2.child("ItemName").setValue(item.getName());
+                                            Location2.child("ItemPrice").setValue(item.getRetailPrice());
+                                            Location2.child("Key").setValue(s.getKey());
+                                            Location2.child("ItemClassifier").setValue(item.getClassifier());
+                                            Location2.child("ItemVolumn").setValue(m_Text);
+                                            Location2.child("ItemShopsPrice").setValue(item.getSalePriceLotus());
+                                            Shoplist.child("ShopCheapest").setValue("Lotus");
+
+
+                                        } else {
+
+                                        }
 
 
                                         Toast.makeText(Tab11.this, item.getName() + " already add to shoppinglist", Toast.LENGTH_LONG).show();
@@ -228,39 +260,43 @@ public class Tab11 extends AppCompatActivity {
 
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder{
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
 
-            mView = itemView ;
+            mView = itemView;
         }
-        public void setName(String Name){
+
+        public void setName(String Name) {
             TextView name = (TextView) mView.findViewById(R.id.nameItem);
             name.setText(Name);
         }
-        public void setVolumn(String Volumn){
+
+        public void setVolumn(String Volumn) {
             TextView volumn = (TextView) mView.findViewById(R.id.volumnItem);
             volumn.setText(Volumn);
             volumn.setLines(2);
 
         }
-        public void setImage(Context ctx , String image){
+
+        public void setImage(Context ctx, String image) {
             ImageView imageV = (ImageView) mView.findViewById(R.id.imageItem);
             Picasso.with(ctx).load(image).fit().placeholder(R.mipmap.ic_launcher).into(imageV);
 
         }
-        public void setBackground (int i){
+
+        public void setBackground(int i) {
             ImageView imageB = (ImageView) mView.findViewById(R.id.sign);
-            if(i == 1) {
+            if (i == 1) {
                 imageB.setBackgroundColor(Color.GREEN);
                 imageB.invalidate();
-            }else if(i == 2){
+            } else if (i == 2) {
                 imageB.setBackgroundColor(Color.YELLOW);
                 imageB.invalidate();
-            }else{
+            } else {
                 imageB.setBackgroundColor(Color.RED);
                 imageB.invalidate();
             }

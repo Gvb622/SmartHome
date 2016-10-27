@@ -52,7 +52,11 @@ public class Tab20 extends AppCompatActivity {
     private RecyclerView mList;
     private Query qType;
     private Query pType;
-    private DatabaseReference mDatabase;
+    private TextView name;
+
+    private Query FoodType;
+
+    static DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
     private ImageButton AddItem2;
 
@@ -67,6 +71,11 @@ public class Tab20 extends AppCompatActivity {
     String Volum;
     String key;
     String type;
+    String Poskey;
+    String g = "";
+    String locate = "";
+    FirebaseRecyclerAdapter<Shoplistitem, ItemViewHolder> firebaseRecyclerAdapter;
+
 
     item i;
 
@@ -75,8 +84,10 @@ public class Tab20 extends AppCompatActivity {
     double TotalLotusPrice = 0;
     double volumnadd;
     double volumnFin;
-    private GoogleApiClient mGoogleApiClient;
 
+    Shoplistitem shopitem2;
+
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +99,75 @@ public class Tab20 extends AppCompatActivity {
                 .addApi(AppIndex.API).build();
         mGoogleApiClient.connect();
 
+        name = (TextView) findViewById(R.id.TextviewShop);
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
+        if (ContextCompat.checkSelfPermission(
+                Tab20.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    Tab20.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    12345
+            );
+        } else {
+            Awareness.SnapshotApi.getPlaces(mGoogleApiClient)
+                    .setResultCallback(new ResultCallback<PlacesResult>() {
+                        public static final String TAG = "Hi";
+
+                        @Override
+                        public void onResult(@NonNull PlacesResult placesResult) {
+                            if (!placesResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Could not get places.");
+                                return;
+                            }
+
+                            List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
+
+                            if (placeLikelihoodList != null) {
+                                for (int i = 0; i < placeLikelihoodList.size(); i++) {
+                                    PlaceLikelihood p = placeLikelihoodList.get(i);
+
+                                    if (p.getPlace().getPlaceTypes().contains(43)) {
+                                        g = p.getPlace().getName().toString();
+                                        System.out.println("Location " + locate);
+                                        System.out.println("G " + g);
+                                        if (g.contains("Tesco")) {
+                                            locate = "Lotus";
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(Tab20.this);
+                                            builder.setTitle("Now you are near : ");
+                                            builder.setMessage(locate);
+                                            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
+                                                    qType = mDatabase.child("Beverage and Drink Powder").orderByChild("Name");
+                                                    //attachRecyclerViewAdapter();
+                                                    name.setText("Now you are at :  " + locate);
+
+                                                }
+                                            });
+                                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                }
+                                            });
+                                            builder.show();
+
+                                        }
+                                    }
+                                }
+                            } else {
+                                Log.e(TAG, "Place is null.");
+                            }
+                        }
+                    });
+        }
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist");
         qType = mDatabase.child("Etc").orderByChild("Name");
         pType = mDatabase.child("all").orderByKey();

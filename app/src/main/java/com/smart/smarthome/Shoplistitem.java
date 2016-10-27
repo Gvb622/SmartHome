@@ -14,12 +14,22 @@ public class Shoplistitem {
     private String ItemTopsPrice;
     private String ItemLotusPrice;
     private String KeyAll;
+    private String ItemShopsPrice;
+    private String ShopCheapest;
 
     public Shoplistitem() {
     }
 
     public String getKeyAll() {
         return KeyAll;
+    }
+
+    public String getItemShopsPrice() {
+        return ItemShopsPrice;
+    }
+
+    public void setItemShopsPrice(String itemShopsPrice) {
+        ItemShopsPrice = itemShopsPrice;
     }
 
     public void setKeyAll(String keyAll) {

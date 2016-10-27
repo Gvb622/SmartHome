@@ -8,7 +8,7 @@
     <LinearLayout
         android:clickable="true"
         android:focusable="true"
-        android:background="#FFCDD2"
+        android:background="@color/colorPrimary"
         android:id="@+id/Top"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
@@ -71,14 +71,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background= "#f37370"
+            android:background= "@color/colorPrimaryDark"
             android:src="@mipmap/ic_add_black_24dp"/>
         <ImageButton
             android:id="@+id/IncreaseItem2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background= "#f37370"
+            android:background= "@color/colorPrimaryDark"
             android:src="@mipmap/ic_arrow_upward_black_24dp"
             />
         <ImageButton
@@ -86,14 +86,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background= "#f37370"
+            android:background= "@color/colorPrimaryDark"
             android:src="@mipmap/ic_arrow_downward_black_24dp"/>
         <ImageButton
             android:id="@+id/RemoveItem2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.25"
-            android:background="#f37370"
+            android:background="@color/colorPrimaryDark"
             android:src="@mipmap/ic_clear_black_24dp"/>
 
     </LinearLayout>

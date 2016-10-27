@@ -49,6 +49,7 @@ import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -60,6 +61,8 @@ public class LocationbaseActivity extends AppCompatActivity
     int PLACE_PICKER_REQUEST = 2;
     LocalActivityManager mLocalActivityManager;
     private FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+
 
 
     @Override
@@ -240,7 +243,7 @@ public class LocationbaseActivity extends AppCompatActivity
 
 
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
 
 
         initSnapshots();
@@ -303,16 +306,28 @@ public class LocationbaseActivity extends AppCompatActivity
                             List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
                             // Show the top 5 possible location results.
                             if (placeLikelihoodList != null) {
-                                for (int i = 0; i < 10 && i < placeLikelihoodList.size(); i++) {
+                                boolean a = false;
+                                for (int i = 0; i < 100 && i < placeLikelihoodList.size(); i++) {
                                     PlaceLikelihood p = placeLikelihoodList.get(i);
-                                    Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
-                                    Log.i(TAG, p.getPlace().getPlaceTypes().toString());
+                                    //Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
+                                    //Log.i(TAG, p.getPlace().getPlaceTypes().toString());
 
                                     if(p.getPlace().getPlaceTypes().contains(43)){
-                                        Toast.makeText(LocationbaseActivity.this,"Supermarket near you", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LocationbaseActivity.this,"Supermarket Near you : " + p.getPlace().getName(), Toast.LENGTH_SHORT).show();
+                                        String g = p.getPlace().getName().toString();
+                                        if(g.contains("Tesco")){
+                                            String locate = "Lotus";
+                                            Tab16.mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
+                                        }
+                                        a = true;
+                                        break;
                                     }else{
-                                        Toast.makeText(LocationbaseActivity.this,"No supermarket nearby", Toast.LENGTH_SHORT).show();
                                     }
+
+                                }
+                                if(a == false) {
+                                    Toast.makeText(LocationbaseActivity.this,"No Supermarket Nearby", Toast.LENGTH_SHORT).show();
+                                    a = false;
 
                                 }
                             } else {

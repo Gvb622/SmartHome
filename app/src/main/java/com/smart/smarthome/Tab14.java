@@ -186,6 +186,46 @@ public class Tab14 extends AppCompatActivity {
                                         Shoplist.child("ItemTopsPrice").setValue(item.getSalePriceTops());
                                         Shoplist.child("ItemLotusPrice").setValue(item.getSalePriceLotus());
 
+                                        DatabaseReference User = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items")
+                                                .child(Type).child(s.getKey());
+                                        User.child("VolumeForAdd").setValue(m_Text);
+
+                                        double tops = Double.parseDouble(item.getSalePriceTops());
+                                        double lotus = Double.parseDouble(item.getSalePriceLotus());
+
+                                        if (tops < lotus) {
+                                            DatabaseReference Location = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location")
+                                                    .child("Tops").child(Type);
+                                            DatabaseReference Location2 = Location.push();
+                                            Location2.child("ItemImage").setValue(item.getImage());
+                                            Location2.child("ItemName").setValue(item.getName());
+                                            Location2.child("ItemPrice").setValue(item.getRetailPrice());
+                                            Location2.child("Key").setValue(s.getKey());
+                                            Location2.child("ItemClassifier").setValue(item.getClassifier());
+                                            Location2.child("ItemVolumn").setValue(m_Text);
+                                            Location2.child("ItemShopsPrice").setValue(item.getSalePriceTops());
+                                            Shoplist.child("ShopCheapest").setValue("Tops");
+
+
+                                        } else if (lotus < tops) {
+                                            DatabaseReference Location = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location")
+                                                    .child("Lotus").child(Type);
+
+                                            DatabaseReference Location2 = Location.push();
+                                            Location2.child("ItemImage").setValue(item.getImage());
+                                            Location2.child("ItemName").setValue(item.getName());
+                                            Location2.child("ItemPrice").setValue(item.getRetailPrice());
+                                            Location2.child("Key").setValue(s.getKey());
+                                            Location2.child("ItemClassifier").setValue(item.getClassifier());
+                                            Location2.child("ItemVolumn").setValue(m_Text);
+                                            Location2.child("ItemShopsPrice").setValue(item.getSalePriceLotus());
+                                            Shoplist.child("ShopCheapest").setValue("Lotus");
+
+
+                                        } else {
+
+                                        }
+
 
 
 

@@ -23,10 +23,19 @@ public class item {
     private String DecreasePerClick;
     private String LowBy;
     private String TotalVolume;
+    private String VolumeForAdd;
 
 
     public item() {
 
+    }
+
+    public String getVolumeForAdd() {
+        return VolumeForAdd;
+    }
+
+    public void setVolumeForAdd(String volumeForAdd) {
+        VolumeForAdd = volumeForAdd;
     }
 
     public String getTotalVolume() {
