@@ -33,7 +33,7 @@ public class SummaryreportActivity extends AppCompatActivity
 
    TextView timeTextView;
    TextView begindateTextView,untildateTextView;
-
+    int m,y,d;
     ImageView monthly;
 
 
@@ -65,8 +65,8 @@ public class SummaryreportActivity extends AppCompatActivity
                 );
 
                 dpd.setAccentColor(Color.parseColor("#d32f2f"));
-                dpd.setTitle("DatePicker Title");
-
+                dpd.setTitle("Pick Begin date");
+                dpd.setMaxDate(now);
 
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
@@ -77,19 +77,19 @@ public class SummaryreportActivity extends AppCompatActivity
             public void onClick(View v) {
                 currentButton =2;
                 java.util.Calendar now = java.util.Calendar.getInstance();
+                java.util.Calendar min = java.util.Calendar.getInstance();
                 com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
                         SummaryreportActivity.this,
                         now.get(java.util.Calendar.YEAR),
                         now.get(java.util.Calendar.MONTH),
                         now.get(java.util.Calendar.DAY_OF_MONTH)
-
-
                 );
 
                 dpd.setAccentColor(Color.parseColor("#d32f2f"));
-                dpd.setTitle("DatePicker Title");
-
-
+                dpd.setTitle("Pick Until date");
+                min.set(y, m-1, d);
+                dpd.setMinDate(min);
+                dpd.setMaxDate(now);
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
@@ -169,7 +169,11 @@ public class SummaryreportActivity extends AppCompatActivity
 
     public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         if(currentButton==1){
+
         String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+            m=monthOfYear;
+            y=year;
+            d=dayOfMonth;
         begindateTextView.setText(date);}
         else{
             String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
