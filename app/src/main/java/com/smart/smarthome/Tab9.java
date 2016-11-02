@@ -250,7 +250,7 @@ public class Tab9 extends AppCompatActivity {
 
                 if(Retail <= Tops && Retail <= Lotus){
 
-                }else if (Tops < Lotus) {
+                }else if (Tops <= Lotus) {
                     viewHolder.setPrice3("Tops : " + model.getItemTopsPrice());
                 } else if (Tops > Lotus) {
                     viewHolder.setPrice3("Lotus : " + model.getItemLotusPrice());

@@ -195,7 +195,11 @@ public class MonthlyReportActivity extends AppCompatActivity
                         priceretail12 += Double.parseDouble(report.getTotalPrice());
 
                     }
+
                 }
+                System.out.println(SummaryreportActivity.begindate);
+                System.out.println(SummaryreportActivity.untildate);
+                System.out.println(pricebuy1);
                 dataList.add(pricebuy1);
                 dataList.add(pricebuy2);
                 dataList.add(pricebuy3);

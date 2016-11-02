@@ -41,7 +41,7 @@ public class SummaryreportActivity extends AppCompatActivity
 
    TextView timeTextView;
    TextView begindateTextView,untildateTextView;
-
+    int m,y,d;
     ImageView monthly;
 
     static public String begindate;
@@ -88,8 +88,8 @@ public class SummaryreportActivity extends AppCompatActivity
                 );
 
                 dpd.setAccentColor(Color.parseColor("#d32f2f"));
-                dpd.setTitle("DatePicker Title");
-
+                dpd.setTitle("Pick Begin date");
+                dpd.setMaxDate(now);
 
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
@@ -100,21 +100,19 @@ public class SummaryreportActivity extends AppCompatActivity
             public void onClick(View v) {
                 currentButton =2;
                 java.util.Calendar now = java.util.Calendar.getInstance();
+                java.util.Calendar min = java.util.Calendar.getInstance();
                 com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
                         SummaryreportActivity.this,
                         now.get(java.util.Calendar.YEAR),
                         now.get(java.util.Calendar.MONTH),
                         now.get(java.util.Calendar.DAY_OF_MONTH)
                 );
-                System.out.println(now.get(java.util.Calendar.DAY_OF_WEEK_IN_MONTH));
 
                 dpd.setAccentColor(Color.parseColor("#d32f2f"));
-                dpd.setTitle("DatePicker Title");
-
-                untildate = "" + now.get(java.util.Calendar.YEAR) + now.get(java.util.Calendar.MONTH) + now.get(java.util.Calendar.DAY_OF_MONTH);
-
-
-
+                dpd.setTitle("Pick Until date");
+                min.set(y, m-1, d);
+                dpd.setMinDate(min);
+                dpd.setMaxDate(now);
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
@@ -207,53 +205,138 @@ public class SummaryreportActivity extends AppCompatActivity
 
 
     public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        if(currentButton==1){
-        String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
-            if(dayOfMonth == 1) {
-                begindate = ""+year+monthOfYear+"01";
-            }else if(dayOfMonth == 2) {
-                begindate = ""+year+monthOfYear+"02";
-            }else if(dayOfMonth == 3) {
-                begindate = ""+year+monthOfYear+"03";
-            }else if(dayOfMonth == 4) {
-                begindate = ""+year+monthOfYear+"04";
-            }else if(dayOfMonth == 5) {
-                begindate = ""+year+monthOfYear+"05";
-            }else if(dayOfMonth == 6) {
-                begindate = ""+year+monthOfYear+"06";
-            }else if(dayOfMonth == 7) {
-                begindate = ""+year+monthOfYear+"07";
-            }else if(dayOfMonth == 8) {
-                begindate = ""+year+monthOfYear+"08";
-            }else if(dayOfMonth == 9) {
-                begindate = ""+year+monthOfYear+"09";
-            }else{
-                begindate = ""+year+monthOfYear+dayOfMonth;
-            }
+        if(currentButton==1) {
 
-            begindateTextView.setText(date);}
-        else{
+            String date = "" + dayOfMonth + "/" + (++monthOfYear) + "/" + year;
+
+            if (dayOfMonth == 1) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "01";
+                }else{
+                    begindate = "" + year + monthOfYear + "01";
+                }
+            } else if (dayOfMonth == 2) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "02";
+                }else{
+                    begindate = "" + year + monthOfYear + "02";
+                }
+            } else if (dayOfMonth == 3) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "03";
+                }else{
+                    begindate = "" + year + monthOfYear + "03";
+                }
+            } else if (dayOfMonth == 4) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "04";
+                }else{
+                    begindate = "" + year + monthOfYear + "04";
+                }
+            } else if (dayOfMonth == 5) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "05";
+                }else{
+                    begindate = "" + year + monthOfYear + "05";
+                }
+            } else if (dayOfMonth == 6) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "06";
+                }else{
+                    begindate = "" + year + monthOfYear + "06";
+                }
+            } else if (dayOfMonth == 7) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "07";
+                }else{
+                    begindate = "" + year + monthOfYear + "07";
+                }
+            } else if (dayOfMonth == 8) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "08";
+                }else{
+                    begindate = "" + year + monthOfYear + "08";
+                }
+            } else if (dayOfMonth == 9) {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + "09";
+                }else{
+                    begindate = "" + year + monthOfYear + "09";
+                }
+            } else {
+                if(monthOfYear < 10){
+                    begindate = "" + year +"0"+ monthOfYear + dayOfMonth;
+                }else{
+                    begindate = "" + year + monthOfYear + dayOfMonth;
+                }
+            }
+            m = monthOfYear;
+            y = year;
+            d = dayOfMonth;
+            begindateTextView.setText(date);
+
+        }else{
             String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
-            if(dayOfMonth == 1) {
-                untildate = ""+year+monthOfYear+"01";
-            }else if(dayOfMonth == 2) {
-                untildate = ""+year+monthOfYear+"02";
-            }else if(dayOfMonth == 3) {
-                untildate = ""+year+monthOfYear+"03";
-            }else if(dayOfMonth == 4) {
-                untildate = ""+year+monthOfYear+"04";
-            }else if(dayOfMonth == 5) {
-                untildate = ""+year+monthOfYear+"05";
-            }else if(dayOfMonth == 6) {
-                untildate = ""+year+monthOfYear+"06";
-            }else if(dayOfMonth == 7) {
-                untildate = ""+year+monthOfYear+"07";
-            }else if(dayOfMonth == 8) {
-                untildate = ""+year+monthOfYear+"08";
-            }else if(dayOfMonth == 9) {
-                untildate = ""+year+monthOfYear+"09";
-            }else{
-                untildate = ""+year+monthOfYear+dayOfMonth;
+            if (dayOfMonth == 1) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "01";
+                }else{
+                    untildate = "" + year + monthOfYear + "01";
+                }
+            } else if (dayOfMonth == 2) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "02";
+                }else{
+                    untildate = "" + year + monthOfYear + "02";
+                }
+            } else if (dayOfMonth == 3) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "03";
+                }else{
+                    untildate = "" + year + monthOfYear + "03";
+                }
+            } else if (dayOfMonth == 4) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "04";
+                }else{
+                    untildate = "" + year + monthOfYear + "04";
+                }
+            } else if (dayOfMonth == 5) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "05";
+                }else{
+                    untildate = "" + year + monthOfYear + "05";
+                }
+            } else if (dayOfMonth == 6) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "06";
+                }else{
+                    untildate = "" + year + monthOfYear + "06";
+                }
+            } else if (dayOfMonth == 7) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "07";
+                }else{
+                    untildate = "" + year + monthOfYear + "07";
+                }
+            } else if (dayOfMonth == 8) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "08";
+                }else{
+                    untildate = "" + year + monthOfYear + "08";
+                }
+            } else if (dayOfMonth == 9) {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + "09";
+                }else{
+                    untildate = "" + year + monthOfYear + "09";
+                }
+            } else {
+                if(monthOfYear < 10){
+                    untildate = "" + year +"0"+ monthOfYear + dayOfMonth;
+                }else{
+                    untildate = "" + year + monthOfYear + dayOfMonth;
+                }
             }
 
             untildateTextView.setText(date);
