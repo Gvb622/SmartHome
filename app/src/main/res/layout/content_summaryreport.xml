@@ -120,7 +120,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="#ffffff"
                     android:id="@+id/summary_sale"
-                    android:text="1902"
+                    android:text="0"
                     android:layout_toRightOf="@id/text_saleprice"
 
                     />
@@ -162,7 +162,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="#ffffff"
                     android:id="@+id/summary_retail"
-                    android:text="3402"
+                    android:text="0"
                     android:layout_toRightOf="@id/text_retailprice"
                     />
                 <TextView
