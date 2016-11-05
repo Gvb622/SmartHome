@@ -75,6 +75,9 @@
         <item>Etc</item>
 
     </string-array>
+    <string name="title_activity_monthly_reports">MonthlyReports</string>
+    <string name="title_activity_weekly_reports">WeeklyReports</string>
+    <string name="title_activity_daily_reports">DailyReports</string>
 
 
 </resources>
