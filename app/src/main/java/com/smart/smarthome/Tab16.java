@@ -106,7 +106,7 @@ public class Tab16 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tab8);
+        setContentView(R.layout.activity_tab6);
 
         mGoogleApiClient = new GoogleApiClient.Builder(Tab16.this)
                 .addApi(Awareness.API)
@@ -142,18 +142,16 @@ public class Tab16 extends AppCompatActivity {
                                 List<PlaceLikelihood> placeLikelihoodList = placesResult.getPlaceLikelihoods();
 
                                 if (placeLikelihoodList != null) {
-
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(Tab16.this);
-
                                     for (int i = 0; i < placeLikelihoodList.size(); i++) {
                                         PlaceLikelihood p = placeLikelihoodList.get(i);
 
                                         if (p.getPlace().getPlaceTypes().contains(43)) {
                                             g = p.getPlace().getName().toString();
-                                            System.out.println("Location " + locate);
-                                            System.out.println("G " + g);
-                                            if (g.contains("Tesco") || g.contains("เทสโก้")) {
+                                            System.out.println("Location "+locate);
+                                            System.out.println("G "+ g);
+                                            if(g.contains("Tesco")){
                                                 locate = "Lotus";
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(Tab16.this);
                                                 builder.setTitle("Now you are near : ");
                                                 builder.setMessage(locate);
                                                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -172,118 +170,11 @@ public class Tab16 extends AppCompatActivity {
 
                                                     }
                                                 });
+                                                builder.show();
 
-                                            } else if (g.contains("Big")) {
-                                                locate = "BigC";
-                                                builder.setTitle("Now you are near : ");
-                                                builder.setMessage(locate);
-                                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
-                                                        qType = mDatabase.child("Food and Ingredients").orderByChild("Name");
-                                                        attachRecyclerViewAdapter();
-                                                        name.setText("Now you are at :  " + locate);
-
-                                                    }
-                                                });
-                                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                    }
-                                                });
-
-                                            }else if (g.contains("Tops")) {
-                                                locate = "Tops";
-                                                builder.setTitle("Now you are near : ");
-                                                builder.setMessage(locate);
-                                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
-                                                        qType = mDatabase.child("Food and Ingredients").orderByChild("Name");
-                                                        attachRecyclerViewAdapter();
-                                                        name.setText("Now you are at :  " + locate);
-
-                                                    }
-                                                });
-                                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                    }
-                                                });
-                                            }else if (g.contains("Foodland")) {
-                                                locate = "Foodland";
-                                                builder.setTitle("Now you are near : ");
-                                                builder.setMessage(locate);
-                                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
-                                                        qType = mDatabase.child("Food and Ingredients").orderByChild("Name");
-                                                        attachRecyclerViewAdapter();
-                                                        name.setText("Now you are at :  " + locate);
-
-                                                    }
-                                                });
-                                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                    }
-                                                });
-
-                                            }
-                                            else if (g.contains("Home Fresh")) {
-                                                locate = "Home Fresh Mart";
-                                                builder.setTitle("Now you are near : ");
-                                                builder.setMessage(locate);
-                                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
-                                                        qType = mDatabase.child("Food and Ingredients").orderByChild("Name");
-                                                        attachRecyclerViewAdapter();
-                                                        name.setText("Now you are at :  " + locate);
-
-                                                    }
-                                                });
-                                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                    }
-                                                });
-                                            }else if (g.contains("Max")) {
-                                                locate = "MaxValue";
-                                                builder.setTitle("Now you are near : ");
-                                                builder.setMessage(locate);
-                                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location").child(locate);
-                                                        qType = mDatabase.child("Food and Ingredients").orderByChild("Name");
-                                                        attachRecyclerViewAdapter();
-                                                        name.setText("Now you are at :  " + locate);
-
-                                                    }
-                                                });
-                                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                    }
-                                                });
-                                            }else{
-                                                builder.setTitle("No Supermarket near by : ");
-                                                builder.setMessage("No supermarket");
                                             }
                                         }
                                     }
-                                    builder.show();
-
                                 } else {
                                     Log.e(TAG, "Place is null.");
                                 }

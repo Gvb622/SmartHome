@@ -18,14 +18,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,40 +32,6 @@ public class MonthlyReportActivity extends AppCompatActivity
 
 
     int randomint = 12;
-    int pricebuy1;
-    int pricebuy2;
-    int pricebuy3;
-    int pricebuy4;
-    int pricebuy5;
-    int pricebuy6;
-    int pricebuy7;
-    int pricebuy8;
-    int pricebuy9;
-    int pricebuy10;
-    int pricebuy11;
-    int pricebuy12;
-
-    int priceretail1;
-    int priceretail2;
-    int priceretail3;
-    int priceretail4;
-    int priceretail5;
-    int priceretail6;
-    int priceretail7;
-    int priceretail8;
-    int priceretail9;
-    int priceretail10;
-    int priceretail11;
-    int priceretail12;
-
-    ArrayList<Integer> dataList;
-    ArrayList<Integer> dataList2;
-
-    LineView lineView;
-
-
-    private DatabaseReference mDatabase;
-    private FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -84,7 +42,7 @@ public class MonthlyReportActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        lineView = (LineView)findViewById(R.id.line_view);
+        final LineView lineView = (LineView)findViewById(R.id.line_view);
 
         //must*
         ArrayList<String> test = new ArrayList<String>();
@@ -128,117 +86,49 @@ public class MonthlyReportActivity extends AppCompatActivity
     }
 
 
-    private void randomSet(final LineView lineView){
+    private void randomSet(LineView lineView){
 
 
-        dataList = new ArrayList<Integer>();
-        dataList2 = new ArrayList<Integer>();
+        ArrayList<Integer> dataList = new ArrayList<Integer>();
+
+        dataList.add(1000);
+        dataList.add(1000);
+        dataList.add(500);
+        dataList.add(700);
+        dataList.add(1500);
+        dataList.add(1300);
+        dataList.add(1100);
+        dataList.add(1200);
+        dataList.add(800);
+        dataList.add(500);
+        dataList.add(1500);
+        dataList.add(600);
 
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report");
-        Query queryRef = mDatabase.orderByChild("Time").startAt(SummaryreportActivity.begindate).endAt(SummaryreportActivity.untildate);
+        ArrayList<Integer> dataList2 = new ArrayList<Integer>();
 
-        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                    Report report = postSnapshot.getValue(Report.class);
-                    if(report.getMonth().equals("01")){
-                        pricebuy1 += report.getTotalBuyPrice();
-                        priceretail1 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("02")){
-                        pricebuy2 += report.getTotalBuyPrice();
-                        priceretail2 += Double.parseDouble(report.getTotalPrice());
+        dataList2.add(1200);
+        dataList2.add(2200);
+        dataList2.add(800);
+        dataList2.add(1500);
+        dataList2.add(1600);
+        dataList2.add(1800);
+        dataList2.add(2200);
+        dataList2.add(1500);
+        dataList2.add(1300);
+        dataList2.add(1400);
+        dataList2.add(1900);
+        dataList2.add(1500);
 
 
-                    }else if(report.getMonth().equals("03")){
-                        pricebuy3 += report.getTotalBuyPrice();
-                        priceretail3 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("04")){
-                        pricebuy4 += report.getTotalBuyPrice();
-                        priceretail4 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("05")){
-                        pricebuy5 += report.getTotalBuyPrice();
-                        priceretail5 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("06")){
-                        pricebuy6 += report.getTotalBuyPrice();
-                        priceretail6 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("07")){
-                        pricebuy7 += report.getTotalBuyPrice();
-                        priceretail7 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("08")){
-                        pricebuy8 += report.getTotalBuyPrice();
-                        priceretail8 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("09")){
-                        pricebuy9 += report.getTotalBuyPrice();
-                        priceretail9 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("10")){
-                        pricebuy10 += report.getTotalBuyPrice();
-                        priceretail10 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("11")){
-                        pricebuy11 += report.getTotalBuyPrice();
-                        priceretail11 += Double.parseDouble(report.getTotalPrice());
-
-                    }else if(report.getMonth().equals("12")){
-                        pricebuy12 += report.getTotalBuyPrice();
-                        priceretail12 += Double.parseDouble(report.getTotalPrice());
-
-                    }
-
-                }
-                System.out.println(SummaryreportActivity.begindate);
-                System.out.println(SummaryreportActivity.untildate);
-                System.out.println(pricebuy1);
-                dataList.add(pricebuy1);
-                dataList.add(pricebuy2);
-                dataList.add(pricebuy3);
-                dataList.add(pricebuy4);
-                dataList.add(pricebuy5);
-                dataList.add(pricebuy6);
-                dataList.add(pricebuy7);
-                dataList.add(pricebuy8);
-                dataList.add(pricebuy9);
-                dataList.add(pricebuy10);
-                dataList.add(pricebuy11);
-                dataList.add(pricebuy12);
-
-                dataList2.add(priceretail1);
-                dataList2.add(priceretail2);
-                dataList2.add(priceretail3);
-                dataList2.add(priceretail4);
-                dataList2.add(priceretail5);
-                dataList2.add(priceretail6);
-                dataList2.add(priceretail7);
-                dataList2.add(priceretail8);
-                dataList2.add(priceretail9);
-                dataList2.add(priceretail10);
-                dataList2.add(priceretail11);
-                dataList2.add(priceretail12);
-
-                ArrayList<ArrayList<Integer>> dataLists = new ArrayList<ArrayList<Integer>>();
-                dataLists.add(dataList);
-                dataLists.add(dataList2);
-                lineView.setDataList(dataLists);
 
 
-            }
+        ArrayList<ArrayList<Integer>> dataLists = new ArrayList<ArrayList<Integer>>();
+        dataLists.add(dataList);
+        dataLists.add(dataList2);
+//        dataLists.add(dataList3);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        lineView.setDataList(dataLists);
     }
 
     @Override

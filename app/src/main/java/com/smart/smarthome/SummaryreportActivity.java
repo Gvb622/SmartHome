@@ -25,14 +25,6 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 
 public class SummaryreportActivity extends AppCompatActivity
@@ -43,18 +35,6 @@ public class SummaryreportActivity extends AppCompatActivity
    TextView begindateTextView,untildateTextView;
     int m,y,d;
     ImageView monthly;
-
-    static public String begindate;
-    static public String untildate;
-    private DatabaseReference mDatabase;
-    private FirebaseAuth firebaseAuth;
-    double saleprice2;
-    double retailprice2;
-    TextView saleprice;
-    TextView retailprice;
-    TextView savemoney;
-
-
 
 
 
@@ -70,11 +50,6 @@ public class SummaryreportActivity extends AppCompatActivity
         ImageView begindateButton = (ImageView)findViewById(R.id.begin_date_button);
         ImageView untildateButton = (ImageView)findViewById(R.id.until_date_button);
 
-        saleprice = (TextView) findViewById(R.id.summary_sale);
-        retailprice = (TextView) findViewById(R.id.summary_retail);
-        savemoney = (TextView) findViewById(R.id.summary_save);
-
-
         begindateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +60,8 @@ public class SummaryreportActivity extends AppCompatActivity
                         now.get(java.util.Calendar.YEAR),
                         now.get(java.util.Calendar.MONTH),
                         now.get(java.util.Calendar.DAY_OF_MONTH)
+
+
                 );
 
                 dpd.setAccentColor(Color.parseColor("#d32f2f"));
@@ -116,32 +93,18 @@ public class SummaryreportActivity extends AppCompatActivity
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report");
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                    Report report = postSnapshot.getValue(Report.class);
-                    saleprice2 += report.getTotalBuyPrice();
-                    retailprice2 += Double.parseDouble(report.getTotalPrice());
-                }
-                saleprice.setText(saleprice2+"");
-                retailprice.setText(retailprice2+"");
-                savemoney.setText(String.valueOf(retailprice2-saleprice2));
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 
+
+        TextView saleprice = (TextView) findViewById(R.id.summary_sale);
+        TextView retailprice = (TextView) findViewById(R.id.summary_retail);
+        TextView savemoney = (TextView) findViewById(R.id.summary_save);
+
+        int sale = Integer.valueOf(saleprice.getText().toString());
+
+        int retail = Integer.valueOf(retailprice.getText().toString());
+        savemoney.setText(String.valueOf(retail-sale));
 
 
 
@@ -158,7 +121,7 @@ public class SummaryreportActivity extends AppCompatActivity
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tt = new Intent (SummaryreportActivity.this,WeeklyReports.class);
+                Intent tt = new Intent (SummaryreportActivity.this,WeeklyReportActivity.class);
                 startActivity(tt);
             }
         });
@@ -167,7 +130,7 @@ public class SummaryreportActivity extends AppCompatActivity
         daily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tt = new Intent (SummaryreportActivity.this,DailyReports.class);
+                Intent tt = new Intent (SummaryreportActivity.this,DailyReportActivity.class);
                 startActivity(tt);
             }
         });
@@ -205,140 +168,15 @@ public class SummaryreportActivity extends AppCompatActivity
 
 
     public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        if(currentButton==1) {
+        if(currentButton==1){
 
-            String date = "" + dayOfMonth + "/" + (++monthOfYear) + "/" + year;
-
-            if (dayOfMonth == 1) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "01";
-                }else{
-                    begindate = "" + year + monthOfYear + "01";
-                }
-            } else if (dayOfMonth == 2) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "02";
-                }else{
-                    begindate = "" + year + monthOfYear + "02";
-                }
-            } else if (dayOfMonth == 3) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "03";
-                }else{
-                    begindate = "" + year + monthOfYear + "03";
-                }
-            } else if (dayOfMonth == 4) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "04";
-                }else{
-                    begindate = "" + year + monthOfYear + "04";
-                }
-            } else if (dayOfMonth == 5) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "05";
-                }else{
-                    begindate = "" + year + monthOfYear + "05";
-                }
-            } else if (dayOfMonth == 6) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "06";
-                }else{
-                    begindate = "" + year + monthOfYear + "06";
-                }
-            } else if (dayOfMonth == 7) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "07";
-                }else{
-                    begindate = "" + year + monthOfYear + "07";
-                }
-            } else if (dayOfMonth == 8) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "08";
-                }else{
-                    begindate = "" + year + monthOfYear + "08";
-                }
-            } else if (dayOfMonth == 9) {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + "09";
-                }else{
-                    begindate = "" + year + monthOfYear + "09";
-                }
-            } else {
-                if(monthOfYear < 10){
-                    begindate = "" + year +"0"+ monthOfYear + dayOfMonth;
-                }else{
-                    begindate = "" + year + monthOfYear + dayOfMonth;
-                }
-            }
-            m = monthOfYear;
-            y = year;
-            d = dayOfMonth;
-            begindateTextView.setText(date);
-
-        }else{
+        String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+            m=monthOfYear;
+            y=year;
+            d=dayOfMonth;
+        begindateTextView.setText(date);}
+        else{
             String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
-            if (dayOfMonth == 1) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "01";
-                }else{
-                    untildate = "" + year + monthOfYear + "01";
-                }
-            } else if (dayOfMonth == 2) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "02";
-                }else{
-                    untildate = "" + year + monthOfYear + "02";
-                }
-            } else if (dayOfMonth == 3) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "03";
-                }else{
-                    untildate = "" + year + monthOfYear + "03";
-                }
-            } else if (dayOfMonth == 4) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "04";
-                }else{
-                    untildate = "" + year + monthOfYear + "04";
-                }
-            } else if (dayOfMonth == 5) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "05";
-                }else{
-                    untildate = "" + year + monthOfYear + "05";
-                }
-            } else if (dayOfMonth == 6) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "06";
-                }else{
-                    untildate = "" + year + monthOfYear + "06";
-                }
-            } else if (dayOfMonth == 7) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "07";
-                }else{
-                    untildate = "" + year + monthOfYear + "07";
-                }
-            } else if (dayOfMonth == 8) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "08";
-                }else{
-                    untildate = "" + year + monthOfYear + "08";
-                }
-            } else if (dayOfMonth == 9) {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + "09";
-                }else{
-                    untildate = "" + year + monthOfYear + "09";
-                }
-            } else {
-                if(monthOfYear < 10){
-                    untildate = "" + year +"0"+ monthOfYear + dayOfMonth;
-                }else{
-                    untildate = "" + year + monthOfYear + dayOfMonth;
-                }
-            }
-
             untildateTextView.setText(date);
 
         }
