@@ -85,94 +85,44 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTabChanged(String s) {
                 if(s.equals("Tab1")){
-                    if(additem == true){
-                        Tab1.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab1.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab1.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    }else if(decreaseitem == true){
-                        Tab1.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab1.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_white_24dp);
-                        Tab1.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    }else if(removeitem == true){
-                    Tab1.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                    Tab1.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                    if(removeitem == true){
+
                     Tab1.Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
                     }else{
-                        Tab1.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab1.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
                         Tab1.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
                     }
 
                 }else if(s.equals("Tab2")) {
-                    if (additem == true) {
-                        Tab2.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab2.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab2.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (decreaseitem == true) {
-                        Tab2.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab2.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_white_24dp);
-                        Tab2.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (removeitem == true) {
-                        Tab2.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab2.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                    if (removeitem == true) {
+
                         Tab2.Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
                     } else {
-                        Tab2.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab2.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+
                         Tab2.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
                     }
                 }else if(s.equals("Tab3")) {
-                    if (additem == true) {
-                        Tab3.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab3.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab3.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (decreaseitem == true) {
-                        Tab3.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab3.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_white_24dp);
-                        Tab3.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (removeitem == true) {
-                        Tab3.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab3.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                    if (removeitem == true) {
+
                         Tab3.Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
                     } else {
-                        Tab3.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab3.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+
                         Tab3.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
                     }
                 }else if(s.equals("Tab4")) {
-                    if (additem == true) {
-                        Tab4.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab4.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab4.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (decreaseitem == true) {
-                        Tab4.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab4.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_white_24dp);
-                        Tab4.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (removeitem == true) {
-                        Tab4.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab4.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+                    if (removeitem == true) {
+
                         Tab4.Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
                     } else {
-                        Tab4.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab4.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+
                         Tab4.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
                     }
                 }else if(s.equals("Tab5")) {
-                    if (additem == true) {
-                        Tab5.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab5.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab5.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (decreaseitem == true) {
-                        Tab5.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab5.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_white_24dp);
-                        Tab5.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (removeitem == true) {
-                        Tab5.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab5.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+
+                    if (removeitem == true) {
+
                         Tab5.Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
                     } else {
-                        Tab5.Increaseitem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab5.Decreaseitem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
+
                         Tab5.Removeitem.setImageResource(R.mipmap.ic_clear_black_24dp);
                     }
                 }

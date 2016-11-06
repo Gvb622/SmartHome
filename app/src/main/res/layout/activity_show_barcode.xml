@@ -25,7 +25,8 @@
                 android:id="@+id/addImageButton"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:src="@mipmap/no_image_icon_6"
+                android:scaleType="fitXY"
+                android:src="@mipmap/add_btn"
                 />
 
             <android.support.design.widget.TextInputLayout
@@ -95,10 +96,11 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7">
+                    android:layout_weight="0.7"
+                    android:textColorHint="#FF0000">
                     <EditText
                         android:id="@+id/addVolumeEdit"
-                        android:hint="Enter Your Product Volumn"
+                        android:hint="Enter Product Volumn"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -134,10 +136,11 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7">
+                    android:layout_weight="0.7"
+                    android:textColorHint="#FF0000">
                     <EditText
                         android:id="@+id/addUnitEdit"
-                        android:hint="Enter Your Product Quantity"
+                        android:hint="Enter Product Quantity"
                         android:textColor="#FF0000"
                         android:gravity="center"
                         android:layout_width="match_parent"
@@ -171,12 +174,24 @@
                     android:layout_height="match_parent" />
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set Price"
+                android:textSize="24dp"
+                android:textColor="#FF0000"
+                android:gravity="center"
+                android:layout_margin="10dp"
+
+                />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:textColorHint="#FF0000"
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/addPriceEdit"
-                    android:hint="Enter Your Product Price"
+                    android:hint="Enter Product Retail Price"
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
@@ -189,7 +204,7 @@
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/addPriceTopsEdit"
-                    android:hint="Enter Your Product Price From Tops"
+                    android:hint="Enter Price From Tops"
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"
@@ -202,7 +217,73 @@
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/addPriceLotusEdit"
-                    android:hint="Enter Your Product Price From Lotus"
+                    android:hint="Enter Price From Lotus"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="numberDecimal"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addPriceBigCEdit"
+                    android:hint="Enter Price From BigC"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="numberDecimal"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addPriceFoodlandEdit"
+                    android:hint="Enter Price From Foodland"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="numberDecimal"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addPriceHomeFreshMartEdit"
+                    android:hint="Enter Price From Home Fresh Mart"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="numberDecimal"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addPriceMaxValueEdit"
+                    android:hint="Enter Price From MaxValue"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="numberDecimal"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/addPriceMakroEdit"
+                    android:hint="Enter Price From Makro"
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:layout_width="match_parent"

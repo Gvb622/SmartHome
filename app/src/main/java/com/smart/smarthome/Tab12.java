@@ -193,7 +193,7 @@ public class Tab12 extends AppCompatActivity {
                                         double tops = Double.parseDouble(item.getSalePriceTops());
                                         double lotus = Double.parseDouble(item.getSalePriceLotus());
 
-                                        if (tops < lotus) {
+                                        if (tops <= lotus) {
                                             DatabaseReference Location = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("location")
                                                     .child("Tops").child(Type);
                                             DatabaseReference Location2 = Location.push();

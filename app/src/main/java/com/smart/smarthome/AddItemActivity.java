@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
@@ -23,12 +24,17 @@ import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -66,6 +72,12 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText Volumn;
     private EditText TopsPrice;
     private EditText LotusPrice;
+    private EditText BigCPrice;
+    private EditText FoodlandPrice;
+    private EditText HomeFreashMartPrice;
+    private EditText MaxValuePrice;
+    private EditText MakroPrice;
+
     private Button Submit;
     private Uri imageUri = null;
     private String Type2;
@@ -77,6 +89,11 @@ public class AddItemActivity extends AppCompatActivity {
     String price_val;
     String priceTops_val;
     String priceLotus_val;
+    String priceBigC_val;
+    String priceFoodland_val;
+    String priceHomeFreashMart_val;
+    String priceMaxValue_val;
+    String priceMakro_val;
     String totalVolume_val;
 
 
@@ -88,6 +105,10 @@ public class AddItemActivity extends AppCompatActivity {
     Uri downloadUrl = null;
     String mCurrentPhotoPath = null;
     private int checkLast ;
+
+    String type_val;
+    String barcode_val;
+    boolean checkAlready;
 
 
     private static final int GALLERY_REQUEST = 1;
@@ -109,7 +130,7 @@ public class AddItemActivity extends AppCompatActivity {
         mStorage = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("system").child("items");
 
         mProgress = new ProgressDialog(this);
 
@@ -135,7 +156,13 @@ public class AddItemActivity extends AppCompatActivity {
         Volumn = (EditText) findViewById(R.id.addVolumeEdit);
         TopsPrice = (EditText) findViewById(R.id.addPriceTopsEdit);
         LotusPrice = (EditText) findViewById(R.id.addPriceLotusEdit);
+        BigCPrice = (EditText) findViewById(R.id.addPriceBigCEdit);
+        FoodlandPrice = (EditText) findViewById(R.id.addPriceFoodlandEdit);
+        HomeFreashMartPrice = (EditText) findViewById(R.id.addPriceHomeFreshMartEdit);
+        MaxValuePrice = (EditText) findViewById(R.id.addPriceMaxValueEdit);
+        MakroPrice = (EditText) findViewById(R.id.addPriceMakroEdit);
 
+        Price.setHintTextColor(Color.RED);
 
         staticSpinner = (Spinner) findViewById(R.id.static_spinner);
 
@@ -294,168 +321,226 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final String barcode_val = Barcode.getText().toString().trim();
-                final String name_val = Name.getText().toString().trim();
-                final String type_val = Type2;
-                final String LowBy_val = LowVolume;
-                volume_val = Volumn.getText().toString().trim();
-                if(volume_val.equals("")){
-                    volume_val = "0";
-                }
-
-                final String quantity_val = Quantity;
-
-                unit_val = Unit.getText().toString().trim();
-
-                if(unit_val.equals("")){
-                    unit_val = "0";
-                }
-
-                double volume = Double.parseDouble(volume_val);
-                double unitItem10   = Double.parseDouble(unit_val);
-                double TotalVolume = volume * unitItem10 ;
-                totalVolume_val = TotalVolume+"";
-
-
-                final String pack_val = Pack;
-
                 price_val = Price.getText().toString().trim();
+                type_val = Type2;
+                barcode_val = Barcode.getText().toString().trim();
 
-                if(price_val.equals("")){
+
+
+                if (price_val.equals("")) {
                     price_val = "0";
                 }
 
-                priceTops_val = TopsPrice.getText().toString().trim();
 
-                if(priceTops_val.equals("")){
-                    priceTops_val = price_val;
-                }
+                if (price_val.equals("0")) {
 
-                priceLotus_val = LotusPrice.getText().toString().trim();
-
-                if(priceLotus_val.equals("")){
-                    priceLotus_val = price_val;
-                }
-
-
-                final String madein_val = Madein.getText().toString().trim();
-
-                sofeline_val = Softline.getText().toString().trim();
-                if(sofeline_val.equals("")){
-                    sofeline_val = "0";
-                }
-
-                deadline_val = Deadline.getText().toString().trim();
-                if(deadline_val.equals("")){
-                    deadline_val = "0";
-                }
-
-                decreaseperclick_val = DecreaseperClick.getText().toString().trim();
-                if(decreaseperclick_val.equals("")){
-                    decreaseperclick_val = "1";
-                }
-
-
-
-
-
-                if (downloadUrl != null && checkLast == 2) {
-
-                    mProgress.setMessage("Adding to inventory . . .");
-                    mProgress.show();
-
-                    DatabaseReference newItem = mDatabase.child(type_val).push();
-                    newItem.child("Barcode").setValue(barcode_val);
-                    newItem.child("Name").setValue(name_val);
-                    newItem.child("Volume").setValue(volume_val);
-                    newItem.child("Quantity").setValue(quantity_val);
-                    newItem.child("Unit").setValue(unit_val);
-                    newItem.child("Classifier").setValue(pack_val);
-                    newItem.child("RetailPrice").setValue(price_val);
-                    newItem.child("Madein").setValue(madein_val);
-                    newItem.child("Image").setValue(downloadUrl.toString());
-                    newItem.child("SalePriceTops").setValue(priceTops_val);
-                    newItem.child("SalePriceLotus").setValue(priceLotus_val);
-                    newItem.child("Softline").setValue(sofeline_val);
-                    newItem.child("Deadline").setValue(deadline_val);
-                    newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
-                    newItem.child("LowBy").setValue(LowBy_val);
-                    newItem.child("TotalVolume").setValue(totalVolume_val);
-
-                    mProgress.dismiss();
-                    finish();
-
-
-                }else  if (imageUri != null && checkLast == 1) {
-
-                    mProgress.setMessage("Adding to inventory . . .");
-                    mProgress.show();
-
-                    StorageReference filepath = mStorage.child("Item_Image").child(imageUri.getLastPathSegment());
-
-                    filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            downloadUrl = taskSnapshot.getDownloadUrl();
-
-                            DatabaseReference newItem = mDatabase.child(type_val).push();
-                            newItem.child("Barcode").setValue(barcode_val);
-                            newItem.child("Name").setValue(name_val);
-                            newItem.child("Volume").setValue(volume_val);
-                            newItem.child("Quantity").setValue(quantity_val);
-                            newItem.child("Unit").setValue(unit_val);
-                            newItem.child("Classifier").setValue(pack_val);
-                            newItem.child("RetailPrice").setValue(price_val);
-                            newItem.child("Madein").setValue(madein_val);
-                            newItem.child("Image").setValue(downloadUrl.toString());
-                            newItem.child("SalePriceTops").setValue(priceTops_val);
-                            newItem.child("SalePriceLotus").setValue(priceLotus_val);
-                            newItem.child("Softline").setValue(sofeline_val);
-                            newItem.child("Deadline").setValue(deadline_val);
-                            newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
-                            newItem.child("LowBy").setValue(LowBy_val);
-                            newItem.child("TotalVolume").setValue(totalVolume_val);
-
-
-
-                            mProgress.dismiss();
-                            finish();
-
-                        }
-                    });
+                    Toast.makeText(AddItemActivity.this, "Please Add Product Retail Price", Toast.LENGTH_LONG).show();
 
                 } else {
 
-                    mProgress.setMessage("Adding to inventory . . .");
-                    mProgress.show();
+                    final String name_val = Name.getText().toString().trim();
+                    final String LowBy_val = LowVolume;
+                    volume_val = Volumn.getText().toString().trim();
+                    if (volume_val.equals("")) {
+                        volume_val = "1";
+                    }
 
-                    DatabaseReference newItem = mDatabase.child(type_val).push();
-                    newItem.child("Barcode").setValue(barcode_val);
-                    newItem.child("Name").setValue(name_val);
-                    newItem.child("Volume").setValue(volume_val);
-                    newItem.child("Quantity").setValue(quantity_val);
-                    newItem.child("Unit").setValue(unit_val);
-                    newItem.child("Classifier").setValue(pack_val);
-                    newItem.child("RetailPrice").setValue(price_val);
-                    newItem.child("Madein").setValue(madein_val);
-                    newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/Item_Image%2Fno_image_icon_6.png?alt=media&token=72197c0c-2159-4c66-a7de-7dbf6a2da4fb");
-                    newItem.child("SalePriceTops").setValue(priceTops_val);
-                    newItem.child("SalePriceLotus").setValue(priceLotus_val);
-                    newItem.child("Softline").setValue(sofeline_val);
-                    newItem.child("Deadline").setValue(deadline_val);
-                    newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
-                    newItem.child("LowBy").setValue(LowBy_val);
-                    newItem.child("TotalVolume").setValue(totalVolume_val);
+                    final String quantity_val = Quantity;
 
+                    unit_val = Unit.getText().toString().trim();
+
+                    if (unit_val.equals("")) {
+                        unit_val = "1";
+                    }
+
+                    double volume = Double.parseDouble(volume_val);
+                    double unitItem10 = Double.parseDouble(unit_val);
+                    double TotalVolume = volume * unitItem10;
+                    totalVolume_val = TotalVolume + "";
 
 
-                    mProgress.dismiss();
-                    finish();
+                    final String pack_val = Pack;
+
+                    priceTops_val = TopsPrice.getText().toString().trim();
+
+                    if (priceTops_val.equals("")) {
+                        priceTops_val = price_val;
+                    }
+
+                    priceLotus_val = LotusPrice.getText().toString().trim();
+
+                    if (priceLotus_val.equals("")) {
+                        priceLotus_val = price_val;
+                    }
+
+                    priceBigC_val = BigCPrice.getText().toString().trim();
+                    if (priceBigC_val.equals("")) {
+                        priceBigC_val = price_val;
+                    }
+
+                    priceFoodland_val = FoodlandPrice.getText().toString().trim();
+                    if (priceFoodland_val.equals("")) {
+                        priceFoodland_val = price_val;
+                    }
+
+                    priceHomeFreashMart_val = HomeFreashMartPrice.getText().toString().trim();
+                    if (priceHomeFreashMart_val.equals("")) {
+                        priceHomeFreashMart_val = price_val;
+                    }
+                    priceMaxValue_val = MaxValuePrice.getText().toString().trim();
+                    if (priceMaxValue_val.equals("")) {
+                        priceMaxValue_val = price_val;
+                    }
+
+                    priceMakro_val = MakroPrice.getText().toString().trim();
+                    if (priceMakro_val.equals("")) {
+                        priceMakro_val = price_val;
+                    }
+
+
+                    final String madein_val = Madein.getText().toString().trim();
+
+                    sofeline_val = Softline.getText().toString().trim();
+                    if (sofeline_val.equals("")) {
+                        sofeline_val = "0";
+                    }
+
+                    deadline_val = Deadline.getText().toString().trim();
+                    if (deadline_val.equals("")) {
+                        deadline_val = "0";
+                    }
+
+                    decreaseperclick_val = DecreaseperClick.getText().toString().trim();
+                    if (decreaseperclick_val.equals("")) {
+                        decreaseperclick_val = "1";
+                    }
+
+
+                    if (downloadUrl != null && checkLast == 2) {
+
+                        mProgress.setMessage("Adding to inventory . . .");
+                        mProgress.show();
+
+
+                        DatabaseReference newItem = mDatabase.child(name_val);
+                        newItem.child("Barcode").setValue(barcode_val);
+                        newItem.child("Name").setValue(name_val);
+                        newItem.child("Volume").setValue(volume_val);
+                        newItem.child("Quantity").setValue(quantity_val);
+                        newItem.child("Unit").setValue(unit_val);
+                        newItem.child("Classifier").setValue(pack_val);
+                        newItem.child("RetailPrice").setValue(price_val);
+                        newItem.child("Madein").setValue(madein_val);
+                        newItem.child("Image").setValue(downloadUrl.toString());
+                        newItem.child("SalePriceTops").setValue(priceTops_val);
+                        newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                        newItem.child("SalePriceBigC").setValue(priceBigC_val);
+                        newItem.child("SalePriceFoodland").setValue(priceFoodland_val);
+                        newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                        newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                        newItem.child("SalePriceMakro").setValue(priceMakro_val);
+                        newItem.child("Softline").setValue(sofeline_val);
+                        newItem.child("Deadline").setValue(deadline_val);
+                        newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
+                        newItem.child("LowBy").setValue(LowBy_val);
+                        newItem.child("TotalVolume").setValue(totalVolume_val);
+                        newItem.child("AlreadyAddtoShoplist").setValue("false");
+                        newItem.child("VolumeForAdd").setValue("0");
+
+
+
+
+                        mProgress.dismiss();
+                        finish();
+
+
+                    } else if (imageUri != null && checkLast == 1) {
+
+                        mProgress.setMessage("Adding to inventory . . .");
+                        mProgress.show();
+
+                        StorageReference filepath = mStorage.child("Item_Image").child(imageUri.getLastPathSegment());
+
+                        filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                downloadUrl = taskSnapshot.getDownloadUrl();
+
+                                //DatabaseReference newItem = mDatabase.child(type_val).push();
+                                DatabaseReference newItem = mDatabase.child(name_val);
+                                newItem.child("Barcode").setValue(barcode_val);
+                                newItem.child("Name").setValue(name_val);
+                                newItem.child("Volume").setValue(volume_val);
+                                newItem.child("Quantity").setValue(quantity_val);
+                                newItem.child("Unit").setValue(unit_val);
+                                newItem.child("Classifier").setValue(pack_val);
+                                newItem.child("RetailPrice").setValue(price_val);
+                                newItem.child("Madein").setValue(madein_val);
+                                newItem.child("Image").setValue(downloadUrl.toString());
+                                newItem.child("SalePriceTops").setValue(priceTops_val);
+                                newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                                newItem.child("SalePriceBigC").setValue(priceBigC_val);
+                                newItem.child("SalePriceFoodland").setValue(priceFoodland_val);
+                                newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                                newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                                newItem.child("SalePriceMakro").setValue(priceMakro_val);
+                                newItem.child("Softline").setValue(sofeline_val);
+                                newItem.child("Deadline").setValue(deadline_val);
+                                newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
+                                newItem.child("LowBy").setValue(LowBy_val);
+                                newItem.child("TotalVolume").setValue(totalVolume_val);
+                                newItem.child("AlreadyAddtoShoplist").setValue("false");
+                                newItem.child("VolumeForAdd").setValue("0");
+
+
+                                mProgress.dismiss();
+                                finish();
+
+                            }
+                        });
+
+                    } else {
+
+                        mProgress.setMessage("Adding to inventory . . .");
+                        mProgress.show();
+
+                        //TODO set it back to user
+                        DatabaseReference newItem = mDatabase.child(name_val);
+                        newItem.child("Barcode").setValue(barcode_val);
+                        newItem.child("Name").setValue(name_val);
+                        newItem.child("Volume").setValue(volume_val);
+                        newItem.child("Quantity").setValue(quantity_val);
+                        newItem.child("Unit").setValue(unit_val);
+                        newItem.child("Classifier").setValue(pack_val);
+                        newItem.child("RetailPrice").setValue(price_val);
+                        newItem.child("Madein").setValue(madein_val);
+                        newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/add_btn.png?alt=media&token=a85a513d-d01a-487d-9108-0907bfbe34f9");
+                        newItem.child("SalePriceTops").setValue(priceTops_val);
+                        newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                        newItem.child("SalePriceBigC").setValue(priceBigC_val);
+                        newItem.child("SalePriceFoodland").setValue(priceFoodland_val);
+                        newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                        newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                        newItem.child("SalePriceMakro").setValue(priceMakro_val);
+                        newItem.child("Softline").setValue(sofeline_val);
+                        newItem.child("Deadline").setValue(deadline_val);
+                        newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
+                        newItem.child("LowBy").setValue(LowBy_val);
+                        newItem.child("TotalVolume").setValue(totalVolume_val);
+                        newItem.child("AlreadyAddtoShoplist").setValue("false");
+                        newItem.child("VolumeForAdd").setValue("0");
+
+
+                        mProgress.dismiss();
+                        finish();
+                    }
                 }
             }
         });
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

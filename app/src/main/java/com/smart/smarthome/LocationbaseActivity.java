@@ -103,87 +103,7 @@ public class LocationbaseActivity extends AppCompatActivity
         TabHost tabHost = (TabHost) findViewById(R.id.tabhost4);
         tabHost.setup(mLocalActivityManager);
 
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String s) {
 
-                boolean increase = false;
-                boolean remove = false;
-                if (s.equals("Tab1")) {
-                    if (increase == true) {
-                        Tab16.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab16.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab16.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (remove == true) {
-                        Tab16.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab16.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab16.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    } else {
-                        Tab16.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab16.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab16.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    }
-
-                } else if (s.equals("Tab2")) {
-                    if (increase == true) {
-                        Tab17.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab17.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab17.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (remove == true) {
-                        Tab17.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab17.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab17.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    } else {
-                        Tab17.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab17.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab17.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    }
-                } else if (s.equals("Tab3")) {
-                    if (increase == true) {
-                        Tab18.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab18.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab18.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (remove == true) {
-                        Tab18.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab18.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab18.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    } else {
-                        Tab18.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab18.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab18.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    }
-                } else if (s.equals("Tab4")) {
-                    if (increase == true) {
-                        Tab19.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab19.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab19.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (remove == true) {
-                        Tab19.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab19.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab19.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    } else {
-                        Tab19.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab19.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab19.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    }
-                } else if (s.equals("Tab5")) {
-                    if (increase == true) {
-                        Tab20.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_white_24dp);
-                        Tab20.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab20.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    } else if (remove == true) {
-                        Tab20.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab20.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab20.RemoveItem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    } else {
-                        Tab20.IncreaseItem.setImageResource(R.mipmap.ic_arrow_upward_black_24dp);
-                        Tab20.DecreaseItem.setImageResource(R.mipmap.ic_arrow_downward_black_24dp);
-                        Tab20.RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
-                    }
-                }
-
-            }
-        });
 
         TabHost.TabSpec tab1 = tabHost.newTabSpec("Tab1");
         tab1.setIndicator("Food");
@@ -309,11 +229,11 @@ public class LocationbaseActivity extends AppCompatActivity
                                 boolean a = false;
                                 for (int i = 0; i < 100 && i < placeLikelihoodList.size(); i++) {
                                     PlaceLikelihood p = placeLikelihoodList.get(i);
-                                    //Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
-                                    //Log.i(TAG, p.getPlace().getPlaceTypes().toString());
+                                    Log.i(TAG, p.getPlace().getName().toString() + ", likelihood: " + p.getLikelihood());
+                                    Log.i(TAG, p.getPlace().getPlaceTypes().toString());
 
                                     if(p.getPlace().getPlaceTypes().contains(43)){
-                                        Toast.makeText(LocationbaseActivity.this,"Supermarket Near you : " + p.getPlace().getName(), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(LocationbaseActivity.this,"Supermarket Near you : " + p.getPlace().getName(), Toast.LENGTH_SHORT).show();
                                         String g = p.getPlace().getName().toString();
                                         if(g.contains("Tesco")){
                                             String locate = "Lotus";
@@ -326,7 +246,7 @@ public class LocationbaseActivity extends AppCompatActivity
 
                                 }
                                 if(a == false) {
-                                    Toast.makeText(LocationbaseActivity.this,"No Supermarket Nearby", Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(LocationbaseActivity.this,"No Supermarket Nearby", Toast.LENGTH_SHORT).show();
                                     a = false;
 
                                 }
@@ -386,15 +306,19 @@ public class LocationbaseActivity extends AppCompatActivity
         } else if (id == R.id.nav_calculator) {
             Intent bar = new Intent(LocationbaseActivity.this,CalculatorActivity.class);
             startActivity(bar);
+            finish();
         } else if (id == R.id.nav_locationbase) {
             Intent bar = new Intent(LocationbaseActivity.this,LocationbaseActivity.class);
             startActivity(bar);
+            finish();
         } else if (id == R.id.nav_summary) {
             Intent bar = new Intent(LocationbaseActivity.this,SummaryreportActivity.class);
             startActivity(bar);
+            finish();
         } else if (id == R.id.nav_setting) {
             Intent bar = new Intent(LocationbaseActivity.this,SettingActivity.class);
             startActivity(bar);
+            finish();
         }
 
 

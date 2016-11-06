@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="88dp"
     android:weightSum="1"
     android:clickable="true"
     android:focusable="true"
@@ -14,26 +14,86 @@
         android:layout_height="match_parent"
         android:layout_weight="0.25"
         android:src="@mipmap/ic_launcher"/>
-    <TextView
 
-        android:gravity="center"
-        android:id="@+id/nameItem"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:weightSum="1">
+
+
+        <TextView
+
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:id="@+id/nameItem"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+
+            />
+        <TextView
+
+            android:paddingLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="15sp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/volumnItem"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.3" />
-    <TextView
+        android:orientation="vertical"
+        android:layout_weight="0.15"
+        android:weightSum="1"
+        >
 
-        android:gravity="center"
-        android:id="@+id/volumnItem"
-        android:layout_weight="0.3"
+        <ImageButton
+            android:id="@+id/IncreaseImageButton"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:background="#0000"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:src="@mipmap/ic_imageincreasebutton"/>
+
+        <ImageButton
+            android:id="@+id/DecreaseImageButton"
+            android:layout_width="match_parent"
+            android:background="#0000"
+            android:src="@mipmap/ic_minus"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent" />
-    <ImageView
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.10"
+        android:weightSum="1"
+        >
+
+        <ImageView
         android:id="@+id/sign"
         android:background="#ff0008"
-        android:layout_weight="0.15"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
        />
+    </LinearLayout>
 
 </LinearLayout>

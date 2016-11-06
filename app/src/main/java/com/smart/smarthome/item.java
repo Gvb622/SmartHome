@@ -18,16 +18,91 @@ public class item {
     private String RetailPrice;
     private String SalePriceLotus;
     private String SalePriceTops;
+    private String SalePriceBigC;
+    private String SalePriceFoodland;
+    private String SalePriceHomeFreshMart;
+    private String SalePriceMaxValue;
+    private String SalePriceMakro;
     private String Softline;
     private String Deadline;
     private String DecreasePerClick;
     private String LowBy;
     private String TotalVolume;
     private String VolumeForAdd;
+    private String AlreadyAddtoShoplist;
+    private String Shopkey;
+    private String ShopAllkey;
 
 
     public item() {
 
+
+    }
+
+    public String getSalePriceBigC() {
+        return SalePriceBigC;
+    }
+
+    public void setSalePriceBigC(String salePriceBigC) {
+        SalePriceBigC = salePriceBigC;
+    }
+
+    public String getSalePriceFoodland() {
+        return SalePriceFoodland;
+    }
+
+    public void setSalePriceFoodland(String salePriceFoodland) {
+        SalePriceFoodland = salePriceFoodland;
+    }
+
+    public String getSalePriceHomeFreshMart() {
+        return SalePriceHomeFreshMart;
+    }
+
+    public void setSalePriceHomeFreshMart(String salePriceHomeFreshMart) {
+        SalePriceHomeFreshMart = salePriceHomeFreshMart;
+    }
+
+    public String getSalePriceMaxValue() {
+        return SalePriceMaxValue;
+    }
+
+    public void setSalePriceMaxValue(String salePriceMaxValue) {
+        SalePriceMaxValue = salePriceMaxValue;
+    }
+
+    public String getSalePriceMakro() {
+        return SalePriceMakro;
+    }
+
+    public void setSalePriceMakro(String salePriceMakro) {
+        SalePriceMakro = salePriceMakro;
+    }
+
+    public String getShopkey() {
+        return Shopkey;
+    }
+
+
+
+    public void setShopkey(String shopkey) {
+        Shopkey = shopkey;
+    }
+
+    public String getShopAllkey() {
+        return ShopAllkey;
+    }
+
+    public void setShopAllkey(String shopAllkey) {
+        ShopAllkey = shopAllkey;
+    }
+
+    public String getAlreadyAddtoShoplist() {
+        return AlreadyAddtoShoplist;
+    }
+
+    public void setAlreadyAddtoShoplist(String alreadyAddtoShoplist) {
+        AlreadyAddtoShoplist = alreadyAddtoShoplist;
     }
 
     public String getVolumeForAdd() {

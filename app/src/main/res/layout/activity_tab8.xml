@@ -36,7 +36,6 @@
         android:clickable="true"
         android:focusable="true"
         android:background="#FAFAFA"
-        android:layout_above="@+id/bottom"
         android:layout_below="@+id/Top"
         android:id="@+id/item_listShopping"
         android:layout_width="match_parent"
@@ -44,45 +43,6 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
-        android:id="@+id/bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
 
-
-        <ImageButton
-            android:id="@+id/Additem2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background= "@color/colorPrimaryDark"
-            android:src="@mipmap/ic_add_black_24dp"/>
-        <ImageButton
-            android:id="@+id/IncreaseItem2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background= "@color/colorPrimaryDark"
-            android:src="@mipmap/ic_arrow_upward_black_24dp"
-            />
-        <ImageButton
-            android:id="@+id/DecreaseItem2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background= "@color/colorPrimaryDark"
-            android:src="@mipmap/ic_arrow_downward_black_24dp"/>
-        <ImageButton
-            android:id="@+id/RemoveItem2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background="@color/colorPrimaryDark"
-            android:src="@mipmap/ic_clear_black_24dp"/>
-
-    </LinearLayout>
 
 </RelativeLayout>

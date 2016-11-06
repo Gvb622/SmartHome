@@ -7,17 +7,79 @@ public class Shoplistitem {
     private String ItemImage;
     private String ItemName;
     private String ItemPrice;
-    private String ItemVolumn;
+    private Double ItemVolumn;
     private String Type;
     private String ItemClassifier;
     private String Key;
     private String ItemTopsPrice;
     private String ItemLotusPrice;
+    private String ItemBigCPrice;
+    private String ItemFoodLandPrice;
+    private String ItemHomeFreshMartPrice;
+    private String ItemMaxValuePrice;
+    private String ItemMakroPrice;
     private String KeyAll;
     private String ItemShopsPrice;
     private String ShopCheapest;
+    private long ShopCheapestNum;
 
     public Shoplistitem() {
+    }
+
+    public String getItemBigCPrice() {
+        return ItemBigCPrice;
+    }
+
+    public void setItemBigCPrice(String itemBigCPrice) {
+        ItemBigCPrice = itemBigCPrice;
+    }
+
+    public String getItemFoodLandPrice() {
+        return ItemFoodLandPrice;
+    }
+
+    public void setItemFoodLandPrice(String itemFoodLandPrice) {
+        ItemFoodLandPrice = itemFoodLandPrice;
+    }
+
+    public String getItemHomeFreshMartPrice() {
+        return ItemHomeFreshMartPrice;
+    }
+
+    public void setItemHomeFreshMartPrice(String itemHomeFreshMartPrice) {
+        ItemHomeFreshMartPrice = itemHomeFreshMartPrice;
+    }
+
+    public String getItemMaxValuePrice() {
+        return ItemMaxValuePrice;
+    }
+
+    public void setItemMaxValuePrice(String itemMaxValuePrice) {
+        ItemMaxValuePrice = itemMaxValuePrice;
+    }
+
+    public String getItemMakroPrice() {
+        return ItemMakroPrice;
+    }
+
+    public void setItemMakroPrice(String itemMakroPrice) {
+        ItemMakroPrice = itemMakroPrice;
+    }
+
+    public long getShopCheapestNum() {
+        return ShopCheapestNum;
+    }
+
+    public void setShopCheapestNum(long shopCheapestNum) {
+        ShopCheapestNum = shopCheapestNum;
+    }
+
+    public String getShopCheapest() {
+        return ShopCheapest;
+    }
+
+    public void setShopCheapest(String shopCheapest) {
+        ShopCheapest = shopCheapest;
     }
 
     public String getKeyAll() {
@@ -92,11 +154,11 @@ public class Shoplistitem {
         ItemPrice = itemPrice;
     }
 
-    public String getItemVolumn() {
+    public Double getItemVolumn() {
         return ItemVolumn;
     }
 
-    public void setItemVolumn(String itemVolumn) {
+    public void setItemVolumn(Double itemVolumn) {
         ItemVolumn = itemVolumn;
     }
 

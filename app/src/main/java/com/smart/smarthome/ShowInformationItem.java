@@ -52,6 +52,11 @@ public class ShowInformationItem extends AppCompatActivity {
     private EditText Volumn;
     private EditText TopsPrice;
     private EditText LotusPrice;
+    private EditText BigCPrice;
+    private EditText FoodlandPrice;
+    private EditText HomeFreashMartPrice;
+    private EditText MaxValuePrice;
+    private EditText MakroPrice;
     private String image;
     private Button Submit;
     private Uri imageUri = null;
@@ -63,7 +68,16 @@ public class ShowInformationItem extends AppCompatActivity {
     String price_val;
     String priceTops_val;
     String priceLotus_val;
+    String priceBigC_val;
+    String priceFoodland_val;
+    String priceHomeFreashMart_val;
+    String priceMaxValue_val;
+    String priceMakro_val;
     String totalVolume_val;
+
+    String shopkey ;
+    String shopkeyall;
+    FirebaseUser user;
 
 
     Spinner staticSpinner;
@@ -131,6 +145,12 @@ public class ShowInformationItem extends AppCompatActivity {
         Volumn = (EditText) findViewById(R.id.addVolumeEdit);
         TopsPrice = (EditText) findViewById(R.id.addPriceTopsEdit);
         LotusPrice = (EditText) findViewById(R.id.addPriceLotusEdit);
+        BigCPrice = (EditText) findViewById(R.id.addPriceBigCEdit);
+        FoodlandPrice = (EditText) findViewById(R.id.addPriceFoodlandEdit);
+        HomeFreashMartPrice = (EditText) findViewById(R.id.addPriceHomeFreshMartEdit);
+        MaxValuePrice = (EditText) findViewById(R.id.addPriceMaxValueEdit);
+        MakroPrice = (EditText) findViewById(R.id.addPriceMakroEdit);
+
 
 
         mProgress = new ProgressDialog(this);
@@ -246,7 +266,7 @@ public class ShowInformationItem extends AppCompatActivity {
 
         mStorage = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items").child(type2).child(value);
         mDatabase2 = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
 
@@ -315,9 +335,16 @@ public class ShowInformationItem extends AppCompatActivity {
                 image = i2.getImage();
                 TopsPrice.setText(i2.getSalePriceTops());
                 LotusPrice.setText(i2.getSalePriceLotus());
+                BigCPrice.setText(i2.getSalePriceBigC());
+                FoodlandPrice.setText(i2.getSalePriceFoodland());
+                HomeFreashMartPrice.setText(i2.getSalePriceHomeFreshMart());
+                MaxValuePrice.setText(i2.getSalePriceMaxValue());
+                MakroPrice.setText(i2.getSalePriceMakro());
                 Softline.setText(i2.getSoftline());
                 Deadline.setText(i2.getDeadline());
                 DecreaseperClick.setText(i2.getDecreasePerClick());
+                shopkey = i2.getShopkey();
+                shopkeyall = i2.getShopAllkey();
 
 
             }
@@ -422,6 +449,29 @@ public class ShowInformationItem extends AppCompatActivity {
                 if(priceLotus_val.equals("")){
                     priceLotus_val = price_val;
                 }
+                priceBigC_val = BigCPrice.getText().toString().trim();
+                if (priceBigC_val.equals("")) {
+                    priceBigC_val = price_val;
+                }
+
+                priceFoodland_val = FoodlandPrice.getText().toString().trim();
+                if (priceFoodland_val.equals("")) {
+                    priceFoodland_val = price_val;
+                }
+
+                priceHomeFreashMart_val = HomeFreashMartPrice.getText().toString().trim();
+                if (priceHomeFreashMart_val.equals("")) {
+                    priceHomeFreashMart_val = price_val;
+                }
+                priceMaxValue_val = MaxValuePrice.getText().toString().trim();
+                if (priceMaxValue_val.equals("")) {
+                    priceMaxValue_val = price_val;
+                }
+
+                priceMakro_val = MakroPrice.getText().toString().trim();
+                if (priceMakro_val.equals("")) {
+                    priceMakro_val = price_val;
+                }
 
                 sofeline_val = Softline.getText().toString().trim();
                 if(sofeline_val.equals("")){
@@ -457,15 +507,34 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("Image").setValue(image);
                         newItem2.child("SalePriceTops").setValue(priceTops_val);
                         newItem2.child("SalePriceLotus").setValue(priceLotus_val);
+                        newItem2.child("SalePriceBigC").setValue(priceBigC_val);
+                        newItem2.child("SalePriceFoodland").setValue(priceFoodland_val);
+                        newItem2.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                        newItem2.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                        newItem2.child("SalePriceMakro").setValue(priceMakro_val);
                         newItem2.child("Softline").setValue(sofeline_val);
                         newItem2.child("Deadline").setValue(deadline_val);
                         newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
                         newItem2.child("LowBy").setValue(LowBy_val);
-                            newItem2.child("TotalVolume").setValue(totalVolume_val);
+                        newItem2.child("TotalVolume").setValue(totalVolume_val);
+                        newItem2.child("AlreadyAddtoShoplist").setValue("false");
+                        newItem2.child("VolumeForAdd").setValue("0");
 
+
+                        DatabaseReference shopall = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
+                                .child("all").child(shopkeyall);
+                        DatabaseReference shopl = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
+                                .child(type2).child(shopkey);
+
+                        shopall.removeValue();
+                        shopl.removeValue();
                         mProgress.dismiss();
                         mDatabase.removeValue();
+
+
                         finish();
+
+                        startActivity(new Intent(ShowInformationItem.this, MainActivity.class));
 
                     }else if(imageUri != null && checkLast == 1){
 
@@ -491,6 +560,11 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem2.child("Image").setValue(downloadUrl.toString());
                                 newItem2.child("SalePriceTops").setValue(priceTops_val);
                                 newItem2.child("SalePriceLotus").setValue(priceLotus_val);
+                                newItem2.child("SalePriceBigC").setValue(priceBigC_val);
+                                newItem2.child("SalePriceFoodland").setValue(priceFoodland_val);
+                                newItem2.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                                newItem2.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                                newItem2.child("SalePriceMakro").setValue(priceMakro_val);
                                 newItem2.child("Softline").setValue(sofeline_val);
                                 newItem2.child("Deadline").setValue(deadline_val);
                                 newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
@@ -519,6 +593,11 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("Image").setValue(downloadUrl.toString());
                         newItem2.child("SalePriceTops").setValue(priceTops_val);
                         newItem2.child("SalePriceLotus").setValue(priceLotus_val);
+                        newItem2.child("SalePriceBigC").setValue(priceBigC_val);
+                        newItem2.child("SalePriceFoodland").setValue(priceFoodland_val);
+                        newItem2.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                        newItem2.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                        newItem2.child("SalePriceMakro").setValue(priceMakro_val);
                         newItem2.child("Softline").setValue(sofeline_val);
                         newItem2.child("Deadline").setValue(deadline_val);
                         newItem2.child("DecreasePerClick").setValue(decreaseperclick_val);
@@ -547,6 +626,11 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("Image").setValue(downloadUrl.toString());
                         newItem.child("SalePriceTops").setValue(priceTops_val);
                         newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                        newItem.child("SalePriceBigC").setValue(priceBigC_val);
+                        newItem.child("SalePriceFoodland").setValue(priceFoodland_val);
+                        newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                        newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                        newItem.child("SalePriceMakro").setValue(priceMakro_val);
                         newItem.child("Softline").setValue(sofeline_val);
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
@@ -582,6 +666,11 @@ public class ShowInformationItem extends AppCompatActivity {
                                 newItem.child("Image").setValue(downloadUrl.toString());
                                 newItem.child("SalePriceTops").setValue(priceTops_val);
                                 newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                                newItem.child("SalePriceBigC").setValue(priceBigC_val);
+                                newItem.child("SalePriceFoodland").setValue(priceFoodland_val);
+                                newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                                newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                                newItem.child("SalePriceMakro").setValue(priceMakro_val);
                                 newItem.child("Softline").setValue(sofeline_val);
                                 newItem.child("Deadline").setValue(deadline_val);
                                 newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
@@ -612,6 +701,11 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem.child("Image").setValue(image);
                         newItem.child("SalePriceTops").setValue(priceTops_val);
                         newItem.child("SalePriceLotus").setValue(priceLotus_val);
+                        newItem.child("SalePriceBigC").setValue(priceBigC_val);
+                        newItem.child("SalePriceFoodland").setValue(priceFoodland_val);
+                        newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
+                        newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
+                        newItem.child("SalePriceMakro").setValue(priceMakro_val);
                         newItem.child("Softline").setValue(sofeline_val);
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
