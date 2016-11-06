@@ -271,6 +271,9 @@ public class MainActivity extends AppCompatActivity
         FirebaseUser user = firebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView userid = (TextView) headerView.findViewById(R.id.textView);
+        userid.setText(user.getEmail());
 
         if (firebaseAuth.getCurrentUser() == null) {
             finish();

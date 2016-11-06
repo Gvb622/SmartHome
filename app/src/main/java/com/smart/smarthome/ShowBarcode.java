@@ -791,9 +791,9 @@ public class ShowBarcode extends AppCompatActivity {
                         if(dataSnapshot.getChildrenCount() == 0){
                             Toast.makeText(ShowBarcode.this, "Barcode not Match in Database", Toast.LENGTH_LONG).show();
                             AlertDialog.Builder builder2 = new AlertDialog.Builder(ShowBarcode.this);
-                            builder2.setTitle("No item match in Database");
-                            builder2.setMessage("Scan Again ");
-                            builder2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            builder2.setTitle("Your barcode is " + barcodeValue);
+                            builder2.setMessage("This item don't have in Database. ");
+                            builder2.setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     Intent intent = new Intent(ShowBarcode.this, BarcodeCaptureActivity.class);
@@ -816,7 +816,7 @@ public class ShowBarcode extends AppCompatActivity {
 
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(ShowBarcode.this);
-                                builder.setTitle("OK ?");
+                                builder.setTitle("Your Barcide is :");
                                 builder.setMessage(barcodeValue);
                                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     @Override

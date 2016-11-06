@@ -75,35 +75,120 @@
         android:weightSum="1">
 
 
-        <ImageButton
-            android:id="@+id/Additem2"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background= "@color/colorPrimaryDark"
-            android:src="@mipmap/ic_add_black_24dp"/>
-        <ImageButton
-            android:id="@+id/IncreaseItem2"
+            android:layout_weight="0.25">
+
+            <ImageButton
+                android:id="@+id/Additem2"
+                android:paddingBottom="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background= "@color/colorPrimaryDark"
+                android:src="@mipmap/ic_add_black_24dp"/>
+
+            <TextView
+                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity = "bottom|center"
+                android:text="Add Item"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black_semi_transparent"
+
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background= "@color/colorPrimaryDark"
-            android:src="@mipmap/ic_arrow_upward_black_24dp"
+            android:layout_weight="0.25">
+
+            <ImageButton
+                android:id="@+id/IncreaseItem2"
+                android:paddingBottom="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background= "@color/colorPrimaryDark"
+                android:src="@mipmap/ic_launcherautoupdate"
+                />
+
+            <TextView
+                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity = "bottom|center"
+                android:text="AutoUpdate"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black_semi_transparent"
+
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25">
+
+            <ImageButton
+                android:id="@+id/DecreaseItem2"
+                android:paddingBottom="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background= "@color/colorPrimaryDark"
+                android:src="@mipmap/ic_launcherbankpig"/>
+
+            <TextView
+                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity = "bottom|center"
+                android:text="Cheap Shop"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/black_semi_transparent"
+
+                />
+
             />
-        <ImageButton
-            android:id="@+id/DecreaseItem2"
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background= "@color/colorPrimaryDark"
-            android:src="@mipmap/ic_arrow_downward_black_24dp"/>
-        <ImageButton
-            android:id="@+id/RemoveItem2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.25"
-            android:background="@color/colorPrimaryDark"
-            android:src="@mipmap/ic_clear_black_24dp"/>
+            android:layout_weight="0.25">
+
+            <ImageButton
+                android:id="@+id/RemoveItem2"
+                android:paddingBottom="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:src="@mipmap/ic_clear_black_24dp"/>
+
+
+
+            <TextView
+                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity = "bottom|center"
+                android:text="Delete Item"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black_semi_transparent"
+
+                />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

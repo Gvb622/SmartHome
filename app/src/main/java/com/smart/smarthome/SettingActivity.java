@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -57,6 +59,10 @@ public class SettingActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView userid = (TextView) headerView.findViewById(R.id.textView);
+        userid.setText(user.getEmail());
+
         logout = (Button) findViewById(R.id.buttonLogout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +72,7 @@ public class SettingActivity extends AppCompatActivity
                 startActivity(new Intent(SettingActivity.this, LoginActivity.class));
             }
         });
+
     }
 
     @Override

@@ -173,6 +173,11 @@ public class ShoppinglistShowlistActivity extends AppCompatActivity
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView userid = (TextView) headerView.findViewById(R.id.textView);
+        userid.setText(user.getEmail());
     }
 
     @Override

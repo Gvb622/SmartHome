@@ -422,7 +422,7 @@ public class AddItemActivity extends AppCompatActivity {
                         mProgress.show();
 
 
-                        DatabaseReference newItem = mDatabase.child(name_val);
+                        DatabaseReference newItem = mDatabase.child(type_val).push();
                         newItem.child("Barcode").setValue(barcode_val);
                         newItem.child("Name").setValue(name_val);
                         newItem.child("Volume").setValue(volume_val);
@@ -467,8 +467,7 @@ public class AddItemActivity extends AppCompatActivity {
 
                                 downloadUrl = taskSnapshot.getDownloadUrl();
 
-                                //DatabaseReference newItem = mDatabase.child(type_val).push();
-                                DatabaseReference newItem = mDatabase.child(name_val);
+                                DatabaseReference newItem = mDatabase.child(type_val).push();
                                 newItem.child("Barcode").setValue(barcode_val);
                                 newItem.child("Name").setValue(name_val);
                                 newItem.child("Volume").setValue(volume_val);
@@ -506,7 +505,8 @@ public class AddItemActivity extends AppCompatActivity {
                         mProgress.show();
 
                         //TODO set it back to user
-                        DatabaseReference newItem = mDatabase.child(name_val);
+
+                        DatabaseReference newItem = mDatabase.child(type_val).push();
                         newItem.child("Barcode").setValue(barcode_val);
                         newItem.child("Name").setValue(name_val);
                         newItem.child("Volume").setValue(volume_val);

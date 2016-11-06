@@ -40,6 +40,18 @@
             android:layout_weight="0.4"
             />
 
+        <TextView
+            android:text="Status"
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="#f1f1f1"
+
+            android:layout_weight="0.35"
+            />
+
 
     </LinearLayout>
 
