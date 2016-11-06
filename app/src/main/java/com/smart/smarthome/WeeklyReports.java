@@ -2,9 +2,11 @@ package com.smart.smarthome;
 
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -164,17 +166,25 @@ public class WeeklyReports  extends ActionBarActivity {
         }
 
         private void generateDefaultData() {
-
+            int numSubcolumns = 1;
             int numColumns = 4;
             // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
             List<Column> columns = new ArrayList<Column>();
             List<SubcolumnValue> values;
-            int temp[]={50,60,70,80}; //set value HERE!!
-
+            int temp[]={50,60,70,80,87,90,48,89}; //set value HERE!!
+            int c=0,c1=1;
             for (int i = 0; i < numColumns; ++i) {
 
                 values = new ArrayList<SubcolumnValue>();
-                values.add(new SubcolumnValue(temp[i], ChartUtils.pickColor()));
+                for (int j = 0; j < numSubcolumns; ++j) {
+                    values.add(new SubcolumnValue(temp[c],  Color.parseColor("#EF5350")));
+                    c=c+2;
+                    values.add(new SubcolumnValue(temp[c1],  Color.parseColor("#42A5F5")));
+                    c1=c1+2;
+                }
+
+
+
 
                 Column column = new Column(values);
                 column.setHasLabels(hasLabels);
@@ -212,6 +222,46 @@ public class WeeklyReports  extends ActionBarActivity {
 
         }
 
+        private void generateSubcolumnsData() {
+            int numSubcolumns = 4;
+            int numColumns = 4;
+            // Column can have many subcolumns, here I use 4 subcolumn in each of 8 columns.
+            List<Column> columns = new ArrayList<Column>();
+            List<SubcolumnValue> values;
+            for (int i = 0; i < numColumns; ++i) {
+
+                values = new ArrayList<SubcolumnValue>();
+                for (int j = 0; j < numSubcolumns; ++j) {
+                    values.add(new SubcolumnValue((float) Math.random() * 50f + 5, ChartUtils.pickColor()));
+                }
+
+                Column column = new Column(values);
+                column.setHasLabels(hasLabels);
+                column.setHasLabelsOnlyForSelected(hasLabelForSelected);
+                columns.add(column);
+            }
+
+            data = new ColumnChartData(columns);
+
+            if (hasAxes) {
+                Axis axisX = new Axis();
+                Axis axisY = new Axis().setHasLines(true);
+                if (hasAxesNames) {
+                    axisX.setName("Axis X");
+                    axisY.setName("Axis Y");
+                }
+                data.setAxisXBottom(axisX);
+                data.setAxisYLeft(axisY);
+            } else {
+                data.setAxisXBottom(null);
+                data.setAxisYLeft(null);
+            }
+
+            chart.setColumnChartData(data);
+
+        }
+
+
 
         private int getSign() {
             int[] sign = new int[]{-1, 1};
@@ -223,10 +273,10 @@ public class WeeklyReports  extends ActionBarActivity {
                 case DEFAULT_DATA:
                     generateDefaultData();
                     break;
-              /*  case SUBCOLUMNS_DATA:
+               case SUBCOLUMNS_DATA:
                     generateSubcolumnsData();
                     break;
-                case STACKED_DATA:
+               /* case STACKED_DATA:
                     generateStackedData();
                     break;
                 case NEGATIVE_SUBCOLUMNS_DATA:

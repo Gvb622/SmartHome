@@ -1,5 +1,6 @@
 package com.smart.smarthome;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -166,12 +167,20 @@ public class DailyReports extends ActionBarActivity {
             // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
             List<Column> columns = new ArrayList<Column>();
             List<SubcolumnValue> values;
-            int temp[]={50,60,70,80,55,76,46}; //set value HERE!!
-
+            int temp[]={50,60,70,80,55,76,46,50,60,70,80,55,76,46}; //set value HERE!!
+            int c=0,c1=1;
             for (int i = 0; i < numColumns; ++i) {
 
                 values = new ArrayList<SubcolumnValue>();
-                values.add(new SubcolumnValue(temp[i], ChartUtils.pickColor()));
+                for (int j = 0; j < numSubcolumns; ++j) {
+                    values.add(new SubcolumnValue(temp[c],  Color.parseColor("#EF5350")));
+                    c=c+2;
+                    values.add(new SubcolumnValue(temp[c1],  Color.parseColor("#42A5F5")));
+                    c1=c1+2;
+                }
+
+
+
 
                 Column column = new Column(values);
                 column.setHasLabels(hasLabels);
@@ -179,9 +188,8 @@ public class DailyReports extends ActionBarActivity {
                 columns.add(column);
             }
 
+
             data = new ColumnChartData(columns);
-
-
 
             if (hasAxes) {
                 ArrayList<AxisValue> vals = new ArrayList<AxisValue>();

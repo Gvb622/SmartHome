@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,7 +6,24 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
    >
+    <TextView
+        android:layout_marginTop="10dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--- Blue = Retail price"
+        android:textColor="#42A5F5"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--- Red = Sale price"
+        android:layout_marginBottom="10dp"
+        android:textColor="#EF5350"
+        />
+
 
     <lecho.lib.hellocharts.view.ColumnChartView
         android:id="@+id/chart"
@@ -14,4 +31,4 @@
         android:layout_height="match_parent" >
     </lecho.lib.hellocharts.view.ColumnChartView>
 
-</RelativeLayout>
+</LinearLayout>
