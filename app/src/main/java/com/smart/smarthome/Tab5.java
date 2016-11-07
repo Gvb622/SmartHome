@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -101,7 +102,6 @@ public class Tab5 extends AppCompatActivity {
                 MainActivity.removeitem = r;
                 if(r == true){
                     Removeitem.setImageResource(R.mipmap.ic_clear_white_24dp);
-                    attachRecyclerViewAdapter();
                     Toast.makeText(Tab5.this, "Plese click on item that you want to delete",Toast.LENGTH_LONG).show();
 
 
@@ -136,6 +136,34 @@ public class Tab5 extends AppCompatActivity {
             }
 
         });
+
+        mDatabase.child("Etc").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                attachRecyclerViewAdapter();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                attachRecyclerViewAdapter();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 

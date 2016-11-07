@@ -123,6 +123,14 @@ public class Tab8 extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Tab8.this);
                         builder.setTitle("The Shop that sale in Cheapest Price");
+                        TotalRetailPrice = 0;
+                        TotalTopsPrice = 0;
+                        TotalLotusPrice = 0;
+                        TotalBigCPrice = 0;
+                        TotalFoodlandPrice = 0;
+                        TotalHomeFreshMartPrice = 0;
+                        TotalMaxValuePrice = 0;
+                        TotalMakroPrice = 0;
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                             Shoplistitem shopitem = postSnapshot.getValue(Shoplistitem.class);
@@ -269,178 +277,217 @@ public class Tab8 extends AppCompatActivity {
 
                 RemoveItem.setImageResource(R.mipmap.ic_clear_black_24dp);
 
-                CharSequence priceItem[] = new CharSequence[]{"Tops", "Lotus", "BigC", "Foodland", "Home Fresh Mart", "MaxValue", "Makro"};
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(Tab8.this);
-                builder2.setTitle("Choose Shop that You buy");
-                builder2.setItems(priceItem, new DialogInterface.OnClickListener() {
+                pType.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        if (which == 0) {
-                            AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
-                            builder3.setTitle("Shop you buy item");
-                            builder3.setMessage("You buy item from Tops");
-                            builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    updateAll("Food and Ingredients", "Tops");
-                                    updateAll("Beverage and Drink Powder", "Tops");
-                                    updateAll("Health and Beauty", "Tops");
-                                    updateAll("Household Product", "Tops");
-                                    updateAll("Etc", "Tops");
-                                }
-                            });
-                            builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            builder3.show();
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                        } else if (which == 1) {
-                            AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
-                            builder3.setTitle("Shop you buy item");
-                            builder3.setMessage("You buy item from Lotus");
-                            builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    updateAll("Food and Ingredients", "Lotus");
-                                    updateAll("Beverage and Drink Powder", "Lotus");
-                                    updateAll("Health and Beauty", "Lotus");
-                                    updateAll("Household Product", "Lotus");
-                                    updateAll("Etc", "Lotus");
-                                }
-                            });
-                            builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            builder3.show();
+                            Shoplistitem shopitem = postSnapshot.getValue(Shoplistitem.class);
+                            double retail = Double.parseDouble(shopitem.getItemPrice());
+                            double tops = Double.parseDouble(shopitem.getItemTopsPrice());
+                            double lotus = Double.parseDouble(shopitem.getItemLotusPrice());
+                            double bigC = Double.parseDouble(shopitem.getItemBigCPrice());
+                            double foodland = Double.parseDouble(shopitem.getItemFoodLandPrice());
+                            double homefreshmart = Double.parseDouble(shopitem.getItemHomeFreshMartPrice());
+                            double maxValue = Double.parseDouble(shopitem.getItemMaxValuePrice());
+                            double makro = Double.parseDouble(shopitem.getItemMakroPrice());
 
-                        } else if (which == 2) {
-                            AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
-                            builder3.setTitle("Shop you buy item");
-                            builder3.setMessage("You buy item from BigC");
-                            builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    updateAll("Food and Ingredients", "BigC");
-                                    updateAll("Beverage and Drink Powder", "BigC");
-                                    updateAll("Health and Beauty", "BigC");
-                                    updateAll("Household Product", "BigC");
-                                    updateAll("Etc", "Lotus");
-                                }
-                            });
-                            builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            builder3.show();
-
-                        } else if (which == 3) {
-                            AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
-                            builder3.setTitle("Shop you buy item");
-                            builder3.setMessage("You buy item from Foodland");
-                            builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    updateAll("Food and Ingredients", "Foodland");
-                                    updateAll("Beverage and Drink Powder", "Foodland");
-                                    updateAll("Health and Beauty", "Foodland");
-                                    updateAll("Household Product", "Foodland");
-                                    updateAll("Etc", "Foodland");
-                                }
-                            });
-                            builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            builder3.show();
-
-                        } else if (which == 4) {
-                            AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
-                            builder3.setTitle("Shop you buy item");
-                            builder3.setMessage("You buy item from Home Fresh Mart");
-                            builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    updateAll("Food and Ingredients", "HomeFreshMart");
-                                    updateAll("Beverage and Drink Powder", "HomeFreshMart");
-                                    updateAll("Health and Beauty", "HomeFreshMart");
-                                    updateAll("Household Product", "HomeFreshMart");
-                                    updateAll("Etc", "HomeFreshMart");
-                                }
-                            });
-                            builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            builder3.show();
-
-                        } else if (which == 5) {
-                            AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
-                            builder3.setTitle("Shop you buy item");
-                            builder3.setMessage("You buy item from MaxValue");
-                            builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    updateAll("Food and Ingredients", "MaxValue");
-                                    updateAll("Beverage and Drink Powder", "MaxValue");
-                                    updateAll("Health and Beauty", "MaxValue");
-                                    updateAll("Household Product", "MaxValue");
-                                    updateAll("Etc", "MaxValue");
-                                }
-                            });
-                            builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            builder3.show();
-
-                        } else if (which == 6) {
-                            AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
-                            builder3.setTitle("Shop you buy item");
-                            builder3.setMessage("You buy item from Makro");
-                            builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    updateAll("Food and Ingredients", "Makro");
-                                    updateAll("Beverage and Drink Powder", "Makro");
-                                    updateAll("Health and Beauty", "Makro");
-                                    updateAll("Household Product", "Makro");
-                                    updateAll("Etc", "Makro");
-                                }
-                            });
-                            builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            builder3.show();
-
+                            TotalRetailPrice += retail * shopitem.getItemVolumn();
+                            TotalTopsPrice += tops * shopitem.getItemVolumn();
+                            TotalLotusPrice += lotus * shopitem.getItemVolumn();
+                            TotalBigCPrice += bigC * shopitem.getItemVolumn();
+                            TotalFoodlandPrice += foodland * shopitem.getItemVolumn();
+                            TotalHomeFreshMartPrice += homefreshmart * shopitem.getItemVolumn();
+                            TotalMaxValuePrice += maxValue * shopitem.getItemVolumn();
+                            TotalMakroPrice += makro * shopitem.getItemVolumn();
                         }
 
-                    }
-                });
-                builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                builder2.show();
+                        CharSequence priceItem[] = new CharSequence[] {"Tops" , "Lotus" , "BigC" , "Foodland", "Home Fresh Mart" , "MaxValue", "Makro"};
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(Tab8.this);
+                        builder2.setTitle("Choose Shop that You buy");
+                        builder2.setItems(priceItem, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which) {
+                                if(which == 0){
+                                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
+                                    builder3.setTitle("You buy item from Tops");
+                                    builder3.setMessage("Price is " + TotalTopsPrice);
+                                    builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            updateAll("Food and Ingredients","Tops");
+                                            updateAll("Beverage and Drink Powder","Tops");
+                                            updateAll("Health and Beauty","Tops");
+                                            updateAll("Household Product","Tops");
+                                            updateAll("Etc","Tops");
+                                        }
+                                    });
+                                    builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    builder3.show();
 
+                                }else if(which == 1){
+                                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
+                                    builder3.setTitle("You buy item from Lotus");
+                                    builder3.setMessage("Price is " + TotalLotusPrice);
+                                    builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            updateAll("Food and Ingredients","Lotus");
+                                            updateAll("Beverage and Drink Powder","Lotus");
+                                            updateAll("Health and Beauty","Lotus");
+                                            updateAll("Household Product","Lotus");
+                                            updateAll("Etc","Lotus");
+                                        }
+                                    });
+                                    builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    builder3.show();
+
+                                }else if(which == 2){
+                                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
+                                    builder3.setTitle("You buy item from BigC");
+                                    builder3.setMessage("Price is " + TotalBigCPrice);
+                                    builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            updateAll("Food and Ingredients","BigC");
+                                            updateAll("Beverage and Drink Powder","BigC");
+                                            updateAll("Health and Beauty","BigC");
+                                            updateAll("Household Product","BigC");
+                                            updateAll("Etc","Lotus");
+                                        }
+                                    });
+                                    builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    builder3.show();
+
+                                }else if(which == 3){
+                                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
+                                    builder3.setTitle("You buy item from Foodland");
+                                    builder3.setMessage("Price is " + TotalFoodlandPrice);
+                                    builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            updateAll("Food and Ingredients","Foodland");
+                                            updateAll("Beverage and Drink Powder","Foodland");
+                                            updateAll("Health and Beauty","Foodland");
+                                            updateAll("Household Product","Foodland");
+                                            updateAll("Etc","Foodland");
+                                        }
+                                    });
+                                    builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    builder3.show();
+
+                                }else if(which == 4){
+                                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
+                                    builder3.setTitle("You buy item from Home Fresh Mart");
+                                    builder3.setMessage("Price is " + TotalHomeFreshMartPrice);
+                                    builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            updateAll("Food and Ingredients","HomeFreshMart");
+                                            updateAll("Beverage and Drink Powder","HomeFreshMart");
+                                            updateAll("Health and Beauty","HomeFreshMart");
+                                            updateAll("Household Product","HomeFreshMart");
+                                            updateAll("Etc","HomeFreshMart");
+                                        }
+                                    });
+                                    builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    builder3.show();
+
+                                }else if(which == 5){
+                                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
+                                    builder3.setTitle("You buy item from MaxValue");
+                                    builder3.setMessage("Price is " + TotalMaxValuePrice);
+                                    builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            updateAll("Food and Ingredients","MaxValue");
+                                            updateAll("Beverage and Drink Powder","MaxValue");
+                                            updateAll("Health and Beauty","MaxValue");
+                                            updateAll("Household Product","MaxValue");
+                                            updateAll("Etc","MaxValue");
+                                        }
+                                    });
+                                    builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    builder3.show();
+
+                                }else if(which == 6){
+                                    AlertDialog.Builder builder3 = new AlertDialog.Builder(Tab8.this);
+                                    builder3.setTitle("You buy item from Makro");
+                                    builder3.setMessage("Price is " + TotalMakroPrice);
+                                    builder3.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            updateAll("Food and Ingredients","Makro");
+                                            updateAll("Beverage and Drink Powder","Makro");
+                                            updateAll("Health and Beauty","Makro");
+                                            updateAll("Household Product","Makro");
+                                            updateAll("Etc","Makro");
+                                        }
+                                    });
+                                    builder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    });
+                                    builder3.show();
+                                }
+
+                            }
+                        });
+                        builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        builder2.show();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                TotalRetailPrice = 0;
+                TotalTopsPrice = 0;
+                TotalLotusPrice = 0;
+                TotalBigCPrice = 0;
+                TotalFoodlandPrice = 0;
+                TotalHomeFreshMartPrice = 0;
+                TotalMaxValuePrice = 0;
+                TotalMakroPrice = 0;
 
             }
         });

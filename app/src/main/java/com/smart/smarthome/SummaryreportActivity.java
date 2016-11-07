@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.icu.util.Calendar;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +33,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -46,6 +49,7 @@ public class SummaryreportActivity extends AppCompatActivity
 
     static public String begindate;
     static public String untildate;
+    static public String month;
     private DatabaseReference mDatabase;
     private FirebaseAuth firebaseAuth;
     double saleprice2;
@@ -53,6 +57,10 @@ public class SummaryreportActivity extends AppCompatActivity
     TextView saleprice;
     TextView retailprice;
     TextView savemoney;
+    boolean buttononeclick = false;
+    boolean buttontwoclick = false;
+    FirebaseUser user;
+
 
 
 
@@ -90,7 +98,6 @@ public class SummaryreportActivity extends AppCompatActivity
                 dpd.setAccentColor(Color.parseColor("#d32f2f"));
                 dpd.setTitle("Pick Begin date");
                 dpd.setMaxDate(now);
-
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
@@ -117,7 +124,7 @@ public class SummaryreportActivity extends AppCompatActivity
             }
         });
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -158,8 +165,20 @@ public class SummaryreportActivity extends AppCompatActivity
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tt = new Intent (SummaryreportActivity.this,WeeklyReports.class);
-                startActivity(tt);
+
+                currentButton = 3;
+                java.util.Calendar now = java.util.Calendar.getInstance();
+                com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+                        SummaryreportActivity.this,
+                        now.get(java.util.Calendar.YEAR),
+                        now.get(java.util.Calendar.MONTH),
+                        now.get(java.util.Calendar.DAY_OF_MONTH)
+                );
+
+                dpd.setAccentColor(Color.parseColor("#d32f2f"));
+                dpd.setTitle("Pick Month");
+                dpd.setMaxDate(now);
+                dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
 
@@ -279,8 +298,11 @@ public class SummaryreportActivity extends AppCompatActivity
             y = year;
             d = dayOfMonth;
             begindateTextView.setText(date);
+            buttononeclick = true;
 
-        }else{
+
+
+        }else if (currentButton == 2){
             String date = ""+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
             if (dayOfMonth == 1) {
                 if(monthOfYear < 10){
@@ -343,8 +365,41 @@ public class SummaryreportActivity extends AppCompatActivity
                     untildate = "" + year + monthOfYear + dayOfMonth;
                 }
             }
+            System.out.println(untildate);
 
             untildateTextView.setText(date);
+            buttontwoclick = true;
+
+        }else{
+
+            if (monthOfYear == 0){
+                month = "01";
+            }else if (monthOfYear== 1) {
+                month = "02";
+            }else if (monthOfYear== 2) {
+                month = "03";
+            }else if (monthOfYear== 3) {
+                month = "04";
+            }else if (monthOfYear== 4) {
+                month = "05";
+            }else if (monthOfYear== 5) {
+                month = "06";
+            }else if (monthOfYear== 6) {
+                month = "07";
+            }else if (monthOfYear== 7) {
+                month = "08";
+            }else if (monthOfYear== 8) {
+                month = "09";
+            }else if (monthOfYear== 9) {
+                month = "10";
+            }else if (monthOfYear== 10) {
+                month = "11";
+            }else if (monthOfYear== 11) {
+                month = "12";
+            }
+            System.out.println(month);
+            Intent tt = new Intent (SummaryreportActivity.this,WeeklyReports.class);
+            startActivity(tt);
 
         }
     }

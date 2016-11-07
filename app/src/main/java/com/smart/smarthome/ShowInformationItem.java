@@ -79,6 +79,8 @@ public class ShowInformationItem extends AppCompatActivity {
     String shopkeyall;
     FirebaseUser user;
 
+    String allreadyadd;
+
 
     Spinner staticSpinner;
     Spinner staticSpinner2;
@@ -278,6 +280,7 @@ public class ShowInformationItem extends AppCompatActivity {
                 Picasso.with(ShowInformationItem.this).load(i2.getImage()).fit().into(addImageButton);
                 Barcode.setText(i2.getBarcode());
                 Name.setText(i2.getName());
+                allreadyadd = i2.getAlreadyAddtoShoplist();
 
                 if(type2.equals("Food and Ingredients") ) {
                     staticSpinner.setSelection(0, true);
@@ -521,13 +524,17 @@ public class ShowInformationItem extends AppCompatActivity {
                         newItem2.child("VolumeForAdd").setValue("0");
 
 
-                        DatabaseReference shopall = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
-                                .child("all").child(shopkeyall);
-                        DatabaseReference shopl = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
-                                .child(type2).child(shopkey);
+                        if(allreadyadd.equals("false")){
 
-                        shopall.removeValue();
-                        shopl.removeValue();
+                        }else {
+                            DatabaseReference shopall = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
+                                    .child("all").child(shopkeyall);
+                            DatabaseReference shopl = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("shoppinglist")
+                                    .child(type2).child(shopkey);
+
+                            shopall.removeValue();
+                            shopl.removeValue();
+                        }
                         mProgress.dismiss();
                         mDatabase.removeValue();
 

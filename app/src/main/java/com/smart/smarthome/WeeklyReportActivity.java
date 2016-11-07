@@ -18,8 +18,15 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import im.dacer.androidcharts.LineView;
@@ -81,18 +88,47 @@ public class WeeklyReportActivity extends AppCompatActivity
         userid.setText(user.getEmail());
     }
 
+
     private void randomSet(LineView lineView){
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("report");
+        Query queryRef = mDatabase.orderByChild("Time").startAt(SummaryreportActivity.begindate).endAt(SummaryreportActivity.untildate);
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Report report = postSnapshot.getValue(Report.class);
+                    String dateAll = report.getTime();
+                    String date = dateAll.substring(6);
+                    System.out.println(date);
+                }
+                }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         ArrayList<Integer> dataList = new ArrayList<Integer>();
         dataList.add(1000);
         dataList.add(1000);
         dataList.add(500);
         dataList.add(700);
+        dataList.add(700);
+        dataList.add(700);
+
 
         ArrayList<Integer> dataList2 = new ArrayList<Integer>();
         dataList2.add(1200);
         dataList2.add(2200);
         dataList2.add(800);
         dataList2.add(1500);
+        dataList2.add(1500);
+        dataList2.add(1500);
+
 
         ArrayList<ArrayList<Integer>> dataLists = new ArrayList<ArrayList<Integer>>();
         dataLists.add(dataList);
