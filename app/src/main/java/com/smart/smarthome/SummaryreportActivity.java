@@ -186,8 +186,8 @@ public class SummaryreportActivity extends AppCompatActivity
         daily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tt = new Intent (SummaryreportActivity.this,DailyReports.class);
-                startActivity(tt);
+                //Intent tt = new Intent (SummaryreportActivity.this,DailyReports.class);
+                //startActivity(tt);
             }
         });
 

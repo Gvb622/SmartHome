@@ -130,7 +130,7 @@ public class AddItemActivity extends AppCompatActivity {
         mStorage = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("system").child("items");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("items");
 
         mProgress = new ProgressDialog(this);
 
@@ -431,7 +431,6 @@ public class AddItemActivity extends AppCompatActivity {
                         newItem.child("Classifier").setValue(pack_val);
                         newItem.child("RetailPrice").setValue(price_val);
                         newItem.child("Madein").setValue(madein_val);
-                        newItem.child("Image").setValue(downloadUrl.toString());
                         newItem.child("SalePriceTops").setValue(priceTops_val);
                         newItem.child("SalePriceLotus").setValue(priceLotus_val);
                         newItem.child("SalePriceBigC").setValue(priceBigC_val);
@@ -439,6 +438,7 @@ public class AddItemActivity extends AppCompatActivity {
                         newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
                         newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
                         newItem.child("SalePriceMakro").setValue(priceMakro_val);
+                        newItem.child("Image").setValue(downloadUrl.toString());
                         newItem.child("Softline").setValue(sofeline_val);
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
@@ -492,7 +492,6 @@ public class AddItemActivity extends AppCompatActivity {
                                 newItem.child("AlreadyAddtoShoplist").setValue("false");
                                 newItem.child("VolumeForAdd").setValue("0");
 
-
                                 mProgress.dismiss();
                                 finish();
 
@@ -515,7 +514,6 @@ public class AddItemActivity extends AppCompatActivity {
                         newItem.child("Classifier").setValue(pack_val);
                         newItem.child("RetailPrice").setValue(price_val);
                         newItem.child("Madein").setValue(madein_val);
-                        newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/add_btn.png?alt=media&token=a85a513d-d01a-487d-9108-0907bfbe34f9");
                         newItem.child("SalePriceTops").setValue(priceTops_val);
                         newItem.child("SalePriceLotus").setValue(priceLotus_val);
                         newItem.child("SalePriceBigC").setValue(priceBigC_val);
@@ -523,6 +521,7 @@ public class AddItemActivity extends AppCompatActivity {
                         newItem.child("SalePriceHomeFreshMart").setValue(priceHomeFreashMart_val);
                         newItem.child("SalePriceMaxValue").setValue(priceMaxValue_val);
                         newItem.child("SalePriceMakro").setValue(priceMakro_val);
+                        newItem.child("Image").setValue("https://firebasestorage.googleapis.com/v0/b/test-b32cf.appspot.com/o/add_btn.png?alt=media&token=a85a513d-d01a-487d-9108-0907bfbe34f9");
                         newItem.child("Softline").setValue(sofeline_val);
                         newItem.child("Deadline").setValue(deadline_val);
                         newItem.child("DecreasePerClick").setValue(decreaseperclick_val);
